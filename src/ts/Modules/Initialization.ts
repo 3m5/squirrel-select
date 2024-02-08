@@ -18,7 +18,7 @@ const dropdownStart = () => {
   })
 }
 
-export const initDropdown = (selector= '.sqs-dropdown-select') => {
+const initDropdown = (selector: string) => {
   dropdownStart()
 
   // MutationObserver that checks for any new select elements being added after the initial page load
@@ -37,3 +37,6 @@ export const initDropdown = (selector= '.sqs-dropdown-select') => {
   observer.observe(document.body, { childList: true, subtree: true })
 }
 
+export default function SquirrelSelect(selector= '.sqs-dropdown-select') {
+  initDropdown(selector)
+}

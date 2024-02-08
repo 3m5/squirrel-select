@@ -1,1 +1,3 @@
-export { default as SquirrelSelect } from './ts/squirrel-select'
+import './scss/squirrel-select.scss'
+import SquirrelSelect from './ts/Modules/Initialization'
+export default SquirrelSelect

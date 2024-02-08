@@ -29,7 +29,7 @@ npm install @3m5-de/squirrel-select
 
 ## Getting Started
 
-tbd
+WIP
 
 
 ## Construction of the dropdown.
@@ -79,7 +79,7 @@ We will gladly accept contributions. Please send us pull requests.
 
 # Version highlights
 
-## 1.0
+### 1.0 - WIP
 The initial release includes the following features:
 
 - Keyboard operability

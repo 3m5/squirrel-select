@@ -39,7 +39,8 @@ jobs:
               "template": "#{{UNCATEGORIZED}}",
               "pr_template": "- #{{TITLE}}"
             }
-      - uses: ncipollo/release-action@v1
+      - name: Create Github release
+        uses: ncipollo/release-action@v1
         with:
           artifactErrorsFailBuild: true
           # ToDo remove with v1.0.0

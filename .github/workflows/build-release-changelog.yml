@@ -1,5 +1,5 @@
-# If this name is changed, "release-02-publish-to-npm.yml" needs to be adapted!
-name: Build the package and create the release within GitHub
+name: Release
+# ToDo description?
 
 on:
   push:
@@ -8,16 +8,25 @@ on:
 
 jobs:
   
-  # ToDo
-  #build:
-  
   create-release:
     runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
-      - name: "Build Changelog"
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+      - name: Install dependencies and build 🔧
+        run: npm ci && npm run build
+      - name: Publish package on NPM 📦
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Build Changelog
         id: build_changelog
         uses: mikepenz/release-changelog-builder-action@v4
         env:
@@ -35,7 +44,4 @@ jobs:
           artifactErrorsFailBuild: true
           # ToDo remove with v1.0.0
           prerelease: true
-          # ToDo do we need / want this?
-          #artifacts: "release.tar.gz,foo/*.txt"
           body: ${{steps.build_changelog.outputs.changelog}}
-          

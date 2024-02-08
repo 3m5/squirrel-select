@@ -25,15 +25,14 @@ jobs:
         with:
           commitMode: true
           failOnError: true
-          configurationJson: '{
-            "template": "#{{CHANGELOG}}\n\n<details>\n\n#{{UNCATEGORIZED}}\n</details>",
-            "pr_template": "- #{{TITLE}}",
-          }'
+          configurationJson: |
+            {
+              "template": "#{{CHANGELOG}}\n\n<details>\n\n#{{UNCATEGORIZED}}\n</details>",
+              "pr_template": "- #{{TITLE}}",
+            }
       - uses: ncipollo/release-action@v1
         with:
           artifactErrorsFailBuild: true
-          # Does this cause the "Full Changelog" output?
-          #generateReleaseNotes: true
           # ToDo remove with v1.0.0
           prerelease: true
           # ToDo do we need / want this?

@@ -1,4 +1,27 @@
 {
   "name": "@3m5-de/squirrel-select",
-  "version": "0.0.1"
+  "version": "0.0.1",
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-typescript": "^11.1.6",
+    "autoprefixer": "^10.4.17",
+    "eslint": "^8.56.0",
+    "postcss": "^8.4.35",
+    "rollup": "^4.9.6",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "rollup-plugin-scss": "^4.0.0",
+    "sass": "^1.70.0",
+    "tslib": "^2.6.2",
+    "typescript": "^5.3.3"
+  },
+  "scripts": {
+    "build": "rollup -c",
+    "dev": "rollup -c -w",
+    "test": "node test/test.js",
+    "pretest": "npm run build"
+  },
+  "files": [
+    "dist"
+  ]
 }

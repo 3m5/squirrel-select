@@ -6,7 +6,7 @@ import peerDepsExternal from 'rollup-plugin-peer-deps-external'
 import sass from 'sass'
 import scss from 'rollup-plugin-scss'
 import terser from '@rollup/plugin-terser'
-import postcss from 'postcss'
+import postcss from 'rollup-plugin-postcss'
 import autoprefixer from 'autoprefixer'
 
 export default {
@@ -25,11 +25,10 @@ export default {
     resolve(),
     commonjs(),
     typescript({ tsconfig: './tsconfig.json' }),
-    scss({
-      fileName: 'css/squirrel-select.css',
-      processor: () => postcss([autoprefixer()]),
-      runtime: sass,
-      outputStyle: 'compressed',
-    })
+    postcss({
+      extract: false,
+      modules: true,
+      use: ['sass'],
+    }),
   ],
 }

@@ -37,7 +37,7 @@ jobs:
           configurationJson: |
             {
               "template": "#{{CHANGELOG}}\n\n<details>\n\n#{{UNCATEGORIZED}}\n</details>",
-              "pr_template": "- #{{TITLE}}",
+              "pr_template": "- #{{TITLE}}"
             }
       - uses: ncipollo/release-action@v1
         with:

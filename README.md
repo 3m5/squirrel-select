@@ -1,6 +1,6 @@
 # Squirrel Select
 
-![Exploding Squirrels](explodingSquirrels.png)
+![Exploding Squirrels](logo_250.jpeg)
 
 [![npm version](https://badge.fury.io/js/@3m5-de%2Fsquirrel-select.svg)](https://badge.fury.io/js/@3m5-de%2Fsquirrel-select) 
 [![](https://badgen.net/badge/license/MIT)]()
@@ -28,28 +28,6 @@ npm install @3m5-de/squirrel-select
 
 tbd
 
-## Contribution
-
-We will gladly accept contributions. Please send us pull requests.
-
-## Version highlights
-
-### 1.0
-The initial release includes the following features:
-
-- Keyboard operability
-
-  - Selecting the dropdown or an option using Tab
-  - Opening the dropdown and selecting an option using Enter
-  - Closing the dropdown using Esc
-  - Selecting an option using arrow keys
-  - Searching for an option by typing
-
-- Activation/Deactivation
- - can be activated or deactivated by setting or removing the disabled attribute on the associated select element
-
-- Class Assignment
-  - it's possible to add classes to specific parts of the newly created dropdown
 
 ## Construction of the dropdown.
 
@@ -91,3 +69,25 @@ The following data attributes are supported:
 
 If a change of the selected element is performed programmatically (e.g., by explicitly setting the value), a change event MUST be dispatched immediately afterward (select.dispatchEvent(new Event('change'));), as otherwise, this change will not be reflected in the dropdown.
 
+## Contribution
+
+We will gladly accept contributions. Please send us pull requests.
+
+## Version highlights
+
+### 1.0
+The initial release includes the following features:
+
+- Keyboard operability
+
+  - Selecting the dropdown or an option using Tab
+  - Opening the dropdown and selecting an option using Enter
+  - Closing the dropdown using Esc
+  - Selecting an option using arrow keys
+  - Searching for an option by typing
+
+- Activation/Deactivation
+- can be activated or deactivated by setting or removing the disabled attribute on the associated select element
+
+- Class Assignment
+  - it's possible to add classes to specific parts of the newly created dropdown

@@ -1,6 +1,6 @@
 {
   "name": "@3m5-de/squirrel-select",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "SquirrelSelect - a dropdown library",
   "scripts": {
     "build": "rollup -c",

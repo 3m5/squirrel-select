@@ -33,5 +33,5 @@ jobs:
           prerelease: true
           # ToDo do we need / want this?
           #artifacts: "release.tar.gz,foo/*.txt"
-          body: {{steps.build_changelog.outputs.changelog}}
+          body: ${{steps.build_changelog.outputs.changelog}}
           

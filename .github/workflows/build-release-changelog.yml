@@ -37,7 +37,7 @@ jobs:
           configurationJson: |
             {
               "template": "#{{UNCATEGORIZED}}",
-              "pr_template": "- #{{TITLE}}"
+              "pr_template": "- #{{TITLE}} <i>by</i> #{{AUTHOR}}"
             }
       - name: Create Github release
         uses: ncipollo/release-action@v1

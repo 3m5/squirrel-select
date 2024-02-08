@@ -1,7 +1,9 @@
-name: Publish Package to npmjs
+name: Publish a release to the official NPM registry
+
 on:
   release:
     types: [published]
+    
 jobs:
   build:
     runs-on: ubuntu-latest

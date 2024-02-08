@@ -1,1 +1,1 @@
-export { default as SquirrelSelect } from "./ts/squirrel-select";
+export { default as SquirrelSelect } from './ts/squirrel-select'

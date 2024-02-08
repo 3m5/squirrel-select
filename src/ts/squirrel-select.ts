@@ -1,3 +1,3 @@
 import '../scss/squirrel-select.scss'
-const SquirrelSelect = () => console.log('Here is my App')
+import { initDropdown as SquirrelSelect } from './Modules/Initialization'
 export default SquirrelSelect

@@ -1,3 +1,84 @@
-.custom-select-class {
-  font-size: 20px;
+.sqs-dropdown {
+
+  &__wrapper {
+    --sqs-dropdown-bg: #f0f0f0;
+    --sqs-dropdown-text-color: #333;
+    --sqs-dropdown-border-color: #ccc;
+    --sqs-dropdown-trigger-height: 40px;
+    --sqs-dropdown-option-padding: 10px;
+    --sqs-dropdown-font-size: 16px;
+    --sqs-dropdown-icon-path: 'path/to/icons/chevron_down.svg';
+    --sqs-dropdown-icon-open-path: 'path/to/icons/chevron_up.svg';
+    --sqs-dropdown-highlight-color: #192435;
+    --sqs-dropdown-options-max-height: 300px;
+
+    position: relative;
+    user-select: none;
+    width: 100%;
+
+
+    .select {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      font-family: sans-serif; /* Basis-Schriftart */
+      font-size: var(--sqs-dropdown-font-size);
+
+      &__trigger {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: var(--sqs-dropdown-text-color);
+        cursor: pointer;
+        border-bottom: 1px solid var(--sqs-dropdown-border-color);
+        background: url(var(--sqs-dropdown-icon-path)) no-repeat right 17px center;
+        min-height: var(--sqs-dropdown-trigger-height);
+        padding: 10px;
+
+        span {
+          width: 100%;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+      }
+
+      &__options {
+        position: absolute;
+        display: none; /* close dropdown */
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--sqs-dropdown-bg);
+        z-index: 2;
+        max-height: var(--sqs-dropdown-options-max-height);
+        overflow: auto;
+        border: 1px solid var(--sqs-dropdown-border-color);
+      }
+
+      &__option {
+        display: block;
+        padding: var(--sqs-dropdown-option-padding);
+        color: var(--sqs-dropdown-text-color);
+        cursor: pointer;
+        transition: background-color 0.3s;
+
+        &:hover, &:focus {
+          background-color: var(--sqs-dropdown-highlight-color);
+          color: #fff;
+        }
+      }
+
+      &.open {
+        .select__options {
+          display: block; /* open dropdown */
+        }
+
+        .select__trigger {
+          background-image: url(var(--sqs-dropdown-icon-open-path));
+        }
+      }
+    }
+  }
 }

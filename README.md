@@ -8,16 +8,19 @@
 
 Squirrel Select is a dropdown library.
 
-This will initialize a dropdown for every select element present on the page (or added later) that has the class sqs-dropdown-select. The select element itself receives the classes hidden and sqs-dropdown-select__initialized, to prevent it from being initialized multiple times.
+It will initialize a dropdown for every select element present on the page (or added later) that has the CSS class `sqs-dropdown-select`.
+The select element itself receives the classes `hidden` and `sqs-dropdown-select__initialized`, to prevent it from being initialized multiple times.
 
-## Authors & Sponsors
+# Authors & Sponsors
 
 * Maurice Kaltofen - [maurice.kaltofen@3m5.de](mailto:maurice.kaltofen@3m5.de)
-* Tim Goßrau - https://github.com/TimG1804
-* Eugen Schlosser - https://github.com/spider22133
-* Robert Heinig - https://github.com/robert-heinig
+* Tim Goßrau - [TimG1804](https://github.com/TimG1804)
+* Eugen Schlosser - [spider22133](https://github.com/spider22133)
+* Robert Heinig - [robert-heinig](https://github.com/robert-heinig)
 
-*The development and public-releases are generously sponsored by our employer http://www.3m5.de.*
+*The development and public-releases are generously sponsored by our employer https://www.3m5.de.*
+
+# Documentation
 
 ## Installation
 ```
@@ -50,12 +53,13 @@ tbd
 </div>
 ```
 
-- If the dropdown is open, the element with the class select receives the class open.
-- If the dropdown is disabled, the same element receives the class select__disabled.
+- If the dropdown is open, the element with the CSS class `select` has received the CSS class `open`.
+- If the dropdown is disabled, the same element has received the CSS class `select__disabled`.
 
-### Class Assignment
+### CSS Class Assignment
 
-With data attributes on the select element, it's possible to add classes to specific parts of the newly created dropdown. These attributes should be handled like the conventional class attribute (i.e., classes are separated by spaces).
+With data attributes on the select element, it's possible to add CSS classes to specific parts of the newly created dropdown.
+These attributes should be handled like the conventional class attribute (i.e., classes are separated by spaces).
 
 The following data attributes are supported:
 
@@ -64,18 +68,18 @@ The following data attributes are supported:
     - data-sqs-select-trigger-classes → <div class="select__trigger">
     - data-sqs-select-options-classes → <div class="select__options">
 
-
 ### Manual Change of the Selected Option
 
-If a change of the selected element is performed programmatically (e.g., by explicitly setting the value), a change event MUST be dispatched immediately afterward (select.dispatchEvent(new Event('change'));), as otherwise, this change will not be reflected in the dropdown.
+If a change of the selected element is performed programmatically (e.g., by explicitly setting the value),
+a change event MUST be dispatched immediately afterward (`select.dispatchEvent(new Event('change'));`), as otherwise, this change will not be reflected in the dropdown.
 
-## Contribution
+# Contribution
 
 We will gladly accept contributions. Please send us pull requests.
 
-## Version highlights
+# Version highlights
 
-### 1.0
+## 1.0
 The initial release includes the following features:
 
 - Keyboard operability

@@ -36,8 +36,8 @@ jobs:
           failOnError: true
           configurationJson: |
             {
-              "template": "#{{UNCATEGORIZED}}",
-              "pr_template": "- #{{TITLE}} <i>by</i> #{{AUTHOR}}"
+              "template": "<h2>What's Changed</h2>#{{UNCATEGORIZED}}",
+              "pr_template": "- #{{TITLE}} <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/#{{AUTHOR}}/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/#{{AUTHOR}}">@#{{AUTHOR}}</a>"
             }
       - name: Create Github release
         uses: ncipollo/release-action@v1

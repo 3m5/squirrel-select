@@ -36,7 +36,7 @@ jobs:
           failOnError: true
           configurationJson: |
             {
-              "template": "<h2>What's Changed</h2>#{{UNCATEGORIZED}}",
+              "template": "<h2>What's Changed</h2> #{{UNCATEGORIZED}}",
               "pr_template": "- #{{TITLE}} by @#{{AUTHOR}}"
             }
       - name: Create Github release

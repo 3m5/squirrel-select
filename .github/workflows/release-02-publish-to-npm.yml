@@ -1,8 +1,10 @@
 name: Publish a release to the official NPM registry
 
 on:
-  release:
-    types: [published]
+  workflow_run:
+    workflows: [Build the package and create the release within GitHub]
+    types:
+      - completed
     
 jobs:
   build:

@@ -1,6 +1,6 @@
 {
   "name": "@3m5-de/squirrel-select",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "SquirrelSelect - a dropdown library",
   "scripts": {
     "build": "rollup -c",
@@ -26,6 +26,6 @@
   },
   "files": [
     "dist"
-  ]
+  ],
   "typings": "./dist/index.d.ts"
 }

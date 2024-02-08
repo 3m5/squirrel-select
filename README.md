@@ -93,5 +93,5 @@ The initial release includes the following features:
 - Activation/Deactivation
 - can be activated or deactivated by setting or removing the disabled attribute on the associated select element
 
-- Class Assignment
+- Class Assignment 
   - it's possible to add classes to specific parts of the newly created dropdown

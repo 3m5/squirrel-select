@@ -4,6 +4,8 @@ import typescript from '@rollup/plugin-typescript'
 import peerDepsExternal from 'rollup-plugin-peer-deps-external'
 import terser from '@rollup/plugin-terser'
 import postcss from 'rollup-plugin-postcss'
+import serve from 'rollup-plugin-serve';
+import livereload from 'rollup-plugin-livereload';
 
 export default {
   input: 'src/index.ts',
@@ -26,5 +28,14 @@ export default {
       modules: true,
       use: ['sass'],
     }),
+    serve({
+      open: true,
+      contentBase: ['dist', 'public'],
+      host: '0.0.0.0',
+      port: 8080
+    }),
+    livereload({
+      watch: 'dist',
+    })
   ],
 }

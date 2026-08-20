@@ -20,8 +20,9 @@ export const createDropdown = (select: HTMLSelectElement) => {
   const selectTrigger = document.createElement('div')
   selectTrigger.classList.add(className.selectTrigger)
   const selectedOption = [...select.options].find(option => option.selected)
-  const triggerText = selectedOption ? selectedOption.text : ''
-  selectTrigger.innerHTML = `<span>${triggerText}</span>`
+  const triggerSpan = document.createElement('span')
+  triggerSpan.textContent = selectedOption ? selectedOption.text : ''
+  selectTrigger.appendChild(triggerSpan)
 
   const selectOptionsDiv = document.createElement('div')
   selectOptionsDiv.classList.add(className.selectOptions);

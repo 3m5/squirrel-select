@@ -1,8 +1,12 @@
 name: Release
+
+permissions: {}
+
 on:
   push:
     tags:
       - 'v*'
+
 jobs:
 
   create-release:
@@ -12,21 +16,23 @@ jobs:
       id-token: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
-          node-version: '20'
+          node-version: '24'
           registry-url: 'https://registry.npmjs.org'
       - name: Install dependencies and build 🔧
-        run: npm ci && npm run build
+        run: npm ci --ignore-scripts && npm run build
+      # Node 24 already ships npm 11.9, but trusted publishing needs >= 11.5.1
+      # and we do not want a release to depend on what the runner happens to ship.
       - name: Update npm
         run: npm install -g npm@^11.5
       - name: Publish package on NPM 📦
         run: npm publish
       - name: Build Changelog
         id: build_changelog
-        uses: mikepenz/release-changelog-builder-action@v4
+        uses: mikepenz/release-changelog-builder-action@32e3c96f29a6532607f638797455e9e98cfc703d # v4.2.2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -38,9 +44,11 @@ jobs:
               "pr_template": "● #{{TITLE}} by @#{{AUTHOR}}\n"
             }
       - name: Create Github release
-        uses: ncipollo/release-action@v1
+        uses: ncipollo/release-action@339a81892b84b4eeb0f6e744e4574d79d0d9b8dd # v1.21.0
         with:
           artifactErrorsFailBuild: true
+          # a release created by hand for the tag must not fail the job
+          allowUpdates: true
           # ToDo remove with v1.0.0
           prerelease: true
           body: ${{steps.build_changelog.outputs.changelog}}

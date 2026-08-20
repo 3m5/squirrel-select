@@ -1,6 +1,6 @@
 {
   "name": "@3m5-de/squirrel-select",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "SquirrelSelect - a dropdown library",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -22,7 +22,6 @@
     "eslint": "^8.56.0",
     "rollup": "^4.9.6",
     "rollup-plugin-peer-deps-external": "^2.2.4",
-    "rollup-plugin-postcss": "^4.0.2",
     "rollup-plugin-scss": "^4.0.0",
     "sass": "^1.70.0",
     "tslib": "^2.6.2",

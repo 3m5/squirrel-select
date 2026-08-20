@@ -1,7 +1,7 @@
 import { className, createOption } from '../Helpers/constantsAndHelpers'
 
 const assignClasses = (element: HTMLElement, classes: string) => {
-  classes.split(/\s+/).forEach(className => element.classList.add(className))
+  classes.split(/\s+/).filter(Boolean).forEach(className => element.classList.add(className))
 }
 
 export const createDropdown = (select: HTMLSelectElement) => {

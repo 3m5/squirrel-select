@@ -28,6 +28,10 @@
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.67.0"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/3m5/squirrel-select"
+  },
   "files": [
     "dist"
   ],

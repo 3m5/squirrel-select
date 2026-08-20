@@ -17,7 +17,7 @@ import { selectOption } from './EventHandling'
  */
 export const observeSelectElement = (select: HTMLSelectElement) => {
   select.addEventListener('sqsUpdate', () => {
-    const optionSelected = select.querySelector<HTMLOptionElement>(`option[value="${select.value}"]`)
+    const optionSelected = select.querySelector<HTMLOptionElement>(`option[value="${CSS.escape(select.value)}"]`)
     const dropdownSelect = select.nextElementSibling?.querySelector<HTMLElement>(`.${className.select}`)
     const dropdownSelectTriggerSpan = dropdownSelect?.querySelector<HTMLSpanElement>(`.${className.selectTrigger} span`)
     const dropdownSelectOptions = dropdownSelect?.querySelector<HTMLElement>(`.${className.selectOptions}`)
@@ -36,7 +36,7 @@ export const observeSelectElement = (select: HTMLSelectElement) => {
         const dropdownSelectOptions = select.nextElementSibling?.querySelector<HTMLElement>(`.${className.selectOptions}`)
         mutation.removedNodes.forEach((node) => {
           if (node instanceof HTMLOptionElement) {
-            dropdownSelectOptions?.querySelector<HTMLElement>(`[data-value="${node.value}"]`)?.remove()
+            dropdownSelectOptions?.querySelector<HTMLElement>(`[data-value="${CSS.escape(node.value)}"]`)?.remove()
           }
         })
         mutation.addedNodes.forEach((node) => {

@@ -23,7 +23,7 @@ export default {
     typescript({ tsconfig: './tsconfig.json' }),
     postcss({
       extract: false,
-      modules: true,
+      modules: false,
       use: ['sass'],
     }),
   ],

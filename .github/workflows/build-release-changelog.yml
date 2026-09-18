@@ -9,10 +9,10 @@ on:
 
 jobs:
 
-  create-release:
+  publish-npm:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: read
       id-token: write
     steps:
       - name: Checkout
@@ -30,6 +30,15 @@ jobs:
         run: npm install -g npm@^11.5
       - name: Publish package on NPM 📦
         run: npm publish
+
+  github-release:
+    needs: publish-npm
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
       - name: Build Changelog
         id: build_changelog
         uses: mikepenz/release-changelog-builder-action@32e3c96f29a6532607f638797455e9e98cfc703d # v4.2.2

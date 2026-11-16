@@ -5,3 +5,8 @@
 
 node_modules/
 dist
+site/dist/
+_site/
+test-results/
+playwright-report/
+blob-report/

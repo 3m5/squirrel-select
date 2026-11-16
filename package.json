@@ -1,39 +1,53 @@
 {
   "name": "@3m5-de/squirrel-select",
   "version": "0.1.5",
-  "description": "SquirrelSelect - a dropdown library",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "scripts": {
-    "build": "rollup -c",
-    "dev": "rollup -c -w",
-    "test": "node test/test.js",
-    "pretest": "npm run build"
-  },
-  "devDependencies": {
-    "@eslint/js": "^10.0.1",
-    "@rollup/plugin-commonjs": "^29.0.3",
-    "@rollup/plugin-node-resolve": "^16.0.3",
-    "@rollup/plugin-terser": "^1.0.0",
-    "@rollup/plugin-typescript": "^12.3.0",
-    "autoprefixer": "^10.5.4",
-    "eslint": "^10.10.0",
-    "globals": "^17.11.0",
-    "rollup": "^4.62.4",
-    "rollup-plugin-peer-deps-external": "^2.2.4",
-    "rollup-plugin-postcss": "^4.0.2",
-    "rollup-plugin-scss": "^4.0.0",
-    "sass": "^1.103.0",
-    "tslib": "^2.8.1",
-    "typescript": "^6.0.3",
-    "typescript-eslint": "^8.67.0"
-  },
+  "description": "A stylesheet for the native <select>. No JavaScript.",
+  "keywords": [
+    "select",
+    "css",
+    "base-select",
+    "customizable-select",
+    "accessibility"
+  ],
+  "license": "MIT",
+  "homepage": "https://3m5.github.io/squirrel-select/",
+  "bugs": "https://github.com/3m5/squirrel-select/issues",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/3m5/squirrel-select.git"
   },
+  "type": "module",
+  "exports": {
+    "./squirrel-select.css": "./dist/squirrel-select.css",
+    "./package.json": "./package.json"
+  },
   "files": [
     "dist"
   ],
-  "typings": "./dist/index.d.ts"
+  "sideEffects": [
+    "*.css"
+  ],
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "build": "node scripts/build.mjs",
+    "lint": "eslint scripts eslint.config.mjs stylelint.config.mjs && stylelint \"src/**/*.css\"",
+    "typecheck": "tsc --noEmit",
+    "size": "node scripts/size.mjs",
+    "pack:check": "node scripts/pack-check.mjs",
+    "test": "npm run lint && npm run typecheck && npm run build && npm run size && npm run pack:check"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
+    "@eslint/js": "^10.0.1",
+    "@playwright/test": "1.65.1",
+    "@types/node": "^26.6.6",
+    "esbuild": "^0.28.2",
+    "eslint": "^10.10.0",
+    "globals": "^17.11.0",
+    "marked": "^18.2.1",
+    "stylelint": "^18.0.0",
+    "stylelint-config-standard": "^41.0.0",
+    "typescript": "~6.0.3",
+    "typescript-eslint": "^8.67.0"
+  }
 }

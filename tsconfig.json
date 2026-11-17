@@ -7,9 +7,10 @@
     "target": "es2024",
     "module": "nodenext",
     "moduleResolution": "nodenext",
+    "allowImportingTsExtensions": true,
     "types": ["node"],
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["scripts"]
+  "include": ["scripts", "tests", "playwright.config.ts"]
 }

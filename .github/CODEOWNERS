@@ -1,0 +1,2 @@
+# reference images change only with a maintainer's review
+tests/browser/**/*-snapshots/ @TimG1804

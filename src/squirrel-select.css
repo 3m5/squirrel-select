@@ -1,0 +1,7 @@
+@layer squirrel {
+  @supports (color: light-dark(#000, #fff)) {
+    :where(.sqs) {
+      --_sqs-radius: var(--sqs-radius, 0.375rem);
+    }
+  }
+}

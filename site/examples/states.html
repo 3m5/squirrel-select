@@ -1,0 +1,501 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>States · SquirrelSelect</title>
+<link rel="stylesheet" href="../dist/squirrel-select.css">
+<style>
+  @font-face {
+    font-family: "Atkinson Hyperlegible Next";
+    src: url("../assets/fonts/atkinson-hyperlegible-next-latin-wght.woff2") format("woff2");
+    font-weight: 200 800;
+    font-display: block;
+  }
+  :root {
+    color-scheme: light dark;
+    --page-bg: light-dark(#f4f5f7, #121418);
+    --page-card: light-dark(#fff, #1b1f24);
+    --page-text: light-dark(#1c2024, #e4e7eb);
+    --page-muted: light-dark(#596370, #a3adb8);
+    --page-line: light-dark(#dde1e6, #2e353d);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 1.5rem 1rem 4rem;
+    font: 16px/1.5 "Atkinson Hyperlegible Next", sans-serif;
+    color: var(--page-text);
+    background: var(--page-bg);
+  }
+  main { max-inline-size: 64rem; margin-inline: auto; }
+  h1 { margin: 0; font-size: 1.5rem; }
+  h1 + p { margin: 0 0 1.5rem; }
+  a { color: inherit; }
+  .cases { display: grid; gap: 1rem; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-block-end: 1rem; }
+  @media (width < 48rem) { .cases { grid-template-columns: minmax(0, 1fr); } }
+  .fall { margin: 0; padding: 1rem; background: var(--page-card); border: 1px solid var(--page-line); border-radius: .5rem; }
+  .fall.wide { grid-column: 1 / -1; }
+  .fall figcaption { margin-block-end: .375rem; font-size: .875rem; font-weight: 700; }
+  .fall .sqs { inline-size: 100%; }
+  .fall form, .fall fieldset { margin: 0; padding: 0; border: 0; }
+  .fall details { margin-block-start: .5rem; font-size: .8125rem; color: var(--page-muted); }
+  .fall pre { overflow: auto; white-space: pre-wrap; }
+  .error { margin: .375rem 0 0; font-size: .8125rem; color: light-dark(#b3261e, #ff9b91); }
+  .narrow { inline-size: 7rem; }
+  .filterbar { --sqs-bg: light-dark(#eef0f3, #262b32); --sqs-border: light-dark(#4d5965, #a5b1bc); }
+  .look-moss {
+    --sqs-text: light-dark(#18241c, #e2ece4); --sqs-muted: light-dark(#4f6054, #a9baad);
+    --sqs-bg: light-dark(#fbfdfb, #151d18); --sqs-surface: light-dark(#fff, #1d2820);
+    --sqs-border: light-dark(#6d7e72, #7a8a7e); --sqs-accent: light-dark(#2e6a3b, #8fd19e);
+    --sqs-radius: .75rem; --sqs-padding-inline: 1em;
+  }
+  .look-steel {
+    --sqs-text: light-dark(#111820, #e6ebf0); --sqs-muted: light-dark(#4d5965, #a5b1bc);
+    --sqs-bg: light-dark(#fff, #12171c); --sqs-surface: light-dark(#fff, #1a2127);
+    --sqs-border: light-dark(#5f6b76, #808b95); --sqs-accent: light-dark(#0b5b78, #7cc7e8);
+    --sqs-radius: 2px; --sqs-font-size: .875rem; --sqs-padding-block: .375em;
+    --sqs-shadow: 0 2px 6px light-dark(rgb(0 0 0 / 16%), rgb(0 0 0 / 60%));
+  }
+  .look-coral {
+    --sqs-text: light-dark(#2a1a16, #f3e6e2); --sqs-muted: light-dark(#6b524c, #c4aca5);
+    --sqs-bg: light-dark(#fff8f5, #221917); --sqs-surface: light-dark(#fff, #2c211e);
+    --sqs-border: light-dark(#9b766d, #94776f); --sqs-accent: light-dark(#ad3624, #ff9e8a);
+    --sqs-invalid: light-dark(#8f1d5c, #ff8fc8);
+    --sqs-radius: 999px; --sqs-border-width: 2px; --sqs-font-size: 1.0625rem;
+  }
+</style>
+</head>
+<body>
+<main>
+<h1>SquirrelSelect states</h1>
+<p><a href="../">Back to the start page</a></p>
+
+<div class="cases">
+<figure class="fall" id="fall-default">
+  <figcaption><label for="s-default">Default</label></figcaption>
+  <select class="sqs" id="s-default">
+    <option>Red squirrel</option>
+    <option>Grey squirrel</option>
+    <option>Hazel dormouse</option>
+    <option>Edible dormouse</option>
+  </select>
+  <details><summary>Code</summary><pre><code>&lt;select class="sqs" id="s-default"&gt;
+  &lt;option&gt;Red squirrel&lt;/option&gt;
+  &lt;option&gt;Grey squirrel&lt;/option&gt;
+  &lt;option&gt;Hazel dormouse&lt;/option&gt;
+  &lt;option&gt;Edible dormouse&lt;/option&gt;
+&lt;/select&gt;</code></pre></details>
+</figure>
+
+<figure class="fall" id="fall-placeholder">
+  <figcaption><label for="s-placeholder">Placeholder option, required</label></figcaption>
+  <form>
+    <select class="sqs" id="s-placeholder" name="species" required>
+      <option value="">Choose a species …</option>
+      <option>Red squirrel</option>
+      <option>Grey squirrel</option>
+    </select>
+  </form>
+  <details><summary>Code</summary><pre><code>&lt;form&gt;
+  &lt;select class="sqs" id="s-placeholder" name="species" required&gt;
+    &lt;option value=""&gt;Choose a species …&lt;/option&gt;
+    &lt;option&gt;Red squirrel&lt;/option&gt;
+    &lt;option&gt;Grey squirrel&lt;/option&gt;
+  &lt;/select&gt;
+&lt;/form&gt;</code></pre></details>
+</figure>
+
+<figure class="fall" id="fall-selected">
+  <figcaption><label for="s-selected">Selected</label></figcaption>
+  <select class="sqs" id="s-selected">
+    <option>Red squirrel</option>
+    <option>Grey squirrel</option>
+    <option selected>Hazel dormouse</option>
+    <option>Edible dormouse</option>
+  </select>
+  <details><summary>Code</summary><pre><code>&lt;select class="sqs" id="s-selected"&gt;
+  &lt;option&gt;Red squirrel&lt;/option&gt;
+  &lt;option&gt;Grey squirrel&lt;/option&gt;
+  &lt;option selected&gt;Hazel dormouse&lt;/option&gt;
+  &lt;option&gt;Edible dormouse&lt;/option&gt;
+&lt;/select&gt;</code></pre></details>
+</figure>
+
+<figure class="fall" id="fall-long">
+  <figcaption><label for="s-long">Long text</label></figcaption>
+  <select class="sqs" id="s-long">
+    <button><selectedcontent></selectedcontent></button>
+    <option>Short</option>
+    <option selected>A very long option text that ends with an ellipsis in the closed field</option>
+    <option>Eichhörnchenkobelbaumeisterinnenlehrgang (one word without a break point)</option>
+  </select>
+  <details><summary>Code</summary><pre><code>&lt;select class="sqs" id="s-long"&gt;
+  &lt;button&gt;&lt;selectedcontent&gt;&lt;/selectedcontent&gt;&lt;/button&gt;
+  &lt;option&gt;Short&lt;/option&gt;
+  &lt;option selected&gt;A very long option text that ends with an ellipsis in the closed field&lt;/option&gt;
+  &lt;option&gt;Eichhörnchenkobelbaumeisterinnenlehrgang (one word without a break point)&lt;/option&gt;
+&lt;/select&gt;</code></pre></details>
+</figure>
+
+<figure class="fall" id="fall-disabled">
+  <figcaption><label for="s-disabled">Disabled</label></figcaption>
+  <select class="sqs" id="s-disabled" disabled>
+    <option>Cannot be changed</option>
+  </select>
+  <details><summary>Code</summary><pre><code>&lt;select class="sqs" id="s-disabled" disabled&gt;
+  &lt;option&gt;Cannot be changed&lt;/option&gt;
+&lt;/select&gt;</code></pre></details>
+</figure>
+
+<figure class="fall" id="fall-invalid">
+  <figcaption><label for="s-invalid">Invalid (server error)</label></figcaption>
+  <select class="sqs" id="s-invalid" aria-invalid="true" aria-describedby="s-invalid-error">
+    <option value="">Choose a species …</option>
+    <option>Red squirrel</option>
+  </select>
+  <p class="error" id="s-invalid-error">Please choose a species.</p>
+  <details><summary>Code</summary><pre><code>&lt;select class="sqs" id="s-invalid" aria-invalid="true" aria-describedby="s-invalid-error"&gt;
+  &lt;option value=""&gt;Choose a species …&lt;/option&gt;
+  &lt;option&gt;Red squirrel&lt;/option&gt;
+&lt;/select&gt;
+&lt;p class="error" id="s-invalid-error"&gt;Please choose a species.&lt;/p&gt;</code></pre></details>
+</figure>
+
+<figure class="fall" id="fall-optgroup">
+  <figcaption><label for="s-optgroup">Groups, separator, disabled option</label></figcaption>
+  <select class="sqs" id="s-optgroup">
+    <optgroup label="Tree squirrels">
+      <option>Red squirrel</option>
+      <option selected>Grey squirrel</option>
+      <option disabled>Caucasian squirrel (sold out)</option>
+    </optgroup>
+    <optgroup label="Dormice">
+      <option>Hazel dormouse</option>
+      <option>Edible dormouse</option>
+    </optgroup>
+    <hr>
+    <option>Northern flying squirrel, glides up to ninety metres between the trees of the boreal forest</option>
+  </select>
+  <details><summary>Code</summary><pre><code>&lt;select class="sqs" id="s-optgroup"&gt;
+  &lt;optgroup label="Tree squirrels"&gt;
+    &lt;option&gt;Red squirrel&lt;/option&gt;
+    &lt;option selected&gt;Grey squirrel&lt;/option&gt;
+    &lt;option disabled&gt;Caucasian squirrel (sold out)&lt;/option&gt;
+  &lt;/optgroup&gt;
+  &lt;optgroup label="Dormice"&gt;
+    &lt;option&gt;Hazel dormouse&lt;/option&gt;
+    &lt;option&gt;Edible dormouse&lt;/option&gt;
+  &lt;/optgroup&gt;
+  &lt;hr&gt;
+  &lt;option&gt;Northern flying squirrel, glides up to ninety metres between the trees of the boreal forest&lt;/option&gt;
+&lt;/select&gt;</code></pre></details>
+</figure>
+
+<figure class="fall" id="fall-fieldset">
+  <figcaption><label for="s-fieldset">Disabled fieldset</label></figcaption>
+  <fieldset disabled>
+    <select class="sqs" id="s-fieldset">
+      <option selected>Red squirrel</option>
+      <option>Grey squirrel</option>
+      <option>Hazel dormouse</option>
+      <option>Edible dormouse</option>
+    </select>
+  </fieldset>
+  <details><summary>Code</summary><pre><code>&lt;fieldset disabled&gt;
+  &lt;select class="sqs" id="s-fieldset"&gt;
+    &lt;option selected&gt;Red squirrel&lt;/option&gt;
+    &lt;option&gt;Grey squirrel&lt;/option&gt;
+    &lt;option&gt;Hazel dormouse&lt;/option&gt;
+    &lt;option&gt;Edible dormouse&lt;/option&gt;
+  &lt;/select&gt;
+&lt;/fieldset&gt;</code></pre></details>
+</figure>
+
+<figure class="fall" id="fall-small">
+  <figcaption><label for="s-small">Small, --sqs-font-size: .875rem</label></figcaption>
+  <select class="sqs" id="s-small" style="--sqs-font-size: .875rem">
+    <option selected>Red squirrel</option>
+    <option>Grey squirrel</option>
+    <option>Hazel dormouse</option>
+    <option>Edible dormouse</option>
+  </select>
+  <details><summary>Code</summary><pre><code>&lt;select class="sqs" id="s-small" style="--sqs-font-size: .875rem"&gt;
+  &lt;option selected&gt;Red squirrel&lt;/option&gt;
+  &lt;option&gt;Grey squirrel&lt;/option&gt;
+  &lt;option&gt;Hazel dormouse&lt;/option&gt;
+  &lt;option&gt;Edible dormouse&lt;/option&gt;
+&lt;/select&gt;</code></pre></details>
+</figure>
+
+<figure class="fall" id="fall-large">
+  <figcaption><label for="s-large">Large, --sqs-font-size: 1.125rem</label></figcaption>
+  <select class="sqs" id="s-large" style="--sqs-font-size: 1.125rem">
+    <option selected>Red squirrel</option>
+    <option>Grey squirrel</option>
+    <option>Hazel dormouse</option>
+    <option>Edible dormouse</option>
+  </select>
+  <details><summary>Code</summary><pre><code>&lt;select class="sqs" id="s-large" style="--sqs-font-size: 1.125rem"&gt;
+  &lt;option selected&gt;Red squirrel&lt;/option&gt;
+  &lt;option&gt;Grey squirrel&lt;/option&gt;
+  &lt;option&gt;Hazel dormouse&lt;/option&gt;
+  &lt;option&gt;Edible dormouse&lt;/option&gt;
+&lt;/select&gt;</code></pre></details>
+</figure>
+
+<figure class="fall" id="fall-theme">
+  <figcaption><label for="s-theme">Own theme on the element</label></figcaption>
+  <select class="sqs" id="s-theme" style="--sqs-accent: light-dark(#a3165a, #ff8cc6); --sqs-border: light-dark(#a3165a, #ff8cc6); --sqs-radius: 999px">
+    <option>Red squirrel</option>
+    <option selected>Grey squirrel</option>
+    <option>Hazel dormouse</option>
+    <option>Edible dormouse</option>
+  </select>
+  <details><summary>Code</summary><pre><code>&lt;select class="sqs" id="s-theme" style="--sqs-accent: light-dark(#a3165a, #ff8cc6); --sqs-border: light-dark(#a3165a, #ff8cc6); --sqs-radius: 999px"&gt;
+  &lt;option&gt;Red squirrel&lt;/option&gt;
+  &lt;option selected&gt;Grey squirrel&lt;/option&gt;
+  &lt;option&gt;Hazel dormouse&lt;/option&gt;
+  &lt;option&gt;Edible dormouse&lt;/option&gt;
+&lt;/select&gt;</code></pre></details>
+</figure>
+
+<figure class="fall" id="fall-ancestor">
+  <figcaption><label for="s-ancestor">Tokens from an ancestor</label></figcaption>
+  <div class="filterbar">
+    <select class="sqs" id="s-ancestor">
+      <option>Red squirrel</option>
+      <option selected>Grey squirrel</option>
+      <option>Hazel dormouse</option>
+      <option>Edible dormouse</option>
+    </select>
+  </div>
+  <details><summary>Code</summary><pre><code>&lt;div class="filterbar"&gt;
+  &lt;select class="sqs" id="s-ancestor"&gt;
+    &lt;option&gt;Red squirrel&lt;/option&gt;
+    &lt;option selected&gt;Grey squirrel&lt;/option&gt;
+    &lt;option&gt;Hazel dormouse&lt;/option&gt;
+    &lt;option&gt;Edible dormouse&lt;/option&gt;
+  &lt;/select&gt;
+&lt;/div&gt;</code></pre></details>
+</figure>
+
+<figure class="fall" id="fall-narrow">
+  <figcaption><label for="s-narrow">Narrow container, 7rem, without selectedcontent</label></figcaption>
+  <div class="narrow">
+    <select class="sqs" id="s-narrow">
+      <option>Eastern grey squirrel from North America</option>
+      <option>Hazel dormouse</option>
+    </select>
+  </div>
+  <details><summary>Code</summary><pre><code>&lt;div class="narrow"&gt;
+  &lt;select class="sqs" id="s-narrow"&gt;
+    &lt;option&gt;Eastern grey squirrel from North America&lt;/option&gt;
+    &lt;option&gt;Hazel dormouse&lt;/option&gt;
+  &lt;/select&gt;
+&lt;/div&gt;</code></pre></details>
+</figure>
+
+<figure class="fall" id="fall-narrow-selectedcontent">
+  <figcaption><label for="s-narrow-selectedcontent">Narrow container, 7rem, with selectedcontent</label></figcaption>
+  <div class="narrow">
+    <select class="sqs" id="s-narrow-selectedcontent">
+      <button><selectedcontent></selectedcontent></button>
+      <option>Eastern grey squirrel from North America</option>
+      <option>Hazel dormouse</option>
+    </select>
+  </div>
+  <details><summary>Code</summary><pre><code>&lt;div class="narrow"&gt;
+  &lt;select class="sqs" id="s-narrow-selectedcontent"&gt;
+    &lt;button&gt;&lt;selectedcontent&gt;&lt;/selectedcontent&gt;&lt;/button&gt;
+    &lt;option&gt;Eastern grey squirrel from North America&lt;/option&gt;
+    &lt;option&gt;Hazel dormouse&lt;/option&gt;
+  &lt;/select&gt;
+&lt;/div&gt;</code></pre></details>
+</figure>
+
+<figure class="fall" id="fall-hint-narrow">
+  <figcaption><label for="s-hint-narrow">Hint without icon, narrow</label></figcaption>
+  <div class="narrow">
+    <select class="sqs" id="s-hint-narrow">
+      <button><selectedcontent></selectedcontent></button>
+      <option><span>United Kingdom of Great Britain and Northern Ireland</span> <span class="sqs-hint">GBP</span></option>
+      <option><span>Switzerland</span> <span class="sqs-hint">CHF</span></option>
+    </select>
+  </div>
+  <details><summary>Code</summary><pre><code>&lt;div class="narrow"&gt;
+  &lt;select class="sqs" id="s-hint-narrow"&gt;
+    &lt;button&gt;&lt;selectedcontent&gt;&lt;/selectedcontent&gt;&lt;/button&gt;
+    &lt;option&gt;&lt;span&gt;United Kingdom of Great Britain and Northern Ireland&lt;/span&gt; &lt;span class="sqs-hint"&gt;GBP&lt;/span&gt;&lt;/option&gt;
+    &lt;option&gt;&lt;span&gt;Switzerland&lt;/span&gt; &lt;span class="sqs-hint"&gt;CHF&lt;/span&gt;&lt;/option&gt;
+  &lt;/select&gt;
+&lt;/div&gt;</code></pre></details>
+</figure>
+
+<figure class="fall" id="fall-rich">
+  <figcaption><label for="s-rich">Rich content with selectedcontent</label></figcaption>
+  <select class="sqs" id="s-rich">
+    <button><selectedcontent></selectedcontent></button>
+    <option value="de" selected><img class="sqs-icon" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3CclipPath id='r'%3E%3Crect width='12' height='12' rx='2'/%3E%3C/clipPath%3E%3Cg clip-path='url(%23r)'%3E%3Crect y='0' width='12' height='4' fill='%23000000'/%3E%3Crect y='4' width='12' height='4' fill='%23dd0000'/%3E%3Crect y='8' width='12' height='4' fill='%23ffce00'/%3E%3C/g%3E%3C/svg%3E" alt=""> <span>Germany</span> <span class="sqs-hint">EUR</span></option>
+    <option value="at"><img class="sqs-icon" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3CclipPath id='r'%3E%3Crect width='12' height='12' rx='2'/%3E%3C/clipPath%3E%3Cg clip-path='url(%23r)'%3E%3Crect y='0' width='12' height='4' fill='%23c8102e'/%3E%3Crect y='4' width='12' height='4' fill='%23ffffff'/%3E%3Crect y='8' width='12' height='4' fill='%23c8102e'/%3E%3C/g%3E%3C/svg%3E" alt=""> <span>Austria</span> <span class="sqs-hint">EUR</span></option>
+    <hr>
+    <option value="fr"><img class="sqs-icon" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3CclipPath id='r'%3E%3Crect width='12' height='12' rx='2'/%3E%3C/clipPath%3E%3Cg clip-path='url(%23r)'%3E%3Crect x='0' width='4' height='12' fill='%230055a4'/%3E%3Crect x='4' width='4' height='12' fill='%23ffffff'/%3E%3Crect x='8' width='4' height='12' fill='%23ef4135'/%3E%3C/g%3E%3C/svg%3E" alt=""> <span>France</span> <span class="sqs-hint">EUR</span></option>
+    <option value="it"><img class="sqs-icon" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3CclipPath id='r'%3E%3Crect width='12' height='12' rx='2'/%3E%3C/clipPath%3E%3Cg clip-path='url(%23r)'%3E%3Crect x='0' width='4' height='12' fill='%23009246'/%3E%3Crect x='4' width='4' height='12' fill='%23ffffff'/%3E%3Crect x='8' width='4' height='12' fill='%23ce2b37'/%3E%3C/g%3E%3C/svg%3E" alt=""> <span>Italy</span> <span class="sqs-hint">EUR</span></option>
+  </select>
+  <details><summary>Code</summary><pre><code>&lt;select class="sqs" id="s-rich"&gt;
+  &lt;button&gt;&lt;selectedcontent&gt;&lt;/selectedcontent&gt;&lt;/button&gt;
+  &lt;option value="de" selected&gt;&lt;img class="sqs-icon" src="flag.svg" alt=""&gt; &lt;span&gt;Germany&lt;/span&gt; &lt;span class="sqs-hint"&gt;EUR&lt;/span&gt;&lt;/option&gt;
+  &lt;option value="at"&gt;&lt;img class="sqs-icon" src="flag.svg" alt=""&gt; &lt;span&gt;Austria&lt;/span&gt; &lt;span class="sqs-hint"&gt;EUR&lt;/span&gt;&lt;/option&gt;
+  &lt;hr&gt;
+  &lt;option value="fr"&gt;&lt;img class="sqs-icon" src="flag.svg" alt=""&gt; &lt;span&gt;France&lt;/span&gt; &lt;span class="sqs-hint"&gt;EUR&lt;/span&gt;&lt;/option&gt;
+  &lt;option value="it"&gt;&lt;img class="sqs-icon" src="flag.svg" alt=""&gt; &lt;span&gt;Italy&lt;/span&gt; &lt;span class="sqs-hint"&gt;EUR&lt;/span&gt;&lt;/option&gt;
+&lt;/select&gt;</code></pre></details>
+</figure>
+
+<figure class="fall" id="fall-rich-plain">
+  <figcaption><label for="s-rich-plain">Rich content without selectedcontent</label></figcaption>
+  <select class="sqs" id="s-rich-plain">
+    <option value="de" selected><img class="sqs-icon" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3CclipPath id='r'%3E%3Crect width='12' height='12' rx='2'/%3E%3C/clipPath%3E%3Cg clip-path='url(%23r)'%3E%3Crect y='0' width='12' height='4' fill='%23000000'/%3E%3Crect y='4' width='12' height='4' fill='%23dd0000'/%3E%3Crect y='8' width='12' height='4' fill='%23ffce00'/%3E%3C/g%3E%3C/svg%3E" alt=""> <span>Germany</span> <span class="sqs-hint">EUR</span></option>
+    <option value="at"><img class="sqs-icon" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3CclipPath id='r'%3E%3Crect width='12' height='12' rx='2'/%3E%3C/clipPath%3E%3Cg clip-path='url(%23r)'%3E%3Crect y='0' width='12' height='4' fill='%23c8102e'/%3E%3Crect y='4' width='12' height='4' fill='%23ffffff'/%3E%3Crect y='8' width='12' height='4' fill='%23c8102e'/%3E%3C/g%3E%3C/svg%3E" alt=""> <span>Austria</span> <span class="sqs-hint">EUR</span></option>
+    <hr>
+    <option value="fr"><img class="sqs-icon" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3CclipPath id='r'%3E%3Crect width='12' height='12' rx='2'/%3E%3C/clipPath%3E%3Cg clip-path='url(%23r)'%3E%3Crect x='0' width='4' height='12' fill='%230055a4'/%3E%3Crect x='4' width='4' height='12' fill='%23ffffff'/%3E%3Crect x='8' width='4' height='12' fill='%23ef4135'/%3E%3C/g%3E%3C/svg%3E" alt=""> <span>France</span> <span class="sqs-hint">EUR</span></option>
+    <option value="it"><img class="sqs-icon" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3CclipPath id='r'%3E%3Crect width='12' height='12' rx='2'/%3E%3C/clipPath%3E%3Cg clip-path='url(%23r)'%3E%3Crect x='0' width='4' height='12' fill='%23009246'/%3E%3Crect x='4' width='4' height='12' fill='%23ffffff'/%3E%3Crect x='8' width='4' height='12' fill='%23ce2b37'/%3E%3C/g%3E%3C/svg%3E" alt=""> <span>Italy</span> <span class="sqs-hint">EUR</span></option>
+  </select>
+  <details><summary>Code</summary><pre><code>&lt;select class="sqs" id="s-rich-plain"&gt;
+  &lt;option value="de" selected&gt;&lt;img class="sqs-icon" src="flag.svg" alt=""&gt; &lt;span&gt;Germany&lt;/span&gt; &lt;span class="sqs-hint"&gt;EUR&lt;/span&gt;&lt;/option&gt;
+  &lt;option value="at"&gt;&lt;img class="sqs-icon" src="flag.svg" alt=""&gt; &lt;span&gt;Austria&lt;/span&gt; &lt;span class="sqs-hint"&gt;EUR&lt;/span&gt;&lt;/option&gt;
+  &lt;hr&gt;
+  &lt;option value="fr"&gt;&lt;img class="sqs-icon" src="flag.svg" alt=""&gt; &lt;span&gt;France&lt;/span&gt; &lt;span class="sqs-hint"&gt;EUR&lt;/span&gt;&lt;/option&gt;
+  &lt;option value="it"&gt;&lt;img class="sqs-icon" src="flag.svg" alt=""&gt; &lt;span&gt;Italy&lt;/span&gt; &lt;span class="sqs-hint"&gt;EUR&lt;/span&gt;&lt;/option&gt;
+&lt;/select&gt;</code></pre></details>
+</figure>
+
+<figure class="fall look-moss" id="fall-look-moss">
+  <figcaption><label for="s-look-moss">Look “Moss”</label></figcaption>
+  <select class="sqs" id="s-look-moss">
+    <option value="">Choose a species …</option>
+    <option selected>Hazel dormouse</option>
+    <option>Edible dormouse</option>
+    <option disabled>Garden dormouse</option>
+  </select>
+  <details><summary>Code</summary><pre><code>&lt;select class="sqs" id="s-look-moss"&gt;
+  &lt;option value=""&gt;Choose a species …&lt;/option&gt;
+  &lt;option selected&gt;Hazel dormouse&lt;/option&gt;
+  &lt;option&gt;Edible dormouse&lt;/option&gt;
+  &lt;option disabled&gt;Garden dormouse&lt;/option&gt;
+&lt;/select&gt;</code></pre></details>
+</figure>
+
+<figure class="fall look-steel" id="fall-look-steel">
+  <figcaption><label for="s-look-steel">Look “Steel”</label></figcaption>
+  <select class="sqs" id="s-look-steel">
+    <option value="">Choose a species …</option>
+    <option selected>Hazel dormouse</option>
+    <option>Edible dormouse</option>
+    <option disabled>Garden dormouse</option>
+  </select>
+  <details><summary>Code</summary><pre><code>&lt;select class="sqs" id="s-look-steel"&gt;
+  &lt;option value=""&gt;Choose a species …&lt;/option&gt;
+  &lt;option selected&gt;Hazel dormouse&lt;/option&gt;
+  &lt;option&gt;Edible dormouse&lt;/option&gt;
+  &lt;option disabled&gt;Garden dormouse&lt;/option&gt;
+&lt;/select&gt;</code></pre></details>
+</figure>
+
+<figure class="fall look-coral" id="fall-look-coral">
+  <figcaption><label for="s-look-coral">Look “Coral”</label></figcaption>
+  <select class="sqs" id="s-look-coral">
+    <option value="">Choose a species …</option>
+    <option selected>Hazel dormouse</option>
+    <option>Edible dormouse</option>
+    <option disabled>Garden dormouse</option>
+  </select>
+  <details><summary>Code</summary><pre><code>&lt;select class="sqs" id="s-look-coral"&gt;
+  &lt;option value=""&gt;Choose a species …&lt;/option&gt;
+  &lt;option selected&gt;Hazel dormouse&lt;/option&gt;
+  &lt;option&gt;Edible dormouse&lt;/option&gt;
+  &lt;option disabled&gt;Garden dormouse&lt;/option&gt;
+&lt;/select&gt;</code></pre></details>
+</figure>
+</div>
+
+<div class="cases" dir="rtl" lang="ar">
+<figure class="fall" id="fall-rtl">
+  <figcaption><label for="s-rtl">اتجاه من اليمين إلى اليسار</label></figcaption>
+  <select class="sqs" id="s-rtl">
+    <option>سنجاب أحمر</option>
+    <option selected>زغبة البندق</option>
+    <option>زغبة كبيرة</option>
+    <option disabled>سنجاب طائر</option>
+  </select>
+  <details><summary>Code</summary><pre><code>&lt;select class="sqs" id="s-rtl"&gt;
+  &lt;option&gt;سنجاب أحمر&lt;/option&gt;
+  &lt;option selected&gt;زغبة البندق&lt;/option&gt;
+  &lt;option&gt;زغبة كبيرة&lt;/option&gt;
+  &lt;option disabled&gt;سنجاب طائر&lt;/option&gt;
+&lt;/select&gt;</code></pre></details>
+</figure>
+</div>
+
+<div class="cases">
+<figure class="fall wide" id="fall-bottom">
+  <figcaption><label for="s-bottom">Open at the bottom edge, long list</label></figcaption>
+  <select class="sqs" id="s-bottom">
+    <option>Red squirrel</option>
+    <option>Grey squirrel</option>
+    <option>Fox squirrel</option>
+    <option>Douglas squirrel</option>
+    <option>Abert’s squirrel</option>
+    <option>Japanese squirrel</option>
+    <option>Persian squirrel</option>
+    <option>Indian giant squirrel</option>
+    <option>Prevost’s squirrel</option>
+    <option>Cape ground squirrel</option>
+    <option>Alpine marmot</option>
+    <option>Siberian chipmunk</option>
+    <option>Eastern chipmunk</option>
+    <option>Least chipmunk</option>
+    <option>Black-tailed prairie dog</option>
+    <option>European ground squirrel</option>
+    <option>Hazel dormouse</option>
+    <option>Edible dormouse</option>
+    <option>Garden dormouse</option>
+    <option>Forest dormouse</option>
+    <option selected>Southern flying squirrel</option>
+    <option>Northern flying squirrel</option>
+    <option>Siberian flying squirrel</option>
+    <option>Red giant flying squirrel</option>
+    <option>Woolly flying squirrel</option>
+  </select>
+  <details><summary>Code</summary><pre><code>&lt;select class="sqs" id="s-bottom"&gt;
+  &lt;option&gt;Red squirrel&lt;/option&gt;
+  &lt;option&gt;Grey squirrel&lt;/option&gt;
+  &lt;option&gt;Fox squirrel&lt;/option&gt;
+  &lt;option&gt;Douglas squirrel&lt;/option&gt;
+  &lt;option&gt;Abert’s squirrel&lt;/option&gt;
+  &lt;option&gt;Japanese squirrel&lt;/option&gt;
+  &lt;option&gt;Persian squirrel&lt;/option&gt;
+  &lt;option&gt;Indian giant squirrel&lt;/option&gt;
+  &lt;option&gt;Prevost’s squirrel&lt;/option&gt;
+  &lt;option&gt;Cape ground squirrel&lt;/option&gt;
+  &lt;option&gt;Alpine marmot&lt;/option&gt;
+  &lt;option&gt;Siberian chipmunk&lt;/option&gt;
+  &lt;option&gt;Eastern chipmunk&lt;/option&gt;
+  &lt;option&gt;Least chipmunk&lt;/option&gt;
+  &lt;option&gt;Black-tailed prairie dog&lt;/option&gt;
+  &lt;option&gt;European ground squirrel&lt;/option&gt;
+  &lt;option&gt;Hazel dormouse&lt;/option&gt;
+  &lt;option&gt;Edible dormouse&lt;/option&gt;
+  &lt;option&gt;Garden dormouse&lt;/option&gt;
+  &lt;option&gt;Forest dormouse&lt;/option&gt;
+  &lt;option selected&gt;Southern flying squirrel&lt;/option&gt;
+  &lt;option&gt;Northern flying squirrel&lt;/option&gt;
+  &lt;option&gt;Siberian flying squirrel&lt;/option&gt;
+  &lt;option&gt;Red giant flying squirrel&lt;/option&gt;
+  &lt;option&gt;Woolly flying squirrel&lt;/option&gt;
+&lt;/select&gt;</code></pre></details>
+</figure>
+</div>
+</main>
+</body>
+</html>

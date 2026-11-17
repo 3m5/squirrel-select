@@ -1,0 +1,48 @@
+@layer squirrel {
+  @supports (color: light-dark(#000, #fff)) {
+    /* public --sqs-* tokens are only read, never declared, so they inherit from any ancestor */
+    :where(.sqs, .sqs-search) {
+      --_sqs-text: var(--sqs-text, light-dark(#1c2024, #e4e7eb));
+      --_sqs-muted: var(--sqs-muted, light-dark(#596370, #a3adb8));
+      --_sqs-bg: var(--sqs-bg, light-dark(#fff, #1b1f24));
+      --_sqs-surface: var(--sqs-surface, light-dark(#fff, #252b32));
+      --_sqs-border: var(--sqs-border, light-dark(#7d8691, #77818c));
+      --_sqs-accent: var(--sqs-accent, light-dark(#2754c5, #8fb1ff));
+      --_sqs-invalid: var(--sqs-invalid, light-dark(#b3261e, #ff9b91));
+      --_sqs-arrow: var(--sqs-arrow, var(--_sqs-muted));
+      --_sqs-hover: var(--sqs-hover, color-mix(in oklab, var(--_sqs-text) 8%, var(--_sqs-surface)));
+      --_sqs-selected: var(--sqs-selected, color-mix(in oklab, var(--_sqs-accent) 14%, var(--_sqs-surface)));
+      --_sqs-mark: var(--sqs-mark, color-mix(in oklab, var(--_sqs-accent) 28%, transparent));
+      --_sqs-selected-strong: color-mix(in oklab, var(--_sqs-accent) 24%, var(--_sqs-surface));
+      --_sqs-border-hover: color-mix(in oklab, var(--_sqs-border), var(--_sqs-text) 45%);
+      --_sqs-font-size: var(--sqs-font-size, 1rem);
+      --_sqs-radius: var(--sqs-radius, .375rem);
+
+      /* a pill-shaped field must not turn the list into a pill */
+      --_sqs-radius-panel: min(var(--_sqs-radius), .75em);
+      --_sqs-radius-option: max(0px, calc(var(--_sqs-radius-panel) - .25em));
+      --_sqs-border-width: var(--sqs-border-width, 1px);
+      --_sqs-pad-block: var(--sqs-padding-block, .5em);
+      --_sqs-pad-inline: var(--sqs-padding-inline, .75em);
+      --_sqs-gap: var(--sqs-gap, .5em);
+      --_sqs-shadow: var(--sqs-shadow, 0 .5rem 1.5rem -.25rem light-dark(rgb(20 28 38 / 18%), rgb(0 0 0 / 55%)));
+      --_sqs-focus-ring: var(--sqs-focus-ring, 2px solid var(--_sqs-accent));
+      --_sqs-focus-offset: var(--sqs-focus-offset, 2px);
+      --_sqs-list-max: var(--sqs-list-max-height, 20em);
+      --_sqs-check: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.25 8.5 6.5 11.75l6.25-7.5' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      --_sqs-chev: .3125em;
+
+      /* two gradients instead of an image, so the arrow follows --sqs-arrow and dark mode in every rendering path */
+      --_sqs-chevron:
+        linear-gradient(to top right, transparent calc(50% - .8px), var(--_sqs-arrow) calc(50% - .8px) calc(50% + .8px), transparent calc(50% + .8px)),
+        linear-gradient(to top left, transparent calc(50% - .8px), var(--_sqs-arrow) calc(50% - .8px) calc(50% + .8px), transparent calc(50% + .8px));
+      --_sqs-duration: 120ms;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      :where(.sqs, .sqs-search) {
+        --_sqs-duration: 0s;
+      }
+    }
+  }
+}

@@ -1,7 +1,4 @@
-@layer squirrel {
-  @supports (color: light-dark(#000, #fff)) {
-    :where(.sqs) {
-      --_sqs-radius: var(--sqs-radius, 0.375rem);
-    }
-  }
-}
+@import url("core/tokens.css");
+@import url("core/base.css");
+@import url("core/picker.css");
+@import url("core/forced.css");

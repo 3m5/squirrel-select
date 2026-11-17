@@ -5,7 +5,7 @@ import { join } from 'node:path'
 
 const expectedFiles = ['LICENSE', 'README.md', 'dist/squirrel-select.css', 'dist/squirrel-select.css.map', 'package.json']
 const mustResolve = ['@3m5-de/squirrel-select/squirrel-select.css', '@3m5-de/squirrel-select/package.json']
-const mustFail = ['@3m5-de/squirrel-select']
+const mustFail = ['@3m5-de/squirrel-select', '@3m5-de/squirrel-select/dist/squirrel-select.css']
 
 const tmp = mkdtempSync(join(tmpdir(), 'sqs-pack-'))
 try {

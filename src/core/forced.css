@@ -1,0 +1,24 @@
+@layer squirrel {
+  /* forced colors: fall back to the native select, which keeps arrow, checkmark and focus in system colors */
+  @supports (color: light-dark(#000, #fff)) {
+    @media (forced-colors: active) {
+      .sqs {
+        appearance: auto;
+      }
+
+      .sqs:user-invalid,
+      .sqs[aria-invalid="true"] {
+        border-style: dashed;
+        border-width: 2px;
+      }
+    }
+  }
+
+  @supports (appearance: base-select) {
+    @media (forced-colors: active) {
+      .sqs::picker(select) {
+        appearance: auto;
+      }
+    }
+  }
+}

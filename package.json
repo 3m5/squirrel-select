@@ -30,11 +30,14 @@
   "scripts": {
     "dev": "node scripts/dev.mjs",
     "build": "node scripts/build.mjs",
-    "lint": "eslint scripts eslint.config.mjs stylelint.config.mjs && stylelint \"src/**/*.css\"",
+    "lint": "eslint scripts tests playwright.config.ts eslint.config.mjs stylelint.config.mjs && stylelint \"src/**/*.css\"",
     "typecheck": "tsc --noEmit",
     "size": "node scripts/size.mjs",
     "pack:check": "node scripts/pack-check.mjs",
-    "test": "npm run lint && npm run typecheck && npm run build && npm run size && npm run pack:check"
+    "test": "npm run lint && npm run typecheck && npm run build && npm run size && npm run pack:check",
+    "test:browser": "playwright test",
+    "test:browser:docker": "npm run build && docker run --rm --init --ipc=host -u \"$(id -u):$(id -g)\" -e HOME=/tmp -e CI -v \"$(pwd):/work\" -w /work mcr.microsoft.com/playwright:v$(node -p \"require('./node_modules/@playwright/test/package.json').version\")-noble npx playwright test",
+    "test:browser:update": "npm run test:browser:docker -- --update-snapshots=changed"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.14.0",

@@ -15,7 +15,7 @@ for (const [file, { budget, max }] of Object.entries(limits)) {
   if (budget !== null && gzip > budget) problems.push('over budget')
   if (budget !== null && budget > max) problems.push('budget above max')
   if (problems.length) failed = true
-  rows.push(`| ${file} | ${gzip} B | ${brotli} B | ${budget ?? 'not set'} | ${max} B | ${problems.join(', ') || 'ok'} |`)
+  rows.push(`| ${file} | ${gzip} B | ${brotli} B | ${budget === null ? 'not set' : `${budget} B`} | ${max} B | ${problems.join(', ') || 'ok'} |`)
 }
 
 const table = rows.join('\n')

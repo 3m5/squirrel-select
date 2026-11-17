@@ -1,0 +1,85 @@
+@layer squirrel {
+  /* stage 2: appearance none for desktop fallback and touch; the field is styled, the list is native */
+  @supports (color: light-dark(#000, #fff)) {
+    .sqs {
+      appearance: none;
+      box-sizing: border-box;
+      min-block-size: 2.5em;
+      min-inline-size: min(100%, 10em);
+      max-inline-size: 100%;
+      margin: 0;
+      padding-block: var(--_sqs-pad-block);
+      padding-inline: var(--_sqs-pad-inline) calc(var(--_sqs-pad-inline) + 2 * var(--_sqs-chev) + var(--_sqs-gap));
+      font: inherit;
+      font-size: var(--_sqs-font-size);
+      line-height: 1.25;
+      color: var(--_sqs-text);
+      background-color: var(--_sqs-bg);
+      border: var(--_sqs-border-width) solid var(--_sqs-border);
+      border-radius: var(--_sqs-radius);
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      cursor: pointer;
+      background-image: var(--_sqs-chevron);
+      background-size: var(--_sqs-chev) var(--_sqs-chev);
+      background-repeat: no-repeat;
+      background-position:
+        right calc(var(--_sqs-pad-inline) + var(--_sqs-chev)) center,
+        right var(--_sqs-pad-inline) center;
+      transition: border-color var(--_sqs-duration);
+    }
+
+    .sqs:dir(rtl) {
+      background-position:
+        left var(--_sqs-pad-inline) center,
+        left calc(var(--_sqs-pad-inline) + var(--_sqs-chev)) center;
+    }
+
+    /* Firefox paints its native list with these */
+    .sqs option,
+    .sqs optgroup {
+      color: var(--_sqs-text);
+      background-color: var(--_sqs-surface);
+    }
+
+    .sqs option:disabled {
+      color: var(--_sqs-muted);
+    }
+
+    .sqs:hover:not(:disabled) {
+      border-color: var(--_sqs-border-hover);
+    }
+
+    .sqs:focus-visible {
+      outline: var(--_sqs-focus-ring);
+      outline-offset: var(--_sqs-focus-offset);
+    }
+
+    .sqs:has(option[value=""]:checked) {
+      color: var(--_sqs-muted);
+    }
+
+    .sqs:user-invalid,
+    .sqs[aria-invalid="true"] {
+      border-color: var(--_sqs-invalid);
+      box-shadow: inset 0 0 0 1px var(--_sqs-invalid);
+    }
+
+    .sqs:disabled {
+      cursor: not-allowed;
+      color: var(--_sqs-muted);
+      background-color: color-mix(in oklab, var(--_sqs-text) 6%, var(--_sqs-bg));
+      border-color: color-mix(in oklab, var(--_sqs-border) 55%, var(--_sqs-bg));
+    }
+
+    /* iOS zooms into fields below 16px; 44px is the recommended touch target, 24px the WCAG minimum */
+    @media (pointer: coarse) {
+      .sqs,
+      .sqs-search {
+        font-size: max(var(--_sqs-font-size), 16px);
+        min-block-size: max(2.5em, 44px);
+      }
+    }
+  }
+}

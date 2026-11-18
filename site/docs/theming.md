@@ -25,7 +25,7 @@ Without `color-scheme`, the select stays light, even if the operating system is 
 
 ## Variables
 
-"Full" means Chrome, Edge and Safari 27+ with a mouse or trackpad. "Field only" means Firefox, older browsers and touch devices, where the open list comes from the system. See [How it works](how-it-works.html).
+"Full" means Chrome, Edge and Safari 27+ with a mouse or trackpad. "Field only" means Firefox, older browsers and touch devices, where the open list comes from the system. See [How it works](how-it-works.html). Lists with `multiple` or `size` use fewer variables, see Lists below.
 
 ### Colors
 
@@ -76,7 +76,22 @@ There are no size classes. Change `--sqs-font-size`, everything else scales:
 .large   { --sqs-font-size: 1.125rem; }
 ```
 
-On touch devices the text never gets smaller than 16 px and the field never lower than 44 px. Below 16 px, iOS zooms into the page when the field gets focus.
+On touch devices the text never gets smaller than 16 px and the field never lower than 44 px. In lists, each row is at least 44 px high in Chrome and Firefox. Below 16 px, iOS zooms into the page when the field gets focus.
+
+## Lists
+
+Lists with `multiple` or `size` greater than 1 read these variables. `multiple` with `size="1"` stays native: it gets no styling, not even the 16 px text on touch devices.
+
+The variables:
+
+- `--sqs-surface` for the background, not `--sqs-bg`
+- `--sqs-text`, `--sqs-muted`, `--sqs-border`, `--sqs-border-width`, `--sqs-invalid`
+- `--sqs-radius`, capped at `.75em` like the open list
+- `--sqs-accent` for the bar at checked options and for the focus ring
+- `--sqs-selected` and `--sqs-hover` for the rows
+- `--sqs-focus-ring`, `--sqs-focus-offset`, `--sqs-font-size`, `--sqs-list-max-height`
+
+The arrow, padding and gap variables only apply to the field. Safari ignores colors on options, so `--sqs-selected` and `--sqs-hover` have no effect there. See [How it works](how-it-works.html).
 
 ## Your own rules
 
@@ -88,7 +103,7 @@ Any rule outside a cascade layer beats the stylesheet, whatever its specificity:
 
 Keep two things: the focus outline, and the native look in forced colors. Do not remove `outline` on focus, and do not set `forced-color-adjust: none` on the select.
 
-Rules for the open list only work with `base-select`. Wrap them in `@supports` and never put them in a selector list with other selectors. Firefox does not know `::picker(select)` and would drop the whole rule.
+Rules for the open list only work with `base-select`. Wrap them in `@supports` and never put them in a selector list with other selectors. Firefox does not know `::picker(select)` and would drop the whole rule. Lists never use `base-select`, so these rules do not reach them.
 
 ```css
 @supports (appearance: base-select) {
@@ -130,4 +145,4 @@ For icons and hints in options, see [rich content](how-it-works.html).
 
 ## Right to left
 
-Nothing to do. Under `dir="rtl"` the arrow moves to the left automatically.
+Nothing to do. Under `dir="rtl"` the arrow moves to the left automatically, and in lists the bar at checked options moves to the right.

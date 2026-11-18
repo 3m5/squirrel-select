@@ -9,6 +9,7 @@
   <section aria-labelledby="kurz">
     <h2 id="kurz">Kurz gesagt</h2>
     <p>SquirrelSelect ändert nur das Aussehen des nativen <code>&lt;select&gt;</code>. Tastatur, Screenreader-Ausgabe und Formularprüfung bleiben beim Browser.</p>
+    <p>Listen (<code>multiple</code> und <code>size</code>) behalten Tastatur- und Mausbedienung und die Screenreader-Ausgabe des Browsers. Nur Rahmen, Farben, Abstände und die fette Schrift gewählter Optionen ändern sich.</p>
     <ul>
       <li><strong>Ziel:</strong> WCAG 2.2, Stufe AA. Damit sind EN 301 549 und BITV 2.0 abgedeckt, die auf die WCAG verweisen.</li>
       <li><strong>Methode:</strong> Selbstbewertung durch die Entwickler. Kein externer Test.</li>
@@ -21,7 +22,7 @@
 
   <section aria-labelledby="automatisch">
     <h2 id="automatisch">Automatische Prüfungen</h2>
-    <p>Sie laufen bei jedem Pull Request in echten Browser-Engines, auf einer Testseite mit allen Zuständen des Auswahlfelds: Platzhalter, gewählt, deaktiviert, ungültig, Gruppen, lange Texte, rechts nach links, Optionen mit Icon, drei Farbthemen.</p>
+    <p>Sie laufen bei jedem Pull Request in echten Browser-Engines, auf einer Testseite mit allen Zuständen des Auswahlfelds: Platzhalter, gewählt, deaktiviert, ungültig, Gruppen, lange Texte, rechts nach links, Optionen mit Icon, drei Farbthemen und Listen mit <code>multiple</code> und <code>size</code>.</p>
     <div class="table-scroll" role="region" aria-labelledby="automatisch-titel" tabindex="0">
       <table>
         <caption id="automatisch-titel">Automatische Prüfungen je Browser-Engine</caption>
@@ -46,6 +47,15 @@
           <tr><th scope="row">Kontrastmodus (forced colors), emuliert: Auswahlfeld des Browsers, gestrichelter Rahmen bei Fehler</th><td>1.4.11</td><td>Bestanden</td><td>Bestanden</td><td>Nicht gelaufen, siehe Hinweis 4</td></tr>
           <tr><th scope="row">Reduzierte Bewegung: keine Übergänge</th><td>2.3.3 (AAA, über dem Ziel)</td><td>Bestanden</td><td>Bestanden</td><td>Bestanden</td></tr>
           <tr><th scope="row">Jede Option hat sichtbaren Text</th><td>1.3.1, 4.1.2</td><td>Bestanden</td><td colspan="2">Gleiches HTML, einmal geprüft</td></tr>
+          <tr><th scope="row">Listen: Name, Rolle, Zustand und gewählte Optionen wie ohne Stylesheet</th><td>1.3.1, 4.1.2</td><td>Bestanden</td><td>Bestanden</td><td>Bestanden</td></tr>
+          <tr><th scope="row">Listen: Tastatur und Maus wie ohne Stylesheet, Fokus bleibt auf der Liste</th><td>2.1.1, 3.2.1</td><td>Bestanden</td><td>Bestanden</td><td>Tastatur: bestanden. Maus: nicht gelaufen, siehe Hinweis 5</td></tr>
+          <tr><th scope="row">Listen: gewählte Optionen mit Akzentbalken und fetter Schrift, nicht nur Farbe</th><td>1.4.1</td><td>Bestanden</td><td>Bestanden</td><td>Systemhervorhebung, siehe Hinweis 5</td></tr>
+          <tr><th scope="row">Listen: Text mindestens 4,5:1, Balken und Rahmen mindestens 3:1</th><td>1.4.3, 1.4.11</td><td>Bestanden</td><td>Gleiche Farben, siehe Hinweis 2</td><td>Bestanden, Text auf der Systemhervorhebung</td></tr>
+          <tr><th scope="row">Listen: Fokusring von mindestens 2 px, Hervorhebung und aktive Option des Browsers bleiben</th><td>2.4.7</td><td>Bestanden</td><td>Bestanden</td><td>Bestanden</td></tr>
+          <tr><th scope="row">Listen: Zeilen mindestens 24 px hoch</th><td>2.5.8</td><td>Bestanden</td><td>Bestanden</td><td>Zeilenhöhe vom Browser, siehe Hinweis 5</td></tr>
+          <tr><th scope="row">Listen bei 320 px, Text auf 200 % und vergrößerten Textabständen: kein waagerechtes Scrollen, alle Zeilen sichtbar</th><td>1.4.10, 1.4.4, 1.4.12</td><td>Bestanden</td><td>Bestanden</td><td>Bestanden</td></tr>
+          <tr><th scope="row">Listen: Formularwert, Zurücksetzen, Ungültig-Zustand nach fehlgeschlagenem Absenden</th><td>3.3.1, mit Ihrem Fehlertext</td><td>Bestanden</td><td>Bestanden</td><td>Bestanden</td></tr>
+          <tr><th scope="row">Listen im Kontrastmodus, emuliert: Systemfarben für gewählte Optionen, gestrichelter Rahmen bei Fehler</th><td>1.4.11</td><td>Bestanden</td><td>Bestanden</td><td>Nicht gelaufen, siehe Hinweis 4</td></tr>
         </tbody>
       </table>
     </div>
@@ -54,6 +64,7 @@
       <li>Die Farben werden einmal in Chromium gemessen. Sie ergeben in jeder Engine dieselben Werte. Gemessen für die Standardfarben und drei Beispielthemen, jeweils hell und dunkel.</li>
       <li>Firefox auf dem Desktop, Smartphones und Tablets zeigen die Liste des Browsers oder Systems. Wir gestalten sie nicht, Fokus, Größe und Tastatur kommen vom Browser.</li>
       <li>Nur Chromium und Firefox können den Kontrastmodus emulieren. Die echten Kontrastdesigns von Windows sind nicht geprüft.</li>
+      <li>In WebKit behalten gewählte Optionen in Listen die graue Hervorhebung des Browsers, und die Zeilenhöhe bestimmt der Browser (etwa 21 px bei 16 px Schrift). Beides lässt sich per CSS nicht ändern. Playwright kann Optionen in einer WebKit-Liste nicht anklicken, darum läuft die Mausprüfung nur in Chromium und Firefox.</li>
     </ol>
     <p>Felder, axe-Prüfung und Darstellungsweg werden zusätzlich mit Touch-Emulation bei 390 px geprüft, in Chromium und WebKit.</p>
   </section>
@@ -103,6 +114,7 @@
       <li>In Firefox auf dem Desktop und in älteren Browsern erscheint die aufgeklappte Liste im Systemstil. Sie ist vollständig zugänglich, entspricht aber optisch nicht dem übrigen Design.</li>
       <li>Auf Smartphones und Tablets öffnet sich bewusst die Auswahl des Betriebssystems.</li>
       <li>Im Kontrastmodus von Windows erscheint bewusst das Auswahlfeld des Browsers in den Farben, die der Nutzer gewählt hat.</li>
+      <li>In Safari behalten gewählte Optionen in Listen die Systemhervorhebung, die Zeilenhöhe bestimmt der Browser. In Firefox und Safari werden lange Optionstexte in Listen abgeschnitten.</li>
     </ul>
     <p>Diese Seite gilt für das Stylesheet. Das Such-Modul bekommt eigene Zeilen, sobald es erscheint.</p>
   </section>
@@ -123,6 +135,7 @@
           <li>In Firefox auf dem Desktop und in älteren Browsern erscheint die aufgeklappte Liste im Systemstil. Sie ist vollständig zugänglich, entspricht aber optisch nicht dem übrigen Design.</li>
           <li>Auf Smartphones und Tablets wird bewusst die Auswahl des Betriebssystems verwendet.</li>
           <li>Im Kontrastmodus von Windows erscheint bewusst das Auswahlfeld des Browsers in den vom Nutzer gewählten Farben.</li>
+          <li>In Safari behalten gewählte Optionen in Listen die Systemhervorhebung, die Zeilenhöhe bestimmt der Browser. In Firefox und Safari werden lange Optionstexte in Listen abgeschnitten.</li>
         </ul>
         <p>Die Barrierefreiheit der gesamten Website bewertet SquirrelSelect nicht. Dafür ist die Erklärung zur Barrierefreiheit der jeweiligen Stelle maßgeblich. Hinweise auf Barrieren bitte an: https://github.com/3m5/squirrel-select/issues</p>
       </div>

@@ -3,39 +3,39 @@
      Keep ::picker(select), ::checkmark and :open inside this block, Firefox drops whole rules otherwise. */
   @supports (appearance: base-select) {
     @media (hover: hover) and (pointer: fine) {
-      .sqs,
-      .sqs::picker(select) {
+      .sqs:not(:where([multiple], [size]:not([size="0"], [size="1"]))),
+      .sqs:not(:where([multiple], [size]:not([size="0"], [size="1"])))::picker(select) {
         appearance: base-select;
       }
 
       /* the gradient arrow stays: long text would push ::picker-icon out of the field */
-      .sqs {
+      .sqs:not(:where([multiple], [size]:not([size="0"], [size="1"]))) {
         display: inline-flex;
         align-items: center;
         overflow: clip;
         overflow-clip-margin: content-box;
       }
 
-      .sqs::picker-icon {
+      .sqs:not(:where([multiple], [size]:not([size="0"], [size="1"])))::picker-icon {
         display: none;
       }
 
-      .sqs > button {
+      .sqs:not(:where([multiple], [size]:not([size="0"], [size="1"]))) > button {
         display: contents;
       }
 
-      .sqs selectedcontent {
+      .sqs:not(:where([multiple], [size]:not([size="0"], [size="1"]))) selectedcontent {
         min-inline-size: 0;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
       }
 
-      .sqs:open {
+      .sqs:not(:where([multiple], [size]:not([size="0"], [size="1"]))):open {
         border-color: var(--_sqs-accent);
       }
 
-      .sqs::picker(select) {
+      .sqs:not(:where([multiple], [size]:not([size="0"], [size="1"])))::picker(select) {
         box-sizing: border-box;
         margin-block: .25em;
         padding: .25em;
@@ -50,7 +50,7 @@
         overflow: auto;
       }
 
-      .sqs option {
+      .sqs:not(:where([multiple], [size]:not([size="0"], [size="1"]))) option {
         gap: var(--_sqs-gap);
         min-block-size: 2em;
         padding: .375em .5em;
@@ -61,40 +61,40 @@
         cursor: pointer;
       }
 
-      .sqs option:checked {
+      .sqs:not(:where([multiple], [size]:not([size="0"], [size="1"]))) option:checked {
         background-color: var(--_sqs-selected);
         font-weight: 600;
       }
 
-      .sqs option:hover:not(:disabled, :checked),
-      .sqs option:focus-visible:not(:checked) {
+      .sqs:not(:where([multiple], [size]:not([size="0"], [size="1"]))) option:hover:not(:disabled, :checked),
+      .sqs:not(:where([multiple], [size]:not([size="0"], [size="1"]))) option:focus-visible:not(:checked) {
         background-color: var(--_sqs-hover);
       }
 
       /* muted text on the strong tone would drop below 4.5:1 */
-      .sqs option:checked:is(:hover, :focus-visible) {
+      .sqs:not(:where([multiple], [size]:not([size="0"], [size="1"]))) option:checked:is(:hover, :focus-visible) {
         background-color: var(--_sqs-selected-strong);
         color: var(--_sqs-text);
       }
 
-      .sqs option:checked:is(:hover, :focus-visible) .sqs-hint {
+      .sqs:not(:where([multiple], [size]:not([size="0"], [size="1"]))) option:checked:is(:hover, :focus-visible) .sqs-hint {
         color: inherit;
       }
 
-      .sqs option:focus-visible {
+      .sqs:not(:where([multiple], [size]:not([size="0"], [size="1"]))) option:focus-visible {
         outline: 2px solid var(--_sqs-accent);
         outline-offset: -2px;
       }
 
-      .sqs option:disabled {
+      .sqs:not(:where([multiple], [size]:not([size="0"], [size="1"]))) option:disabled {
         cursor: not-allowed;
       }
 
-      .sqs option[value=""] {
+      .sqs:not(:where([multiple], [size]:not([size="0"], [size="1"]))) option[value=""] {
         color: var(--_sqs-muted);
       }
 
-      .sqs option::checkmark {
+      .sqs:not(:where([multiple], [size]:not([size="0"], [size="1"]))) option::checkmark {
         content: "";
         flex: none;
         inline-size: .875em;
@@ -103,7 +103,7 @@
         mask: var(--_sqs-check) center / contain no-repeat;
       }
 
-      .sqs optgroup {
+      .sqs:not(:where([multiple], [size]:not([size="0"], [size="1"]))) optgroup {
         padding-block-start: .25em;
         font-size: .8125em;
         font-weight: 600;
@@ -111,39 +111,39 @@
         background-color: transparent;
       }
 
-      .sqs optgroup > * {
+      .sqs:not(:where([multiple], [size]:not([size="0"], [size="1"]))) optgroup > * {
         font-size: calc(1em / .8125);
         font-weight: normal;
       }
 
-      .sqs optgroup > option {
+      .sqs:not(:where([multiple], [size]:not([size="0"], [size="1"]))) optgroup > option {
         color: var(--_sqs-text);
       }
 
-      .sqs optgroup > option:checked {
+      .sqs:not(:where([multiple], [size]:not([size="0"], [size="1"]))) optgroup > option:checked {
         font-weight: 600;
       }
 
-      .sqs optgroup legend {
+      .sqs:not(:where([multiple], [size]:not([size="0"], [size="1"]))) optgroup legend {
         padding: .25em .5em;
       }
 
-      .sqs optgroup + optgroup,
-      .sqs hr {
+      .sqs:not(:where([multiple], [size]:not([size="0"], [size="1"]))) optgroup + optgroup,
+      .sqs:not(:where([multiple], [size]:not([size="0"], [size="1"]))) hr {
         margin-block: .25em 0;
         border: 0;
         border-block-start: 1px solid color-mix(in oklab, var(--_sqs-border) 40%, transparent);
       }
 
       /* rich content: icon, text, hint; the hint is hidden in the closed field */
-      .sqs .sqs-icon {
+      .sqs:not(:where([multiple], [size]:not([size="0"], [size="1"]))) .sqs-icon {
         flex: none;
         inline-size: 1.25em;
         block-size: 1.25em;
         object-fit: contain;
       }
 
-      .sqs .sqs-hint {
+      .sqs:not(:where([multiple], [size]:not([size="0"], [size="1"]))) .sqs-hint {
         margin-inline-start: auto;
         padding-inline-start: var(--_sqs-gap);
         font-size: .875em;
@@ -151,14 +151,14 @@
         color: var(--_sqs-muted);
       }
 
-      .sqs selectedcontent:has(> .sqs-icon) {
+      .sqs:not(:where([multiple], [size]:not([size="0"], [size="1"]))) selectedcontent:has(> .sqs-icon) {
         display: flex;
         align-items: center;
         gap: var(--_sqs-gap);
       }
 
       /* hidden visually only, so the field announces the same value as the native select */
-      .sqs selectedcontent .sqs-hint {
+      .sqs:not(:where([multiple], [size]:not([size="0"], [size="1"]))) selectedcontent .sqs-hint {
         position: absolute;
         inset-inline-start: 0;
         inline-size: 1px;

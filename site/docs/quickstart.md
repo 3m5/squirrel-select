@@ -35,6 +35,8 @@ The file is already minified and comes with a source map. For production, pin th
 
 An option with `value=""` works as a placeholder: it is shown in a muted color, and `required` makes the browser ask for a real choice.
 
+For a list where people can choose several options, add `multiple`, and `size` for the number of visible rows. The same class styles it. See [Lists](how-it-works.html).
+
 ## 3. Make it yours
 
 Set CSS variables on any ancestor, or on the select itself:

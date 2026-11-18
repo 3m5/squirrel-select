@@ -11,6 +11,12 @@
         border-style: dashed;
         border-width: 2px;
       }
+
+      /* Firefox shows the selection of a list box as light grey on white otherwise */
+      .sqs:where([multiple]:not([size="1"]), [size]:not([size="0"], [size="1"])) option:checked {
+        background-color: SelectedItem;
+        color: SelectedItemText;
+      }
     }
   }
 

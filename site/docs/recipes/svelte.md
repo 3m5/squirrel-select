@@ -36,3 +36,4 @@ With plain Svelte and Vite, import it in `main.js` instead.
 
 - Variables work in component styles: `.filters { --sqs-accent: light-dark(#b0185a, #ff8cc6); }`.
 - Rules for the open list (`::picker(select)`) belong in a global stylesheet, inside `@supports (appearance: base-select)`, see [Theming](../theming.html).
+- For several choices, add `multiple`; `bind:value` then holds an array.

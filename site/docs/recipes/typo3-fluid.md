@@ -43,3 +43,4 @@ Set the class in the form definition:
 
 - In the Bootstrap 5 templates of the form framework, the default class is `form-select`. Replace it with `sqs`, do not add both: Bootstrap's CSS is not in a layer and wins.
 - Every option needs text. An empty first option without a label shows up as an empty line in Firefox and on phones.
+- For several choices, set `multiple="1"` on `f:form.select`, or use the element type `MultiSelect` in the form framework with the same `elementClassAttribute`.

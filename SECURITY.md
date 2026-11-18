@@ -2,13 +2,12 @@
 
 ## Supported versions
 
-Squirrel Select is pre-1.0. Only the latest published release receives security fixes;
-there are no maintained backport branches.
+Only the latest release receives security fixes; there are no maintained backport branches.
 
 | Version | Supported |
 | :-- | :-- |
-| 0.1.x | yes |
-| < 0.1 | no |
+| 1.x | yes |
+| 0.x | until 1.0.0 is released, then no |
 
 ## Reporting a vulnerability
 
@@ -20,8 +19,8 @@ that is the disclosure.
 
 Please include:
 
-- affected version and how the library is loaded (npm package, bundled `dist/`)
-- a minimal reproduction, ideally the `<select>` markup and attributes involved
+- affected version and how the stylesheet is loaded (npm package, CDN, self-hosted file)
+- a minimal reproduction, ideally the `<select>` markup and the browser involved
 - impact you believe it has
 
 ## What to expect
@@ -35,8 +34,20 @@ is available on npm.
 
 ## Scope
 
-Squirrel Select runs entirely in the browser and renders the content of an existing
-`<select>` element. Markup and option values already under an attacker's control before
-the library initializes are out of scope — it reflects the DOM it is given. In scope is
-anything where Squirrel Select turns that input into script execution, escapes the
-element it was applied to, or breaks the selector escaping it performs internally.
+SquirrelSelect 1.x is a plain CSS file. It contains no JavaScript, and it neither reads nor
+sends data. Its only `url()` is an embedded `data:` image; it loads nothing from other hosts
+and imports no other files.
+
+In scope is anything in the published stylesheet that could be abused, for example:
+
+- CSS that loads content from elsewhere, such as a `url()` or `@import` pointing to a host
+- selectors that leak page data, such as attribute selectors that trigger a request for
+  matching values
+- rules that hide, overlay or disguise content outside the select it was applied to
+
+Out of scope are your own CSS that overrides ours, markup and option text already under an
+attacker's control, and browser bugs that SquirrelSelect cannot work around. If you are
+unsure, report it anyway.
+
+The optional search module, planned for 1.1, adds JavaScript. This section will be extended
+when it ships.

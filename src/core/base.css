@@ -1,21 +1,26 @@
 @layer squirrel {
-  /* stage 2: appearance none for desktop fallback and touch; the field is styled, the list is native */
+  /* stage 2: appearance none for desktop fallback, touch and every list box; the field is styled, its list is native */
   @supports (color: light-dark(#000, #fff)) {
     .sqs {
       appearance: none;
       box-sizing: border-box;
-      min-block-size: 2.5em;
       min-inline-size: min(100%, 10em);
       max-inline-size: 100%;
       margin: 0;
-      padding-block: var(--_sqs-pad-block);
-      padding-inline: var(--_sqs-pad-inline) calc(var(--_sqs-pad-inline) + 2 * var(--_sqs-chev) + var(--_sqs-gap));
       font: inherit;
       font-size: var(--_sqs-font-size);
       line-height: 1.25;
       color: var(--_sqs-text);
-      background-color: var(--_sqs-bg);
       border: var(--_sqs-border-width) solid var(--_sqs-border);
+      transition: border-color var(--_sqs-duration);
+    }
+
+    /* the field: everything but multiple and size > 1; :where keeps the specificity of .sqs */
+    .sqs:not(:where([multiple], [size]:not([size="0"], [size="1"]))) {
+      min-block-size: 2.5em;
+      padding-block: var(--_sqs-pad-block);
+      padding-inline: var(--_sqs-pad-inline) calc(var(--_sqs-pad-inline) + 2 * var(--_sqs-chev) + var(--_sqs-gap));
+      background-color: var(--_sqs-bg);
       border-radius: var(--_sqs-radius);
       white-space: nowrap;
       text-overflow: ellipsis;
@@ -27,10 +32,9 @@
       background-position:
         right calc(var(--_sqs-pad-inline) + var(--_sqs-chev)) center,
         right var(--_sqs-pad-inline) center;
-      transition: border-color var(--_sqs-duration);
     }
 
-    .sqs:dir(rtl) {
+    .sqs:not(:where([multiple], [size]:not([size="0"], [size="1"]))):dir(rtl) {
       background-position:
         left var(--_sqs-pad-inline) center,
         left calc(var(--_sqs-pad-inline) + var(--_sqs-chev)) center;
@@ -43,7 +47,8 @@
       background-color: var(--_sqs-surface);
     }
 
-    .sqs option:disabled {
+    .sqs option:disabled,
+    .sqs:disabled option {
       color: var(--_sqs-muted);
     }
 
@@ -56,7 +61,7 @@
       outline-offset: var(--_sqs-focus-offset);
     }
 
-    .sqs:has(option[value=""]:checked) {
+    .sqs:not(:where([multiple], [size]:not([size="0"], [size="1"]))):has(option[value=""]:checked) {
       color: var(--_sqs-muted);
     }
 
@@ -73,6 +78,59 @@
       border-color: color-mix(in oklab, var(--_sqs-border) 55%, var(--_sqs-bg));
     }
 
+    /* list boxes keep the native behaviour in every engine: no base-select, no arrow, no placeholder rules */
+    .sqs:where([multiple]:not([size="1"]), [size]:not([size="0"], [size="1"])) {
+      max-block-size: var(--_sqs-list-max);
+      padding: .25em;
+      background-color: var(--_sqs-surface);
+      border-radius: var(--_sqs-radius-panel);
+    }
+
+    .sqs:where([multiple]:not([size="1"]), [size]:not([size="0"], [size="1"])) option {
+      padding: .375em .5em;
+      border-radius: var(--_sqs-radius-option);
+      white-space: normal;
+      background-color: transparent;
+    }
+
+    /* the weight shows where the font has a bold face; the bar below is the second cue, WebKit keeps its system grey for both */
+    .sqs:where([multiple]:not([size="1"]), [size]:not([size="0"], [size="1"])) option:checked {
+      font-weight: 600;
+    }
+
+    .sqs:where([multiple]:not([size="1"]), [size]:not([size="0"], [size="1"])) optgroup {
+      padding-block-start: .25em;
+      font-size: .8125em;
+      font-style: normal;
+      font-weight: 600;
+      color: var(--_sqs-muted);
+      background-color: transparent;
+    }
+
+    .sqs:where([multiple]:not([size="1"]), [size]:not([size="0"], [size="1"])) optgroup > option {
+      font-size: calc(1em / .8125);
+      font-weight: normal;
+    }
+
+    /* with focus the browser paints its own highlight, which must stay; in forced colors the system colours win */
+    @media (forced-colors: none) {
+      .sqs:where([multiple]:not([size="1"]), [size]:not([size="0"], [size="1"])) option:hover:not(:disabled, :checked) {
+        background-color: var(--_sqs-hover);
+      }
+
+      .sqs:where([multiple]:not([size="1"]), [size]:not([size="0"], [size="1"])):not(:focus) option:checked {
+        background: linear-gradient(var(--_sqs-accent) 0 0) 0 / 3px no-repeat var(--_sqs-selected);
+      }
+
+      .sqs:where([multiple]:not([size="1"]), [size]:not([size="0"], [size="1"])):not(:focus) option:checked:hover {
+        background-color: var(--_sqs-selected-strong);
+      }
+
+      .sqs:where([multiple]:not([size="1"]), [size]:not([size="0"], [size="1"])):not(:focus) option:checked:dir(rtl) {
+        background-position-x: 100%;
+      }
+    }
+
     /* iOS zooms into fields below 16px; 44px is the recommended touch target, 24px the WCAG minimum */
     @media (pointer: coarse) {
       .sqs,
@@ -80,6 +138,18 @@
         font-size: max(var(--_sqs-font-size), 16px);
         min-block-size: max(2.5em, 44px);
       }
+
+      /* option boxes ignore min-block-size in native lists, so the rows grow through padding */
+      .sqs:where([multiple]:not([size="1"]), [size]:not([size="0"], [size="1"])) option {
+        padding-block: max(.375em, calc((44px - 1.25em) / 2));
+      }
+    }
+
+    /* multiple size="1" is a drop-down in Chromium and a one-row list elsewhere, so it stays native;
+       this outranks every shared rule above */
+    .sqs[multiple][size="1"],
+    .sqs[multiple][size="1"] :is(option, optgroup) {
+      all: revert-layer;
     }
   }
 }

@@ -7,7 +7,7 @@ export default defineConfig({
   testDir: 'tests/browser',
   forbidOnly: !!process.env.CI,
   reporter: process.env.CI ? [['github'], ['html', { open: 'never' }]] : 'list',
-  use: { baseURL: 'http://sqs.test' },
+  use: { baseURL: 'http://sqs.test/squirrel-select/' },
   expect: { toHaveScreenshot: { maxDiffPixels: 10, animations: 'disabled', caret: 'hide' } },
   projects: [
     { name: 'chromium', use: { ...devices['Desktop Chrome'], ...desktop } },

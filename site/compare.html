@@ -1,0 +1,326 @@
+<title>Compare – SquirrelSelect</title>
+<meta name="description" content="How SquirrelSelect compares with the plain native select, daisyUI, Tom Select, Choices.js and Slim Select. Sourced and dated.">
+
+<main id="main">
+  <h1>Compare</h1>
+  <p>
+    SquirrelSelect styles the browser's own <code>&lt;select&gt;</code>. Most select
+    libraries take a different route: they hide the select and draw their own widget.
+    Both approaches are valid. This page lays out the differences so you can pick the right
+    tool for your form.
+  </p>
+  <p>
+    <strong>As of <time datetime="2026-11-18">18 November 2026</time>.</strong> Every cell is
+    based on the official documentation, repository or published npm package listed under
+    <a href="#sources">Sources</a>. Version numbers and sizes were checked on that date.
+    If you spot something outdated, please open an issue.
+  </p>
+
+  <section aria-labelledby="short-title">
+    <h2 id="short-title">In short</h2>
+    <ul>
+      <li>
+        <strong>Choose SquirrelSelect</strong> if you want the native select to match your
+        design without adding JavaScript, and you are fine with the open list coming from the
+        operating system in Firefox and on phones.
+      </li>
+      <li>
+        <strong>Choose Tom Select, Choices.js or Slim Select</strong> if you need search,
+        server-side loading, tags or free-text entries today, or if the open list has to look
+        the same in every browser. They do more than SquirrelSelect, and they have done it
+        for years.
+      </li>
+      <li>
+        <strong>Choose daisyUI</strong> if your project already uses Tailwind CSS. Its select
+        follows the same idea as SquirrelSelect.
+      </li>
+      <li>
+        <strong>Do nothing</strong> if the default look is acceptable. The plain select is
+        accessible, fast and works everywhere.
+      </li>
+    </ul>
+  </section>
+
+  <section aria-labelledby="table-title">
+    <h2 id="table-title">Side by side</h2>
+    <p>
+      “Not yet” means the feature is planned for an optional search module that is not
+      released. “Not documented” means we found nothing about it in the project's own
+      documentation; it may still be possible.
+    </p>
+
+    <div class="table-scroll" role="region" aria-labelledby="compare-caption" tabindex="0">
+      <table>
+        <caption id="compare-caption">
+          SquirrelSelect 1.0 compared with five alternatives, as of 18 November 2026.
+          Scroll sideways to see all columns.
+        </caption>
+        <thead>
+          <tr>
+            <th scope="col">Feature</th>
+            <th scope="col">SquirrelSelect 1.0</th>
+            <th scope="col">Native select (do nothing)</th>
+            <th scope="col">daisyUI 5.8.1 select</th>
+            <th scope="col">Tom Select 2.7.0</th>
+            <th scope="col">Choices.js 11.2.4</th>
+            <th scope="col">Slim Select 4.7.0</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Approach</th>
+            <td>Styles the native select</td>
+            <td>Browser default</td>
+            <td>Styles the native select</td>
+            <td>Hides the select, renders its own widget</td>
+            <td>Hides the select, renders its own widget</td>
+            <td>Hides the select, renders its own widget</td>
+          </tr>
+          <tr>
+            <th scope="row">JavaScript needed</th>
+            <td>No</td>
+            <td>No</td>
+            <td>No</td>
+            <td>Yes</td>
+            <td>Yes</td>
+            <td>Yes</td>
+          </tr>
+          <tr>
+            <th scope="row">Setup</th>
+            <td>Add <code>class="sqs"</code></td>
+            <td>None</td>
+            <td>Add <code>class="select"</code></td>
+            <td><code>new TomSelect(…)</code></td>
+            <td><code>new Choices(…)</code></td>
+            <td><code>new SlimSelect(…)</code></td>
+          </tr>
+          <tr>
+            <th scope="row">Requires</th>
+            <td>Nothing</td>
+            <td>Nothing</td>
+            <td>Tailwind CSS</td>
+            <td>Nothing</td>
+            <td>Nothing</td>
+            <td>Nothing (optional Vue and React wrappers)</td>
+          </tr>
+          <tr>
+            <th scope="row">Runtime dependencies (npm)</th>
+            <td>None</td>
+            <td>—</td>
+            <td>None</td>
+            <td>2: <code>@orchidjs/sifter</code>, <code>@orchidjs/unicode-variants</code></td>
+            <td>1: <code>fuse.js</code></td>
+            <td>None</td>
+          </tr>
+          <tr>
+            <th scope="row">Size, gzip<sup><a href="#note-size" id="ref-size">1<span class="visually-hidden"> (how we measured)</span></a></sup></th>
+            <td>2.2 kB CSS</td>
+            <td>0</td>
+            <td>Not comparable: compiled into your Tailwind CSS build</td>
+            <td>17.8 kB JS + 2.1 kB CSS</td>
+            <td>20.8 kB JS + 2.4 kB CSS</td>
+            <td>19.4 kB JS + 2.8 kB CSS</td>
+          </tr>
+          <tr>
+            <th scope="row">Licence</th>
+            <td>MIT</td>
+            <td>—</td>
+            <td>MIT</td>
+            <td>Apache-2.0</td>
+            <td>MIT</td>
+            <td>MIT</td>
+          </tr>
+          <tr>
+            <th scope="row">Latest release</th>
+            <td>This release</td>
+            <td>—</td>
+            <td>15 Nov 2026</td>
+            <td>7 Nov 2026</td>
+            <td>23 Aug 2026</td>
+            <td>12 Nov 2026</td>
+          </tr>
+          <tr>
+            <th scope="row">Open list, desktop Chrome, Edge, Safari 27+</th>
+            <td>Styled</td>
+            <td>Browser default</td>
+            <td>Styled</td>
+            <td>Styled by the library</td>
+            <td>Styled by the library</td>
+            <td>Styled by the library</td>
+          </tr>
+          <tr>
+            <th scope="row">Open list, desktop Firefox</th>
+            <td>Drawn by the operating system; closed field styled</td>
+            <td>Drawn by the operating system</td>
+            <td>Drawn by the operating system; closed field styled</td>
+            <td>Styled by the library</td>
+            <td>Styled by the library</td>
+            <td>Styled by the library</td>
+          </tr>
+          <tr>
+            <th scope="row">Open list on phones</th>
+            <td>Native iOS or Android picker; closed field styled</td>
+            <td>Native iOS or Android picker</td>
+            <td>Browser-drawn styled list where supported, which replaces the native picker; native picker elsewhere</td>
+            <td>Library list</td>
+            <td>Library list</td>
+            <td>Library panel, centred modal on mobile by default</td>
+          </tr>
+          <tr>
+            <th scope="row">Submitted value</th>
+            <td>The select itself</td>
+            <td>The select itself</td>
+            <td>The select itself</td>
+            <td>The original select, kept in sync by the library</td>
+            <td>The original select, kept in sync by the library</td>
+            <td>The original select, kept in sync by the library</td>
+          </tr>
+          <tr>
+            <th scope="row">Icons or images in options</th>
+            <td>Yes in desktop Chrome, Edge and Safari 27+; text only elsewhere</td>
+            <td>No, text only</td>
+            <td>Yes where the browser draws a styled list; text only elsewhere</td>
+            <td>Yes, through render templates</td>
+            <td>Yes, through custom templates</td>
+            <td>Yes, through custom HTML per option</td>
+          </tr>
+          <tr>
+            <th scope="row">Option groups</th>
+            <td>Yes</td>
+            <td>Yes</td>
+            <td>Yes</td>
+            <td>Yes</td>
+            <td>Yes</td>
+            <td>Yes</td>
+          </tr>
+          <tr>
+            <th scope="row">Separator lines (<code>&lt;hr&gt;</code>)</th>
+            <td>Yes, styled</td>
+            <td>Yes: Chrome 119+, Safari 17+, Firefox 122+</td>
+            <td>Yes, browser default</td>
+            <td>Not documented</td>
+            <td>Not documented</td>
+            <td>Not documented</td>
+          </tr>
+          <tr>
+            <th scope="row">Theming</th>
+            <td>CSS custom properties</td>
+            <td>—</td>
+            <td>Tailwind classes and daisyUI themes</td>
+            <td>Default and Bootstrap 4/5 stylesheets</td>
+            <td>CSS custom properties</td>
+            <td>CSS custom properties</td>
+          </tr>
+          <tr>
+            <th scope="row">Search in the options</th>
+            <td>Not yet</td>
+            <td>No; typing jumps to a matching option</td>
+            <td>No</td>
+            <td>Yes</td>
+            <td>Yes</td>
+            <td>Yes</td>
+          </tr>
+          <tr>
+            <th scope="row">Load options from a server</th>
+            <td>Not yet</td>
+            <td>No</td>
+            <td>No</td>
+            <td>Yes</td>
+            <td>Yes</td>
+            <td>Yes</td>
+          </tr>
+          <tr>
+            <th scope="row">Multiple selection as tags</th>
+            <td>Not yet</td>
+            <td>No; <code>multiple</code> shows a list box</td>
+            <td>No</td>
+            <td>Yes</td>
+            <td>Yes</td>
+            <td>Yes</td>
+          </tr>
+          <tr>
+            <th scope="row">Add new values by typing</th>
+            <td>No, not planned</td>
+            <td>No</td>
+            <td>No</td>
+            <td>Yes</td>
+            <td>Yes</td>
+            <td>Yes</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="notes" id="note-size">
+      <sup>1</sup> Measured on 18 November 2026 with <code>gzip -9</code> on the files the
+      packages publish: <code>dist/squirrel-select.css</code>;
+      <code>tom-select.complete.min.js</code> and <code>tom-select.min.css</code>;
+      <code>choices.min.js</code> and <code>choices.min.css</code>;
+      <code>slimselect.js</code> and <code>slimselect.css</code>.
+      Bundlers and smaller builds can change these numbers.
+      <a href="#ref-size">Back to the table</a>
+    </p>
+  </section>
+
+  <section aria-labelledby="limits-title">
+    <h2 id="limits-title">What SquirrelSelect does not do</h2>
+    <ul>
+      <li>
+        It does not make the open list look the same everywhere. In Firefox and older
+        browsers the operating system draws it; on phones people get the native picker on
+        purpose. See <a href="docs/browser-support.html">browser support</a>.
+      </li>
+      <li>
+        It does not add search, server-side loading or tags. An optional module for these is
+        planned. Until then, the libraries above are the better choice for those forms.
+      </li>
+      <li>
+        It does not accept free-text entries, and this is not planned.
+      </li>
+    </ul>
+    <p>
+      What it keeps: keyboard handling, screen reader support, autofill and form validation
+      come from the browser, because the select stays a select. Our test results are on the
+      <a href="accessibility.html">accessibility page</a>.
+    </p>
+  </section>
+
+  <section aria-labelledby="sources-title" id="sources">
+    <h2 id="sources-title">Sources</h2>
+    <p>Checked on 18 November 2026.</p>
+    <ul>
+      <li>
+        Native select:
+        <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/select">MDN, &lt;select&gt;</a>,
+        <a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Forms/Customizable_select">MDN, customizable select</a>,
+        <a href="https://developer.chrome.com/blog/hr-in-select">Chrome, &lt;hr&gt; in select</a>,
+        <a href="https://www.firefox.com/firefox/122.0/releasenotes/">Firefox 122 release notes</a>
+      </li>
+      <li>
+        daisyUI:
+        <a href="https://daisyui.com/components/select/">select component</a>,
+        <a href="https://github.com/saadeghi/daisyui">repository</a>,
+        <a href="https://www.npmjs.com/package/daisyui">npm package</a>
+        (version, licence; select styles read from <code>components/select.css</code>)
+      </li>
+      <li>
+        Tom Select:
+        <a href="https://tom-select.js.org/docs/">documentation</a>,
+        <a href="https://tom-select.js.org/plugins/">plugins</a>,
+        <a href="https://github.com/orchidjs/tom-select">repository</a>,
+        <a href="https://www.npmjs.com/package/tom-select">npm package</a>
+      </li>
+      <li>
+        Choices.js:
+        <a href="https://github.com/Choices-js/Choices">repository and documentation</a>,
+        <a href="https://www.npmjs.com/package/choices.js">npm package</a>
+      </li>
+      <li>
+        Slim Select:
+        <a href="https://slimselectjs.com/">documentation</a>,
+        <a href="https://github.com/brianvoe/slim-select">repository</a>,
+        <a href="https://www.npmjs.com/package/slim-select">npm package</a>
+      </li>
+    </ul>
+  </section>
+</main>

@@ -49,8 +49,8 @@ jobs:
           persist-credentials: false
       - name: Install dependencies
         run: npm ci --ignore-scripts
-      - name: Build
-        run: npm run build
+      - name: Build library and site
+        run: npm run site
       - name: Browser tests
         run: npx playwright test
       - name: Upload report and diff images

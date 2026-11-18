@@ -1,14 +1,15 @@
 import { test as base, expect, type Locator, type Page } from '@playwright/test'
-import { existsSync } from 'node:fs'
+import { existsSync, statSync } from 'node:fs'
 import { join } from 'node:path'
 
-// pages come from site/, the stylesheet from the built dist/, so build errors show up too; no server process needed
+// serves the built _site/ under the same subpath as the live site, so absolute links fail here too; no server process needed
 export const test = base.extend({
   context: async ({ context }, use) => {
     await context.route('http://sqs.test/**', route => {
       const { pathname } = new URL(route.request().url())
-      const file = join(process.cwd(), pathname.startsWith('/dist/') ? '' : 'site', pathname)
-      return existsSync(file) ? route.fulfill({ path: file }) : route.fulfill({ status: 404 })
+      const path = pathname.replace(/^\/squirrel-select\//, '').replace(/(^|\/)$/, '$1index.html')
+      const file = join(process.cwd(), '_site', path)
+      return pathname.startsWith('/squirrel-select/') && existsSync(file) && statSync(file).isFile() ? route.fulfill({ path: file }) : route.fulfill({ status: 404 })
     })
     await use(context)
   },
@@ -20,7 +21,7 @@ export const project = () => test.info().project.name
 export const isBaseSelect = () => ['chromium', 'webkit'].includes(project())
 
 export async function gotoStates(page: Page) {
-  await page.goto('/examples/states.html')
+  await page.goto('examples/states.html')
   await page.evaluate(() => document.fonts.ready)
 }
 

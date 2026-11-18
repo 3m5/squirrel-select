@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="{{lang}}" data-scheme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{title}}</title>
+<meta name="description" content="{{description}}">
+<script>
+  document.documentElement.classList.add('js')
+  try { document.documentElement.dataset.scheme = localStorage.getItem('squirrel-select-scheme') || 'dark' } catch {}
+</script>
+<link rel="icon" href="{{root}}assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="{{root}}assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="preload" href="{{root}}assets/fonts/atkinson-hyperlegible-next-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="{{root}}assets/fonts/space-grotesk-latin-700.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="{{root}}dist/squirrel-select.css">
+<link rel="stylesheet" href="{{root}}assets/site.css">
+<script type="module" src="{{root}}assets/site.js"></script>
+{{head}}
+</head>
+<body>
+<a class="skip-link" href="#main" lang="en">Skip to content</a>
+<header class="site-header" lang="en">
+  <div class="wrap">
+    <a class="brand" href="{{root}}index.html">
+      <svg class="icon" viewBox="0 0 64 64" fill="currentColor" fill-rule="evenodd" aria-hidden="true" focusable="false"><path d="M43.3 19.52L44.41 19.87L44.41 23.89L53.16 23.89L53.16 16.24L47.68 10.76L39.67 10.76L32.73 17.7L32.73 37.03L29.81 34.11L29.81 29.73L26.89 26.81L23.97 26.81L23.97 21.7L19.59 26.81L13.75 26.81L10.84 29.73L10.84 34.11L13.75 38.49L18.13 38.49L15.21 41.41L15.21 48.71L31.27 48.71L31.64 48.34L32.91 49.61L41.49 41.03L41.49 21.33ZM15.94 32.65L15.94 29.73L18.86 29.73L18.86 32.65ZM28.37 57.47L32.91 62L50.25 44.66L50.25 32.65L61.92 32.65L61.92 12.61L51.31 2L36.05 2L33.74 4.31L28.89 2.51L15.57 18.06L10.13 18.06L2.08 26.11L2.08 36.76L6.46 43.33L6.46 57.47ZM6.46 27.92L11.94 22.43L17.58 22.43L25.92 12.7L28.35 13.6L28.52 15.72L37.86 6.38L49.49 6.38L57.54 14.43L57.54 28.27L45.87 28.27L45.87 42.85L32.91 55.81L30.19 53.09L10.84 53.09L10.84 42.01L6.46 35.44Z"/></svg>
+      SquirrelSelect
+    </a>
+    <nav class="site-nav" aria-label="Main">
+      <ul>
+        <li><a href="{{root}}index.html">Home</a></li>
+        <li><a href="{{root}}examples/states.html">Examples</a></li>
+        <li><a href="{{root}}playground.html">Playground</a></li>
+        <li><a href="{{root}}docs/index.html" data-section="docs/">Docs</a></li>
+        <li><a href="{{root}}accessibility.html" data-section="de/">Accessibility</a></li>
+        <li><a href="{{root}}compare.html">Compare</a></li>
+        <li><a href="https://github.com/3m5/squirrel-select/releases">Changelog</a></li>
+        <li><a href="https://github.com/3m5/squirrel-select">GitHub</a></li>
+      </ul>
+    </nav>
+    <div class="header-tools">
+      <label for="site-scheme" class="visually-hidden">Appearance</label>
+      <select class="sqs" id="site-scheme">
+        <option value="system">System</option>
+        <option value="light">Light</option>
+        <option value="dark">Dark</option>
+      </select>
+    </div>
+  </div>
+</header>
+<div class="layout">
+{{subnav}}
+{{main}}
+</div>
+<footer class="site-footer" lang="en">
+  <div class="wrap">
+    <p><strong>SquirrelSelect</strong> · <a href="https://github.com/3m5/squirrel-select/blob/main/LICENSE">MIT License</a> · a project by 3m5.</p>
+    <p>Every select on this site uses SquirrelSelect.</p>
+  </div>
+</footer>
+</body>
+</html>

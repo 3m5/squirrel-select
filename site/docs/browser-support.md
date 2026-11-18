@@ -22,9 +22,9 @@ With forced colors, such as Windows contrast themes, every browser shows the nat
 
 - **Automated, on every change:** the current stable Chromium, WebKit and Firefox, including touch emulation, screenshots of every state, and automated accessibility checks with axe.
 - **Preview, every week:** Firefox with `base-select` switched on, so we see how the full styling will look there. The same run warns us as soon as Firefox Nightly turns it on.
-- **By hand, before every minor release:** a short checklist on our team's phones (iPhone and Android), with the free screen readers on those phones, and keyboard only with zoom at 200% and 400% in Chrome, Edge and Firefox. Patch releases get a short smoke test.
+- **By hand, before every minor release:** a short checklist on a real Android device with TalkBack, and keyboard only with zoom at 200% and 400% in Chrome, Edge and Firefox. iPhone is not tested on a real device; the automated tests run the Safari engine with touch emulation. Patch releases get a short smoke test.
 
-We do not test older browser versions one by one. WebKit in our test runs is a Linux build, not Safari, which is why real phones are part of every minor release.
+We do not test older browser versions one by one. WebKit in our test runs is a Linux build, not Safari, which is why a real Android device is part of every minor release. iPhone is not tested on a real device.
 
 Accessibility is a self-assessment against WCAG 2.2 level AA, not an external certification. The results are on the [accessibility page](../accessibility.html).
 

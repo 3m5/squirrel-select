@@ -13,8 +13,8 @@
       <li><strong>Target:</strong> WCAG 2.2, level AA. This includes EN 301 549 and BITV 2.0, which refer to WCAG.</li>
       <li><strong>Method:</strong> self-assessment by the developers. No external audit.</li>
       <li><strong>Automated:</strong> axe-core, contrast calculation, keyboard and layout tests in Chromium 159, Firefox 159 and WebKit 27.2 (Playwright 1.65.1), on every change. All pass.</li>
-      <li><strong>By hand, before every minor release:</strong> a short checklist on our team’s phones (iPhone and Android), with the free screen readers on those phones, and keyboard with zoom in Chrome, Edge and Firefox. Patch releases get a short smoke test. Not done yet for 1.0.0.</li>
-      <li><strong>Not tested:</strong> NVDA, JAWS, VoiceOver on macOS, the real Windows contrast themes, an external BITV test.</li>
+      <li><strong>By hand, before every minor release:</strong> a short checklist on a real Android phone with TalkBack, and keyboard with zoom in Chrome, Edge and Firefox. Patch releases get a short smoke test. Not done yet for 1.0.0.</li>
+      <li><strong>Not tested:</strong> VoiceOver on a real iPhone (WebKit with touch emulation is checked automatically), NVDA, JAWS, VoiceOver on macOS, the real Windows contrast themes, an external BITV test.</li>
     </ul>
     <p><strong>Status:</strong> <time datetime="2026-11-18">18 November 2026</time>, before the 1.0.0 release.</p>
   </section>
@@ -81,7 +81,7 @@
           <tr><th scope="row">NVDA + Chrome (Windows)</th><td>Not tested</td></tr>
           <tr><th scope="row">NVDA + Firefox (Windows)</th><td>Not tested</td></tr>
           <tr><th scope="row">VoiceOver + Safari (macOS)</th><td>Not tested</td></tr>
-          <tr><th scope="row">VoiceOver + Safari (iPhone)</th><td>Not done yet, planned before 1.0.0</td></tr>
+          <tr><th scope="row">VoiceOver + Safari (iPhone)</th><td>Not tested on a real device. WebKit with touch emulation is checked automatically (see above)</td></tr>
           <tr><th scope="row">TalkBack + Chrome (Android phone)</th><td>Not done yet, planned before 1.0.0</td></tr>
           <tr><th scope="row">Keyboard only, zoom 200% and 400% (Chrome, Edge, Firefox)</th><td>Not done yet, planned before 1.0.0</td></tr>
           <tr><th scope="row">JAWS + Chrome (Windows)</th><td>Not tested</td></tr>
@@ -127,7 +127,7 @@
         <p><strong>Accessibility of SquirrelSelect</strong></p>
         <p>SquirrelSelect is a stylesheet for the native HTML <code>&lt;select&gt;</code> element. Keyboard use, screen reader output and form validation are handled by the browser. SquirrelSelect only changes the appearance.</p>
         <p><strong>Standard:</strong> WCAG 2.2, level AA. This covers the requirements of EN 301 549 V3.2.1, chapter 9 (WCAG 2.1 AA), which BITV 2.0 refers to.</p>
-        <p><strong>Method:</strong> self-assessment by the developers, no external certification. Automated checks (axe-core, contrast calculation, keyboard and layout tests in Chromium, Firefox and WebKit) on every change. Checks by hand before every minor release: a short checklist on the team’s phones (iPhone and Android), with the free screen readers VoiceOver and TalkBack, and keyboard with zoom in Chrome, Edge and Firefox. Patch releases get a short smoke test. NVDA, JAWS, VoiceOver on macOS and the real Windows contrast themes are not tested. Results by browser and screen reader: https://3m5.github.io/squirrel-select/accessibility.html, status 18 November 2026.</p>
+        <p><strong>Method:</strong> self-assessment by the developers, no external certification. Automated checks (axe-core, contrast calculation, keyboard and layout tests in Chromium, Firefox and WebKit) on every change. Checks by hand before every minor release: a short checklist on a real Android phone with the free screen reader TalkBack, and keyboard with zoom in Chrome, Edge and Firefox. Patch releases get a short smoke test. VoiceOver on a real iPhone, NVDA, JAWS, VoiceOver on macOS and the real Windows contrast themes are not tested. Results by browser and screen reader: https://3m5.github.io/squirrel-select/accessibility.html, status 18 November 2026.</p>
         <p><strong>Result:</strong> Used as intended, SquirrelSelect causes no known violations of WCAG 2.2 AA. As intended means: every select has a visible label, every option contains text, the page provides error messages as text, and anyone who changes the color variables keeps the documented contrast values in light and dark mode.</p>
         <p><strong>Known limits:</strong></p>
         <ul>

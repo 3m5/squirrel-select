@@ -7,6 +7,8 @@
 
 > [!NOTE]
 > Version 1.0 is in preparation. The package on npm today (0.1.x) is the old JavaScript dropdown; its documentation is in the tag [v0.1.5](https://github.com/3m5/squirrel-select/tree/v0.1.5). The CDN path `@1` and the documentation site work once 1.0 is released.
+>
+> To try the release candidate: `npm install @3m5-de/squirrel-select@next`, or from a CDN `https://cdn.jsdelivr.net/npm/@3m5-de/squirrel-select@1.0.0-rc.1/dist/squirrel-select.css`.
 
 **Not a dropdown widget. A stylesheet for the native `<select>`.**
 
@@ -111,7 +113,7 @@ SquirrelSelect only changes how the select looks; the browser keeps doing the re
 
 ## Browser support and versioning
 
-Every browser gets a working, native select. Each change is tested in current Chromium, WebKit and Firefox. By hand, before every minor release: a short checklist on our team's phones (iPhone and Android), with the free screen readers on those phones, and keyboard with zoom in Chrome, Edge and Firefox. Patch releases get a short smoke test. The public API is the class `sqs`, the classes `sqs-icon` and `sqs-hint`, the documented CSS variables, the layer name `squirrel` and the file path; changing any of them needs a major version. Details: [Browser support](https://3m5.github.io/squirrel-select/docs/browser-support.html).
+Every browser gets a working, native select. Each change is tested in current Chromium, WebKit and Firefox. By hand, before every minor release: a short checklist on a real Android device with TalkBack, and keyboard with zoom in Chrome, Edge and Firefox. iPhone is not tested on a real device; the automated tests run the Safari engine with touch emulation. Patch releases get a short smoke test. The public API is the class `sqs`, the classes `sqs-icon` and `sqs-hint`, the documented CSS variables, the layer name `squirrel` and the file path; changing any of them needs a major version. Details: [Browser support](https://3m5.github.io/squirrel-select/docs/browser-support.html).
 
 ## Migrating from 0.x
 

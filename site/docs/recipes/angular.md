@@ -27,3 +27,4 @@ Do not add it to a component's `styleUrls`. Angular scopes component styles, so 
 
 - Variables do work in component styles, because CSS variables pass through the scoping: `:host { --sqs-accent: light-dark(#b0185a, #ff8cc6); }`.
 - Rules for the open list (`::picker(select)`) belong in the global stylesheet, inside `@supports (appearance: base-select)`, see [Theming](../theming.html).
+- For several choices, add `multiple`; the form control then holds an array.

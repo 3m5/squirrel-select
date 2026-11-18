@@ -8,6 +8,7 @@
   <section aria-labelledby="summary">
     <h2 id="summary">In short</h2>
     <p>SquirrelSelect only changes how the native <code>&lt;select&gt;</code> looks. Keyboard, screen reader output and form validation stay with the browser.</p>
+    <p>Lists (<code>multiple</code> and <code>size</code>) keep the browser’s own keyboard and mouse behavior and screen reader output. Only borders, colors, spacing and the bold text of chosen options change.</p>
     <ul>
       <li><strong>Target:</strong> WCAG 2.2, level AA. This includes EN 301 549 and BITV 2.0, which refer to WCAG.</li>
       <li><strong>Method:</strong> self-assessment by the developers. No external audit.</li>
@@ -20,7 +21,7 @@
 
   <section aria-labelledby="automated">
     <h2 id="automated">Automated checks</h2>
-    <p>These run in real browser engines on every pull request, on a test page with every state of the select: placeholder, selected, disabled, invalid, groups, long text, right-to-left, rich options, three color themes.</p>
+    <p>These run in real browser engines on every pull request, on a test page with every state of the select: placeholder, selected, disabled, invalid, groups, long text, right-to-left, rich options, three color themes, and lists with <code>multiple</code> and <code>size</code>.</p>
     <div class="table-scroll" role="region" aria-labelledby="automated-caption" tabindex="0">
       <table>
         <caption id="automated-caption">Automated checks by browser engine</caption>
@@ -45,6 +46,15 @@
           <tr><th scope="row">Contrast mode (forced colors), emulated: browser’s own select, dashed border when invalid</th><td>1.4.11</td><td>Pass</td><td>Pass</td><td>Not run, see note 4</td></tr>
           <tr><th scope="row">Reduced motion: no transitions</th><td>2.3.3 (AAA, beyond the target)</td><td>Pass</td><td>Pass</td><td>Pass</td></tr>
           <tr><th scope="row">Every option has visible text</th><td>1.3.1, 4.1.2</td><td>Pass</td><td colspan="2">Same HTML, checked once</td></tr>
+          <tr><th scope="row">Lists: name, role, state and chosen options the same as without the stylesheet</th><td>1.3.1, 4.1.2</td><td>Pass</td><td>Pass</td><td>Pass</td></tr>
+          <tr><th scope="row">Lists: keyboard and mouse work as without the stylesheet, focus stays on the list</th><td>2.1.1, 3.2.1</td><td>Pass</td><td>Pass</td><td>Keyboard: pass. Mouse: not run, see note 5</td></tr>
+          <tr><th scope="row">Lists: chosen options have an accent bar and bold text, not color alone</th><td>1.4.1</td><td>Pass</td><td>Pass</td><td>System highlight, see note 5</td></tr>
+          <tr><th scope="row">Lists: text at least 4.5:1, bar and border at least 3:1</th><td>1.4.3, 1.4.11</td><td>Pass</td><td>Same colors, see note 2</td><td>Pass, text on the system highlight</td></tr>
+          <tr><th scope="row">Lists: focus ring of at least 2px, the browser’s own highlight and active option stay</th><td>2.4.7</td><td>Pass</td><td>Pass</td><td>Pass</td></tr>
+          <tr><th scope="row">Lists: rows at least 24px high</th><td>2.5.8</td><td>Pass</td><td>Pass</td><td>Row height from the browser, see note 5</td></tr>
+          <tr><th scope="row">Lists at 320px, text at 200% and increased text spacing: no horizontal scrolling, all rows shown</th><td>1.4.10, 1.4.4, 1.4.12</td><td>Pass</td><td>Pass</td><td>Pass</td></tr>
+          <tr><th scope="row">Lists: form value, reset, invalid state after a failed submit</th><td>3.3.1, with your error text</td><td>Pass</td><td>Pass</td><td>Pass</td></tr>
+          <tr><th scope="row">Lists in the contrast mode, emulated: system colors for chosen options, dashed border when invalid</th><td>1.4.11</td><td>Pass</td><td>Pass</td><td>Not run, see note 4</td></tr>
         </tbody>
       </table>
     </div>
@@ -53,6 +63,7 @@
       <li>Colors are measured once in Chromium. They resolve to the same values in every engine. Measured for the default colors and three example themes, each in light and dark.</li>
       <li>Firefox on the desktop, phones and tablets show the browser’s or system’s own list. We do not style it, so focus, size and keyboard come from the browser.</li>
       <li>Only Chromium and Firefox can emulate the contrast mode. The real Windows contrast themes are not tested.</li>
+      <li>In WebKit, chosen options in a list keep the browser’s grey highlight, and the browser sets the row height (about 21px at 16px text). Neither can be changed with CSS. Playwright cannot click options in a WebKit list, so the mouse check runs in Chromium and Firefox only.</li>
     </ol>
     <p>The fields, the axe check and the rendering path are also checked with touch emulation at 390px, in Chromium and WebKit.</p>
   </section>
@@ -102,6 +113,7 @@
       <li>In Firefox on the desktop and in older browsers, the open list uses the system style. It is fully accessible, but does not match the rest of the design.</li>
       <li>On phones and tablets, the system’s own picker opens on purpose.</li>
       <li>In the Windows contrast mode, the browser’s own select appears on purpose, in the colors the user chose.</li>
+      <li>In Safari, selected options in a list keep the system highlight, and the row height comes from the browser. In Firefox and Safari, long option text in a list is cut off.</li>
     </ul>
     <p>This page covers the stylesheet. The search module gets its own rows when it ships.</p>
   </section>
@@ -122,6 +134,7 @@
           <li>In Firefox on the desktop and in older browsers, the open list uses the system style. It is fully accessible, but does not match the rest of the design.</li>
           <li>On phones and tablets, the system’s own picker opens on purpose.</li>
           <li>In the Windows contrast mode, the browser’s own select appears on purpose, in the colors the user chose.</li>
+          <li>In Safari, selected options in a list keep the system highlight, and the row height comes from the browser. In Firefox and Safari, long option text in a list is cut off.</li>
         </ul>
         <p>SquirrelSelect does not assess the accessibility of the whole website. The accessibility statement of the respective organization applies to that. Report barriers at: https://github.com/3m5/squirrel-select/issues</p>
       </div>

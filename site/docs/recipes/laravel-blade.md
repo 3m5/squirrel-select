@@ -32,3 +32,4 @@ Your layout already loads it with `@vite(['resources/css/app.css', 'resources/js
 ## Watch out for
 
 - If you use Tailwind CSS, set the layer order, see [Troubleshooting](../troubleshooting.html).
+- For several choices, add `multiple` and name the field with brackets, such as `name="tags[]"`, so PHP receives an array.

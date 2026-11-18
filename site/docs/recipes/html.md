@@ -41,3 +41,4 @@ Or host the file yourself: copy `dist/squirrel-select.css` from the npm package 
 
 - An unpinned `@1` can change with every release. Use it for trying out, not for production.
 - An `integrity` hash only fits one exact version.
+- For a list with several choices, add `multiple` and set the visible rows with `size`, for example `<select class="sqs" name="colors" multiple size="5">`.

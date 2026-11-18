@@ -82,6 +82,7 @@ The 0.x variables never took effect, but if you copied them into your own CSS:
 
 - **Firefox on desktop:** the closed field matches your design. The open list comes from the browser. 0.x drew its own list everywhere.
 - **Touch devices:** the closed field matches your design. Choosing opens the native iOS or Android picker. 0.x showed its own list.
+- **Multiple choice:** 0.x turned a `<select multiple>` into a dropdown with a single choice. In 1.0 it stays a real list where people can choose several options, styled in every browser.
 - **Keyboard:** now the browser's own behavior. Type-to-select works with any letter, including umlauts and accents. 0.x only matched a to z.
 - **Screen readers:** the select is announced as a real select with all its options. 0.x had no ARIA roles.
 - **Search:** 0.x had none beyond type-to-select, and neither does the 1.0 core. An optional search module is planned for 1.1.

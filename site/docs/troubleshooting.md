@@ -35,7 +35,15 @@ Do not combine `.sqs` with `.form-select` or similar classes. Their CSS is not i
 
 ## The open list ignores my rule
 
-Rules with `::picker(select)`, `::checkmark` or `:open` must not share a selector list with other selectors. Firefox does not know them and drops the whole rule, including the parts it knows. Write them on their own, inside `@supports (appearance: base-select)`. See [Theming](theming.html).
+Rules with `::picker(select)`, `::checkmark` or `:open` must not share a selector list with other selectors. Firefox does not know them and drops the whole rule, including the parts it knows. Write them on their own, inside `@supports (appearance: base-select)`. See [Theming](theming.html). Lists with `multiple` or `size` never use `base-select`, so these rules do not apply to them.
+
+## A `multiple` select with `size="1"` looks unstyled
+
+Expected. `multiple` with `size="1"` stays native: it gets no styling, not even the 16 px text on touch devices. Use a `size` of 4 or more for lists.
+
+## The selection in a list changes color on focus
+
+Expected. While a list has focus, the browser paints the checked options in its own selection color. The accent bar comes back when focus leaves. Safari always uses its own colors for options. See [How it works](how-it-works.html).
 
 ## Dark mode does not switch
 
@@ -63,7 +71,7 @@ Styles do not cross a shadow root. Add the stylesheet inside the shadow root, fo
 
 ## Check your page
 
-Paste this into the browser console. It lists selects without the stylesheet, without a label, and options without text. It prints nothing if all is well.
+Paste this into the browser console. It lists selects without the stylesheet, without a label, and options without text, and points out a `multiple` select with `size="1"`. It prints nothing if all is well.
 
 ```js
 (() => {
@@ -72,7 +80,9 @@ Paste this into the browser console. It lists selects without the stylesheet, wi
   const forced = matchMedia('(forced-colors: active)').matches;
   for (const el of els) {
     if (!(el instanceof HTMLSelectElement)) { console.warn('[squirrel-select] class="sqs" belongs on a <select>:', el); continue; }
-    if (!forced && !['none', 'base-select'].includes(getComputedStyle(el).appearance))
+    if (el.multiple && el.getAttribute('size') === '1')
+      console.info('[squirrel-select] multiple with size="1" stays native, use size="4" or more:', el);
+    else if (!forced && !['none', 'base-select'].includes(getComputedStyle(el).appearance))
       console.warn('[squirrel-select] Not styled: stylesheet missing, overridden, or browser too old:', el);
     if (!el.labels.length && !el.hasAttribute('aria-label') && !el.hasAttribute('aria-labelledby'))
       console.warn('[squirrel-select] Select has no label:', el);

@@ -14,6 +14,23 @@ The first path uses `appearance: base-select`, the browser feature that makes th
 
 There is no JavaScript copy of the list for Firefox. The open native list is drawn outside the page, so no CSS or script can reach it. Faking it would mean rebuilding the select from `<div>`s, with all the keyboard and screen reader work that comes with it. The goal is **the same tokens, not the same pixels**.
 
+These three paths are for the dropdown. Lists work differently, see below.
+
+## Lists
+
+A select with `multiple`, or with `size` greater than 1, is a list box in the page instead of a field that opens. SquirrelSelect styles it in every browser and never switches it to `base-select`, because in Chrome that would change how it works: a click would toggle instead of choose, Shift would no longer select a range, and focus could get lost. Choosing with mouse, keyboard and touch stays exactly as the browser does it.
+
+| | Chrome, Edge, Firefox | Safari |
+|---|---|---|
+| Box: background, border, corners, focus ring, error border | styled | styled |
+| Rows: spacing, rounded corners, hover | styled | from the browser |
+| Checked options | tinted, with an accent bar at the start | system color |
+| Option groups | smaller, muted labels | smaller, muted labels |
+
+While the list has focus, the browser paints the checked options in its own selection color, so focus and selection look the way people know them. The accent bar comes back when focus leaves. Under `dir="rtl"` the bar sits on the right. In forced colors, checked options use the system's selection colors.
+
+`size` sets the number of visible rows, and `--sqs-list-max-height` caps the height. On touch devices, rows are at least 44 px high in Chrome and Firefox. An iPhone shows a `multiple` select as a field that opens the system picker; we have not tested this on a real device. Use a `size` of 4 or more for lists. `multiple` with `size="1"` stays native: it gets no styling, not even the 16 px text on touch devices. Chrome draws it as a closed field, Firefox and Safari as a list one row high, and no single design fits both.
+
 ## What it looks like
 
 These are the reference screenshots from our automated tests. They are taken with Playwright on Linux, so WebKit stands in for Safari and the touch images are emulated. Long screenshots show their top part; the link below each one opens it in full.
@@ -56,7 +73,7 @@ With `base-select`, options can contain more than text. Use the classes `sqs-ico
 </select>
 ```
 
-The hint is hidden visually in the closed field. Screen readers still read it, like with the native select. In Firefox and on phones the option shows its text only, here "Germany EUR". That is why every option needs real text, and why a space belongs between the parts. Images are decoration with `alt=""`. Do not put buttons or links inside options.
+The hint is hidden visually in the closed field. Screen readers still read it, like with the native select. In Firefox and on phones the option shows its text only, here "Germany EUR". That is why every option needs real text, and why a space belongs between the parts. Images are decoration with `alt=""`. Do not put buttons or links inside options. Rich content works in the dropdown only, not in lists.
 
 ## Older browsers
 

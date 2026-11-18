@@ -438,6 +438,106 @@
 </div>
 
 <div class="cases">
+<figure class="fall" id="fall-multiple">
+  <figcaption><label for="s-multiple">Multiple, two selected, groups, disabled option</label></figcaption>
+  <select class="sqs" id="s-multiple" multiple>
+    <optgroup label="Tree squirrels">
+      <option selected>Red squirrel</option>
+      <option selected>Grey squirrel</option>
+      <option disabled>Caucasian squirrel (sold out)</option>
+    </optgroup>
+    <optgroup label="Dormice">
+      <option>Hazel dormouse</option>
+      <option>Edible dormouse</option>
+    </optgroup>
+  </select>
+  <details><summary>Code</summary><pre><code>&lt;select class="sqs" id="s-multiple" multiple&gt;
+  &lt;optgroup label="Tree squirrels"&gt;
+    &lt;option selected&gt;Red squirrel&lt;/option&gt;
+    &lt;option selected&gt;Grey squirrel&lt;/option&gt;
+    &lt;option disabled&gt;Caucasian squirrel (sold out)&lt;/option&gt;
+  &lt;/optgroup&gt;
+  &lt;optgroup label="Dormice"&gt;
+    &lt;option&gt;Hazel dormouse&lt;/option&gt;
+    &lt;option&gt;Edible dormouse&lt;/option&gt;
+  &lt;/optgroup&gt;
+&lt;/select&gt;</code></pre></details>
+</figure>
+
+<figure class="fall" id="fall-size">
+  <figcaption><label for="s-size">List, size="4", one choice</label></figcaption>
+  <select class="sqs" id="s-size" size="4">
+    <option>Red squirrel</option>
+    <option>Grey squirrel</option>
+    <option selected>Hazel dormouse</option>
+    <option>Edible dormouse</option>
+    <option>Garden dormouse</option>
+  </select>
+  <details><summary>Code</summary><pre><code>&lt;select class="sqs" id="s-size" size="4"&gt;
+  &lt;option&gt;Red squirrel&lt;/option&gt;
+  &lt;option&gt;Grey squirrel&lt;/option&gt;
+  &lt;option selected&gt;Hazel dormouse&lt;/option&gt;
+  &lt;option&gt;Edible dormouse&lt;/option&gt;
+  &lt;option&gt;Garden dormouse&lt;/option&gt;
+&lt;/select&gt;</code></pre></details>
+</figure>
+
+<figure class="fall" id="fall-multiple-disabled">
+  <figcaption><label for="s-multiple-disabled">Multiple, disabled</label></figcaption>
+  <select class="sqs" id="s-multiple-disabled" multiple disabled>
+    <option selected>Red squirrel</option>
+    <option>Grey squirrel</option>
+    <option selected>Hazel dormouse</option>
+    <option>Edible dormouse</option>
+  </select>
+  <details><summary>Code</summary><pre><code>&lt;select class="sqs" id="s-multiple-disabled" multiple disabled&gt;
+  &lt;option selected&gt;Red squirrel&lt;/option&gt;
+  &lt;option&gt;Grey squirrel&lt;/option&gt;
+  &lt;option selected&gt;Hazel dormouse&lt;/option&gt;
+  &lt;option&gt;Edible dormouse&lt;/option&gt;
+&lt;/select&gt;</code></pre></details>
+</figure>
+
+<figure class="fall" id="fall-multiple-invalid">
+  <figcaption><label for="s-multiple-invalid">Multiple, required, invalid</label></figcaption>
+  <form>
+    <select class="sqs" id="s-multiple-invalid" name="species" multiple required aria-invalid="true" aria-describedby="s-multiple-invalid-error">
+      <option>Red squirrel</option>
+      <option>Grey squirrel</option>
+      <option>Hazel dormouse</option>
+      <option>Edible dormouse</option>
+    </select>
+  </form>
+  <p class="error" id="s-multiple-invalid-error">Choose at least one species.</p>
+  <details><summary>Code</summary><pre><code>&lt;form&gt;
+  &lt;select class="sqs" id="s-multiple-invalid" name="species" multiple required aria-invalid="true" aria-describedby="s-multiple-invalid-error"&gt;
+    &lt;option&gt;Red squirrel&lt;/option&gt;
+    &lt;option&gt;Grey squirrel&lt;/option&gt;
+    &lt;option&gt;Hazel dormouse&lt;/option&gt;
+    &lt;option&gt;Edible dormouse&lt;/option&gt;
+  &lt;/select&gt;
+&lt;/form&gt;
+&lt;p class="error" id="s-multiple-invalid-error"&gt;Choose at least one species.&lt;/p&gt;</code></pre></details>
+</figure>
+
+<figure class="fall" id="fall-multiple-rtl" dir="rtl" lang="ar">
+  <figcaption><label for="s-multiple-rtl">اختيار متعدد من اليمين إلى اليسار</label></figcaption>
+  <select class="sqs" id="s-multiple-rtl" multiple>
+    <option selected>سنجاب أحمر</option>
+    <option>زغبة البندق</option>
+    <option selected>زغبة كبيرة</option>
+    <option disabled>سنجاب طائر</option>
+  </select>
+  <details><summary>Code</summary><pre><code>&lt;select class="sqs" id="s-multiple-rtl" multiple&gt;
+  &lt;option selected&gt;سنجاب أحمر&lt;/option&gt;
+  &lt;option&gt;زغبة البندق&lt;/option&gt;
+  &lt;option selected&gt;زغبة كبيرة&lt;/option&gt;
+  &lt;option disabled&gt;سنجاب طائر&lt;/option&gt;
+&lt;/select&gt;</code></pre></details>
+</figure>
+</div>
+
+<div class="cases">
 <figure class="fall wide" id="fall-bottom">
   <figcaption><label for="s-bottom">Open at the bottom edge, long list</label></figcaption>
   <select class="sqs" id="s-bottom">

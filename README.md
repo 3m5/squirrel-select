@@ -52,6 +52,8 @@ Make it yours with CSS variables, on any parent element:
 | Touch devices (phones, tablets without mouse or trackpad) | styled, at least 16 px text and 44 px high | native picker |
 | Older browsers (Chrome < 123, Firefox < 120, Safari < 17.5) | browser default | browser default |
 
+Lists with `multiple` or `size` greater than 1 are styled in every browser as well: box, rows and checked options. Choosing and focus stay the browser's own.
+
 The goal is the same tokens, not the same pixels. Screenshots from our test runs and the reasons behind each path: [How it works](https://3m5.github.io/squirrel-select/docs/how-it-works.html).
 
 ## Install
@@ -88,7 +90,7 @@ All styles live in the cascade layer `squirrel`, so your own CSS outside a layer
 
 | Variable | Default (light / dark) | Used for |
 |---|---|---|
-| `--sqs-accent` | `#2754c5` / `#8fb1ff` | focus ring, checkmark |
+| `--sqs-accent` | `#2754c5` / `#8fb1ff` | focus ring, checkmark, selection in lists |
 | `--sqs-radius` | `.375rem` | corners |
 | `--sqs-font-size` | `1rem` | text size and overall size |
 | `--sqs-border` | `#7d8691` / `#77818c` | border |

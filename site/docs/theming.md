@@ -7,7 +7,7 @@ Change the look with CSS variables, or write your own rules. Both work without `
 Set them on the select, or on any ancestor. The stylesheet only reads them and never declares them, so a value on a parent always arrives.
 
 ```css
-.filters { --sqs-accent: #b0185a; --sqs-radius: 999px; }
+.filters { --sqs-accent: light-dark(#b0185a, #ff8cc6); --sqs-radius: 999px; }
 ```
 
 ```html

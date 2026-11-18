@@ -18,10 +18,10 @@ For production, pin the exact version and add an `integrity` hash, so the browse
       integrity="sha384-…" crossorigin="anonymous">
 ```
 
-Compute the hash from the file you downloaded:
+Compute the hash from the pinned URL:
 
 ```sh
-openssl dgst -sha384 -binary squirrel-select.css | openssl base64 -A
+curl -s https://cdn.jsdelivr.net/npm/@3m5-de/squirrel-select@1.0.0/dist/squirrel-select.css | openssl dgst -sha384 -binary | openssl base64 -A
 ```
 
 Or host the file yourself: copy `dist/squirrel-select.css` from the npm package next to your other assets and link it. Then no third-party server is involved.

@@ -7,8 +7,8 @@ SquirrelSelect styles the real `<select>`. How far the styling goes is decided b
 | Where | Closed field | Open list |
 |---|---|---|
 | Chrome and Edge 135+, Safari 27+ on desktop, with mouse or trackpad | styled | styled: groups, checkmark, separators, dark mode |
-| Firefox, older Safari and Chrome on desktop | styled | drawn by the browser or operating system |
-| Phones and tablets | styled, at least 16 px text and 44 px high | the native iOS or Android picker |
+| Firefox, Safari 17.5 to 26, Chrome and Edge 123 to 134 on desktop | styled | drawn by the browser or operating system |
+| Touch devices (phones, tablets without mouse or trackpad) | styled, at least 16 px text and 44 px high | the native iOS or Android picker |
 
 The first path uses `appearance: base-select`, the browser feature that makes the native select fully stylable. We switch it on only for a mouse or trackpad. On touch devices it can replace the native picker with a web menu, and the native picker is the better choice there. All other browsers get `appearance: none`: the field matches your design, the list is the system's.
 

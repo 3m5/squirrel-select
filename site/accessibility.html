@@ -1,0 +1,130 @@
+<title>Accessibility – SquirrelSelect</title>
+<meta name="description" content="What we test, with which browsers and screen readers, what is not tested yet, and what you need to do. With a statement text for public sector projects.">
+
+<main id="main">
+  <h1>Accessibility</h1>
+  <p><a href="de/barrierefreiheit.html" hreflang="de" lang="de">Deutsche Fassung</a></p>
+
+  <section aria-labelledby="summary">
+    <h2 id="summary">In short</h2>
+    <p>SquirrelSelect only changes how the native <code>&lt;select&gt;</code> looks. Keyboard, screen reader output and form validation stay with the browser.</p>
+    <ul>
+      <li><strong>Target:</strong> WCAG 2.2, level AA. This includes EN 301 549 and BITV 2.0, which refer to WCAG.</li>
+      <li><strong>Method:</strong> self-assessment by the developers. No external audit.</li>
+      <li><strong>Automated:</strong> axe-core, contrast calculation, keyboard and layout tests in Chromium 159, Firefox 159 and WebKit 27.2 (Playwright 1.65.1), on every change. All pass.</li>
+      <li><strong>By hand, before every minor release:</strong> a short checklist on our team’s phones (iPhone and Android), with the free screen readers on those phones, and keyboard with zoom in Chrome, Edge and Firefox. Patch releases get a short smoke test. Not done yet for 1.0.0.</li>
+      <li><strong>Not tested:</strong> NVDA, JAWS, VoiceOver on macOS, the real Windows contrast themes, an external BITV test.</li>
+    </ul>
+    <p><strong>Status:</strong> <time datetime="2026-11-18">18 November 2026</time>, before the 1.0.0 release.</p>
+  </section>
+
+  <section aria-labelledby="automated">
+    <h2 id="automated">Automated checks</h2>
+    <p>These run in real browser engines on every pull request, on a test page with every state of the select: placeholder, selected, disabled, invalid, groups, long text, right-to-left, rich options, three color themes.</p>
+    <div class="table-scroll" role="region" aria-labelledby="automated-caption" tabindex="0">
+      <table>
+        <caption id="automated-caption">Automated checks by browser engine</caption>
+        <thead>
+          <tr><th scope="col">Check</th><th scope="col">WCAG</th><th scope="col">Chromium</th><th scope="col">Firefox</th><th scope="col">WebKit</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">No axe-core violations, light and dark</th><td>all A and AA rules axe covers</td><td>Pass</td><td>Pass, see note 1</td><td>Pass</td></tr>
+          <tr><th scope="row">Name, role and value the same as the unstyled select</th><td>1.3.1, 4.1.2</td><td>Pass</td><td>Not measured</td><td>Not measured</td></tr>
+          <tr><th scope="row">Text contrast at least 4.5:1</th><td>1.4.3</td><td>Pass</td><td colspan="2">Same colors, see note 2</td></tr>
+          <tr><th scope="row">Borders, arrow and focus ring at least 3:1</th><td>1.4.11</td><td>Pass</td><td colspan="2">Same colors, see note 2</td></tr>
+          <tr><th scope="row">Focus ring of at least 2px on the field</th><td>2.4.7</td><td>Pass</td><td>Pass</td><td>Pass</td></tr>
+          <tr><th scope="row">Focus ring of at least 2px on an option in the open list</th><td>2.4.7</td><td>Pass</td><td>Browser’s list, see note 3</td><td>Pass</td></tr>
+          <tr><th scope="row">Fields at least 24px high</th><td>2.5.8</td><td>Pass</td><td>Pass</td><td>Pass</td></tr>
+          <tr><th scope="row">Options at least 24px high</th><td>2.5.8</td><td>Pass</td><td>Browser’s list, see note 3</td><td>Pass</td></tr>
+          <tr><th scope="row">Keyboard: open, choose, close with Escape, focus back on the field</th><td>2.1.1, 2.4.3</td><td>Pass</td><td>Browser’s list, see note 3</td><td>Pass</td></tr>
+          <tr><th scope="row">320px wide: no horizontal scrolling</th><td>1.4.10</td><td>Pass</td><td>Pass</td><td>Pass</td></tr>
+          <tr><th scope="row">320px wide: the open list stays on screen</th><td>1.4.10</td><td>Pass</td><td>Browser’s list, see note 3</td><td>Pass</td></tr>
+          <tr><th scope="row">Text at 200%: option text not cut off</th><td>1.4.4</td><td>Pass</td><td>Browser’s list, see note 3</td><td>Pass</td></tr>
+          <tr><th scope="row">Increased text spacing: option text not cut off</th><td>1.4.12</td><td>Pass</td><td>Browser’s list, see note 3</td><td>Pass</td></tr>
+          <tr><th scope="row">Invalid state shows after a failed submit</th><td>3.3.1, with your error text</td><td>Pass</td><td>Pass</td><td>Pass</td></tr>
+          <tr><th scope="row">Contrast mode (forced colors), emulated: browser’s own select, dashed border when invalid</th><td>1.4.11</td><td>Pass</td><td>Pass</td><td>Not run, see note 4</td></tr>
+          <tr><th scope="row">Reduced motion: no transitions</th><td>2.3.3 (AAA, beyond the target)</td><td>Pass</td><td>Pass</td><td>Pass</td></tr>
+          <tr><th scope="row">Every option has visible text</th><td>1.3.1, 4.1.2</td><td>Pass</td><td colspan="2">Same HTML, checked once</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ol class="notes">
+      <li>Firefox keeps an empty internal button inside a select that uses <code>&lt;selectedcontent&gt;</code>, but does not show it. axe skips it there. Whether a screen reader announces it is not tested yet.</li>
+      <li>Colors are measured once in Chromium. They resolve to the same values in every engine. Measured for the default colors and three example themes, each in light and dark.</li>
+      <li>Firefox on the desktop, phones and tablets show the browser’s or system’s own list. We do not style it, so focus, size and keyboard come from the browser.</li>
+      <li>Only Chromium and Firefox can emulate the contrast mode. The real Windows contrast themes are not tested.</li>
+    </ol>
+    <p>The fields, the axe check and the rendering path are also checked with touch emulation at 390px, in Chromium and WebKit.</p>
+  </section>
+
+  <section aria-labelledby="manual">
+    <h2 id="manual">Checks by hand</h2>
+    <p>Each combination runs through the same points: name, role, current value, open or closed, position (“2 of 5”), group title, disabled option, required and invalid, error text, and rich options (icon plus extra text, read once).</p>
+    <div class="table-scroll" role="region" aria-labelledby="manual-caption" tabindex="0">
+      <table>
+        <caption id="manual-caption">Checks by hand, by screen reader and browser</caption>
+        <thead>
+          <tr><th scope="col">Screen reader and browser</th><th scope="col">Status</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">NVDA + Chrome (Windows)</th><td>Not tested</td></tr>
+          <tr><th scope="row">NVDA + Firefox (Windows)</th><td>Not tested</td></tr>
+          <tr><th scope="row">VoiceOver + Safari (macOS)</th><td>Not tested</td></tr>
+          <tr><th scope="row">VoiceOver + Safari (iPhone)</th><td>Not done yet, planned before 1.0.0</td></tr>
+          <tr><th scope="row">TalkBack + Chrome (Android phone)</th><td>Not done yet, planned before 1.0.0</td></tr>
+          <tr><th scope="row">Keyboard only, zoom 200% and 400% (Chrome, Edge, Firefox)</th><td>Not done yet, planned before 1.0.0</td></tr>
+          <tr><th scope="row">JAWS + Chrome (Windows)</th><td>Not tested</td></tr>
+          <tr><th scope="row">Windows contrast themes, real (Edge)</th><td>Not tested, only emulated (see above)</td></tr>
+          <tr><th scope="row">External BITV test</th><td>Not done</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Results are rated ok, workaround or blocker, with the cause: our code, or the browser or screen reader (then with a link to the bug report).</p>
+  </section>
+
+  <section aria-labelledby="your-part">
+    <h2 id="your-part">Your part</h2>
+    <p>The browser does most of the work, but these points are up to the page that uses SquirrelSelect.</p>
+    <ul>
+      <li><strong>Label every select.</strong> Each <code>&lt;select&gt;</code> needs a visible <code>&lt;label&gt;</code>. A placeholder option is not a label.</li>
+      <li><strong>Golden rule: every option needs visible text.</strong> Icons and images are decoration: <code>alt=""</code> or <code>aria-hidden="true"</code>. An <code>aria-label</code> does not replace the text, because the Firefox list, phones and the contrast mode show only the text.</li>
+      <li><strong>Keep extra text short and separated.</strong> Put a space between the parts. The field reads them together, for example “Germany EUR”.</li>
+      <li><strong>Give errors as text.</strong> Show the message next to the field and connect it with <code>aria-describedby</code>. The red border alone is not enough.</li>
+      <li><strong>Keep contrast when you change colors.</strong> Text at least 4.5:1, borders and focus ring at least 3:1, in light and dark (<code>light-dark()</code>).</li>
+      <li><strong>Keep the focus ring and the contrast mode.</strong> Do not remove the outline, and do not set <code>forced-color-adjust: none</code> on the select.</li>
+      <li><strong>No buttons or links inside options.</strong></li>
+    </ul>
+  </section>
+
+  <section aria-labelledby="limits">
+    <h2 id="limits">Known limits</h2>
+    <ul>
+      <li>In Firefox on the desktop and in older browsers, the open list uses the system style. It is fully accessible, but does not match the rest of the design.</li>
+      <li>On phones and tablets, the system’s own picker opens on purpose.</li>
+      <li>In the Windows contrast mode, the browser’s own select appears on purpose, in the colors the user chose.</li>
+    </ul>
+    <p>This page covers the stylesheet. The search module gets its own rows when it ships.</p>
+  </section>
+
+  <section aria-labelledby="statement">
+    <h2 id="statement">Statement text for your accessibility statement</h2>
+    <p>For public sector projects. Copy it into your own accessibility statement and adjust it. It covers SquirrelSelect only, not your whole site. Use it once the checks by hand above are done.</p>
+    <figure class="code">
+      <figcaption><span>Statement text</span> <button type="button" data-copy="statement-text">Copy</button></figcaption>
+      <div id="statement-text" class="statement">
+        <p><strong>Accessibility of SquirrelSelect</strong></p>
+        <p>SquirrelSelect is a stylesheet for the native HTML <code>&lt;select&gt;</code> element. Keyboard use, screen reader output and form validation are handled by the browser. SquirrelSelect only changes the appearance.</p>
+        <p><strong>Standard:</strong> WCAG 2.2, level AA. This covers the requirements of EN 301 549 V3.2.1, chapter 9 (WCAG 2.1 AA), which BITV 2.0 refers to.</p>
+        <p><strong>Method:</strong> self-assessment by the developers, no external certification. Automated checks (axe-core, contrast calculation, keyboard and layout tests in Chromium, Firefox and WebKit) on every change. Checks by hand before every minor release: a short checklist on the team’s phones (iPhone and Android), with the free screen readers VoiceOver and TalkBack, and keyboard with zoom in Chrome, Edge and Firefox. Patch releases get a short smoke test. NVDA, JAWS, VoiceOver on macOS and the real Windows contrast themes are not tested. Results by browser and screen reader: https://3m5.github.io/squirrel-select/accessibility.html, status 18 November 2026.</p>
+        <p><strong>Result:</strong> Used as intended, SquirrelSelect causes no known violations of WCAG 2.2 AA. As intended means: every select has a visible label, every option contains text, the page provides error messages as text, and anyone who changes the color variables keeps the documented contrast values in light and dark mode.</p>
+        <p><strong>Known limits:</strong></p>
+        <ul>
+          <li>In Firefox on the desktop and in older browsers, the open list uses the system style. It is fully accessible, but does not match the rest of the design.</li>
+          <li>On phones and tablets, the system’s own picker opens on purpose.</li>
+          <li>In the Windows contrast mode, the browser’s own select appears on purpose, in the colors the user chose.</li>
+        </ul>
+        <p>SquirrelSelect does not assess the accessibility of the whole website. The accessibility statement of the respective organization applies to that. Report barriers at: https://github.com/3m5/squirrel-select/issues</p>
+      </div>
+    </figure>
+  </section>
+</main>

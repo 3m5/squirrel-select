@@ -1,0 +1,131 @@
+<title>Barrierefreiheit – SquirrelSelect</title>
+<meta name="description" content="Was wir prüfen, mit welchen Browsern und Screenreadern, was noch nicht geprüft ist und was Sie selbst tun müssen. Mit Textbaustein für die Erklärung zur Barrierefreiheit nach BITV 2.0.">
+<meta name="page-lang" content="de">
+
+<main id="main">
+  <h1>Barrierefreiheit</h1>
+  <p><a href="../accessibility.html" hreflang="en" lang="en">English version</a></p>
+
+  <section aria-labelledby="kurz">
+    <h2 id="kurz">Kurz gesagt</h2>
+    <p>SquirrelSelect ändert nur das Aussehen des nativen <code>&lt;select&gt;</code>. Tastatur, Screenreader-Ausgabe und Formularprüfung bleiben beim Browser.</p>
+    <ul>
+      <li><strong>Ziel:</strong> WCAG 2.2, Stufe AA. Damit sind EN 301 549 und BITV 2.0 abgedeckt, die auf die WCAG verweisen.</li>
+      <li><strong>Methode:</strong> Selbstbewertung durch die Entwickler. Kein externer Test.</li>
+      <li><strong>Automatisch:</strong> axe-core, Kontrastberechnung, Tastatur- und Darstellungstests in Chromium 159, Firefox 159 und WebKit 27.2 (Playwright 1.65.1), bei jeder Änderung. Alle bestanden.</li>
+      <li><strong>Von Hand, vor jedem Minor-Release:</strong> eine kurze Checkliste auf den Smartphones des Teams (iPhone und Android), mit den kostenlosen Screenreadern dieser Geräte, dazu Tastatur mit Zoom in Chrome, Edge und Firefox. Patch-Releases bekommen einen kurzen Rauchtest. Für 1.0.0 noch nicht erledigt.</li>
+      <li><strong>Nicht geprüft:</strong> NVDA, JAWS, VoiceOver unter macOS, die echten Kontrastdesigns von Windows, ein externer BITV-Test.</li>
+    </ul>
+    <p><strong>Stand:</strong> <time datetime="2026-11-18">18. November 2026</time>, vor dem Release 1.0.0.</p>
+  </section>
+
+  <section aria-labelledby="automatisch">
+    <h2 id="automatisch">Automatische Prüfungen</h2>
+    <p>Sie laufen bei jedem Pull Request in echten Browser-Engines, auf einer Testseite mit allen Zuständen des Auswahlfelds: Platzhalter, gewählt, deaktiviert, ungültig, Gruppen, lange Texte, rechts nach links, Optionen mit Icon, drei Farbthemen.</p>
+    <div class="table-scroll" role="region" aria-labelledby="automatisch-titel" tabindex="0">
+      <table>
+        <caption id="automatisch-titel">Automatische Prüfungen je Browser-Engine</caption>
+        <thead>
+          <tr><th scope="col">Prüfung</th><th scope="col">WCAG</th><th scope="col">Chromium</th><th scope="col">Firefox</th><th scope="col">WebKit</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Keine Verstöße laut axe-core, hell und dunkel</th><td>alle A- und AA-Regeln, die axe abdeckt</td><td>Bestanden</td><td>Bestanden, siehe Hinweis 1</td><td>Bestanden</td></tr>
+          <tr><th scope="row">Name, Rolle und Wert wie beim ungestylten Auswahlfeld</th><td>1.3.1, 4.1.2</td><td>Bestanden</td><td>Nicht gemessen</td><td>Nicht gemessen</td></tr>
+          <tr><th scope="row">Textkontrast mindestens 4,5:1</th><td>1.4.3</td><td>Bestanden</td><td colspan="2">Gleiche Farben, siehe Hinweis 2</td></tr>
+          <tr><th scope="row">Rahmen, Pfeil und Fokusring mindestens 3:1</th><td>1.4.11</td><td>Bestanden</td><td colspan="2">Gleiche Farben, siehe Hinweis 2</td></tr>
+          <tr><th scope="row">Fokusring von mindestens 2 px am Feld</th><td>2.4.7</td><td>Bestanden</td><td>Bestanden</td><td>Bestanden</td></tr>
+          <tr><th scope="row">Fokusring von mindestens 2 px an einer Option der offenen Liste</th><td>2.4.7</td><td>Bestanden</td><td>Liste des Browsers, siehe Hinweis 3</td><td>Bestanden</td></tr>
+          <tr><th scope="row">Felder mindestens 24 px hoch</th><td>2.5.8</td><td>Bestanden</td><td>Bestanden</td><td>Bestanden</td></tr>
+          <tr><th scope="row">Optionen mindestens 24 px hoch</th><td>2.5.8</td><td>Bestanden</td><td>Liste des Browsers, siehe Hinweis 3</td><td>Bestanden</td></tr>
+          <tr><th scope="row">Tastatur: öffnen, wählen, mit Escape schließen, Fokus zurück aufs Feld</th><td>2.1.1, 2.4.3</td><td>Bestanden</td><td>Liste des Browsers, siehe Hinweis 3</td><td>Bestanden</td></tr>
+          <tr><th scope="row">320 px breit: kein waagerechtes Scrollen</th><td>1.4.10</td><td>Bestanden</td><td>Bestanden</td><td>Bestanden</td></tr>
+          <tr><th scope="row">320 px breit: die offene Liste bleibt im Bild</th><td>1.4.10</td><td>Bestanden</td><td>Liste des Browsers, siehe Hinweis 3</td><td>Bestanden</td></tr>
+          <tr><th scope="row">Text auf 200 %: Optionstext nicht abgeschnitten</th><td>1.4.4</td><td>Bestanden</td><td>Liste des Browsers, siehe Hinweis 3</td><td>Bestanden</td></tr>
+          <tr><th scope="row">Vergrößerte Textabstände: Optionstext nicht abgeschnitten</th><td>1.4.12</td><td>Bestanden</td><td>Liste des Browsers, siehe Hinweis 3</td><td>Bestanden</td></tr>
+          <tr><th scope="row">Ungültig-Zustand erscheint nach einem fehlgeschlagenen Absenden</th><td>3.3.1, mit Ihrem Fehlertext</td><td>Bestanden</td><td>Bestanden</td><td>Bestanden</td></tr>
+          <tr><th scope="row">Kontrastmodus (forced colors), emuliert: Auswahlfeld des Browsers, gestrichelter Rahmen bei Fehler</th><td>1.4.11</td><td>Bestanden</td><td>Bestanden</td><td>Nicht gelaufen, siehe Hinweis 4</td></tr>
+          <tr><th scope="row">Reduzierte Bewegung: keine Übergänge</th><td>2.3.3 (AAA, über dem Ziel)</td><td>Bestanden</td><td>Bestanden</td><td>Bestanden</td></tr>
+          <tr><th scope="row">Jede Option hat sichtbaren Text</th><td>1.3.1, 4.1.2</td><td>Bestanden</td><td colspan="2">Gleiches HTML, einmal geprüft</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ol class="notes">
+      <li>Firefox behält in einem Auswahlfeld mit <code>&lt;selectedcontent&gt;</code> einen leeren internen Knopf, zeigt ihn aber nicht an. axe lässt ihn dort aus. Ob ein Screenreader ihn ansagt, ist noch nicht geprüft.</li>
+      <li>Die Farben werden einmal in Chromium gemessen. Sie ergeben in jeder Engine dieselben Werte. Gemessen für die Standardfarben und drei Beispielthemen, jeweils hell und dunkel.</li>
+      <li>Firefox auf dem Desktop, Smartphones und Tablets zeigen die Liste des Browsers oder Systems. Wir gestalten sie nicht, Fokus, Größe und Tastatur kommen vom Browser.</li>
+      <li>Nur Chromium und Firefox können den Kontrastmodus emulieren. Die echten Kontrastdesigns von Windows sind nicht geprüft.</li>
+    </ol>
+    <p>Felder, axe-Prüfung und Darstellungsweg werden zusätzlich mit Touch-Emulation bei 390 px geprüft, in Chromium und WebKit.</p>
+  </section>
+
+  <section aria-labelledby="von-hand">
+    <h2 id="von-hand">Prüfungen von Hand</h2>
+    <p>Jede Kombination geht dieselben Punkte durch: Name, Rolle, aktueller Wert, offen oder geschlossen, Position („2 von 5“), Gruppentitel, deaktivierte Option, Pflichtfeld und ungültig, Fehlertext sowie Optionen mit Icon und Zusatztext (einmal angesagt).</p>
+    <div class="table-scroll" role="region" aria-labelledby="von-hand-titel" tabindex="0">
+      <table>
+        <caption id="von-hand-titel">Prüfungen von Hand, je Screenreader und Browser</caption>
+        <thead>
+          <tr><th scope="col">Screenreader und Browser</th><th scope="col">Stand</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">NVDA + Chrome (Windows)</th><td>Nicht geprüft</td></tr>
+          <tr><th scope="row">NVDA + Firefox (Windows)</th><td>Nicht geprüft</td></tr>
+          <tr><th scope="row">VoiceOver + Safari (macOS)</th><td>Nicht geprüft</td></tr>
+          <tr><th scope="row">VoiceOver + Safari (iPhone)</th><td>Noch nicht erledigt, geplant vor 1.0.0</td></tr>
+          <tr><th scope="row">TalkBack + Chrome (Android-Smartphone)</th><td>Noch nicht erledigt, geplant vor 1.0.0</td></tr>
+          <tr><th scope="row">Nur Tastatur, Zoom 200 % und 400 % (Chrome, Edge, Firefox)</th><td>Noch nicht erledigt, geplant vor 1.0.0</td></tr>
+          <tr><th scope="row">JAWS + Chrome (Windows)</th><td>Nicht geprüft</td></tr>
+          <tr><th scope="row">Kontrastdesigns von Windows, echt (Edge)</th><td>Nicht geprüft, nur emuliert (siehe oben)</td></tr>
+          <tr><th scope="row">Externer BITV-Test</th><td>Nicht durchgeführt</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Bewertet wird mit ok, Abstrich oder Blocker, jeweils mit Ursache: unser Code oder Browser beziehungsweise Screenreader (dann mit Link zum Fehlerbericht).</p>
+  </section>
+
+  <section aria-labelledby="ihr-teil">
+    <h2 id="ihr-teil">Ihr Teil</h2>
+    <p>Das meiste erledigt der Browser. Diese Punkte liegen bei der Seite, die SquirrelSelect einbindet.</p>
+    <ul>
+      <li><strong>Jedes Auswahlfeld beschriften.</strong> Jedes <code>&lt;select&gt;</code> braucht ein sichtbares <code>&lt;label&gt;</code>. Eine Platzhalter-Option ist keine Beschriftung.</li>
+      <li><strong>Golden Rule: Jede Option braucht sichtbaren Text.</strong> Icons und Bilder sind Schmuck: <code>alt=""</code> oder <code>aria-hidden="true"</code>. Ein <code>aria-label</code> ersetzt den Text nicht, denn die Firefox-Liste, Smartphones und der Kontrastmodus zeigen nur den Text.</li>
+      <li><strong>Zusatztext kurz halten und trennen.</strong> Zwischen die Teile gehört ein Leerzeichen. Das Feld liest sie zusammen vor, zum Beispiel „Deutschland EUR“.</li>
+      <li><strong>Fehler als Text ausgeben.</strong> Die Meldung steht sichtbar am Feld und ist mit <code>aria-describedby</code> verbunden. Der rote Rahmen allein reicht nicht.</li>
+      <li><strong>Kontrast halten, wenn Sie Farben ändern.</strong> Text mindestens 4,5:1, Rahmen und Fokusring mindestens 3:1, hell und dunkel (<code>light-dark()</code>).</li>
+      <li><strong>Fokusring und Kontrastmodus lassen.</strong> Die Outline nicht entfernen und am Auswahlfeld kein <code>forced-color-adjust: none</code> setzen.</li>
+      <li><strong>Keine Knöpfe oder Links in Optionen.</strong></li>
+    </ul>
+  </section>
+
+  <section aria-labelledby="grenzen">
+    <h2 id="grenzen">Bekannte Einschränkungen</h2>
+    <ul>
+      <li>In Firefox auf dem Desktop und in älteren Browsern erscheint die aufgeklappte Liste im Systemstil. Sie ist vollständig zugänglich, entspricht aber optisch nicht dem übrigen Design.</li>
+      <li>Auf Smartphones und Tablets öffnet sich bewusst die Auswahl des Betriebssystems.</li>
+      <li>Im Kontrastmodus von Windows erscheint bewusst das Auswahlfeld des Browsers in den Farben, die der Nutzer gewählt hat.</li>
+    </ul>
+    <p>Diese Seite gilt für das Stylesheet. Das Such-Modul bekommt eigene Zeilen, sobald es erscheint.</p>
+  </section>
+
+  <section aria-labelledby="textbaustein">
+    <h2 id="textbaustein">Textbaustein für Ihre Erklärung zur Barrierefreiheit</h2>
+    <p>Für öffentliche Stellen nach BITV 2.0. Übernehmen Sie ihn in Ihre Erklärung zur Barrierefreiheit und passen Sie ihn an. Er gilt nur für SquirrelSelect, nicht für Ihre ganze Website. Verwenden Sie ihn, sobald die Prüfungen von Hand oben erledigt sind.</p>
+    <figure class="code">
+      <figcaption><span>Textbaustein</span> <button type="button" data-copy="textbaustein-text">Kopieren</button></figcaption>
+      <div id="textbaustein-text" class="statement">
+        <p><strong>Barrierefreiheit von SquirrelSelect</strong></p>
+        <p>SquirrelSelect ist ein Stylesheet für das native HTML-Element <code>&lt;select&gt;</code>. Bedienung per Tastatur, Ausgabe an Screenreader und Formularprüfung übernimmt der Browser selbst. SquirrelSelect verändert nur die Darstellung.</p>
+        <p><strong>Prüfgrundlage:</strong> WCAG 2.2, Konformitätsstufe AA. Damit sind die Anforderungen der EN 301 549 V3.2.1, Kapitel 9 (WCAG 2.1 AA), auf die die BITV 2.0 verweist, mit abgedeckt.</p>
+        <p><strong>Prüfmethode:</strong> Selbstbewertung durch die Entwickler, keine externe Zertifizierung. Automatisierte Prüfung (axe-core, Kontrastberechnung, Tastatur- und Darstellungstests in Chromium, Firefox und WebKit) bei jeder Änderung. Manuelle Prüfung vor jedem Minor-Release: eine kurze Checkliste auf den Smartphones des Teams (iPhone und Android), mit den kostenlosen Screenreadern VoiceOver und TalkBack, dazu Tastatur mit Zoom in Chrome, Edge und Firefox. Patch-Releases bekommen einen kurzen Rauchtest. NVDA, JAWS, VoiceOver unter macOS und die echten Kontrastdesigns von Windows sind nicht geprüft. Ergebnisse je Browser und Screenreader: https://3m5.github.io/squirrel-select/de/barrierefreiheit.html, Stand 18. November 2026.</p>
+        <p><strong>Ergebnis:</strong> Bei bestimmungsgemäßer Verwendung erzeugt SquirrelSelect keine bekannten Verstöße gegen WCAG 2.2 AA. Bestimmungsgemäß heißt: Jedes Auswahlfeld hat eine sichtbare Beschriftung (<code>&lt;label&gt;</code>), jede Option enthält Text, Fehlermeldungen stellt die einbindende Seite als Text bereit, und wer die Farbvariablen ändert, hält die dokumentierten Kontrastwerte in hellem und dunklem Farbschema ein.</p>
+        <p><strong>Bekannte Einschränkungen:</strong></p>
+        <ul>
+          <li>In Firefox auf dem Desktop und in älteren Browsern erscheint die aufgeklappte Liste im Systemstil. Sie ist vollständig zugänglich, entspricht aber optisch nicht dem übrigen Design.</li>
+          <li>Auf Smartphones und Tablets wird bewusst die Auswahl des Betriebssystems verwendet.</li>
+          <li>Im Kontrastmodus von Windows erscheint bewusst das Auswahlfeld des Browsers in den vom Nutzer gewählten Farben.</li>
+        </ul>
+        <p>Die Barrierefreiheit der gesamten Website bewertet SquirrelSelect nicht. Dafür ist die Erklärung zur Barrierefreiheit der jeweiligen Stelle maßgeblich. Hinweise auf Barrieren bitte an: https://github.com/3m5/squirrel-select/issues</p>
+      </div>
+    </figure>
+  </section>
+</main>

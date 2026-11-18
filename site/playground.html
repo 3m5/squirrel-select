@@ -1,0 +1,96 @@
+<title>Playground – SquirrelSelect</title>
+<meta name="description" content="Try the SquirrelSelect tokens with sliders and color pickers, check the contrast in light and dark, and copy the CSS.">
+
+<main id="main">
+  <h1>Playground</h1>
+  <p>Move a slider, look at the result, copy the CSS. The output lists only the values you changed. The preview is neutral on purpose, like a page without its own style.</p>
+  <noscript><p><strong>The playground needs JavaScript.</strong> The preview below shows the default look. Every token is listed in <a href="docs/theming.html">Theming</a>.</p></noscript>
+
+  <div class="pg">
+    <div class="preview-bar needs-js">
+      <div class="field">
+        <label for="preview-scheme">Preview colors</label>
+        <select class="sqs" id="preview-scheme"><option value="light">Light</option><option value="dark">Dark</option></select>
+      </div>
+      <div class="field">
+        <label for="preview-dir">Direction</label>
+        <select class="sqs" id="preview-dir"><option value="ltr">Left to right</option><option value="rtl">Right to left</option></select>
+      </div>
+    </div>
+    <div class="preview" id="preview" data-scheme="light">
+      <div class="field">
+        <label for="p-default">Species</label>
+        <select class="sqs" id="p-default"><option>Red squirrel</option><option selected>Hazel dormouse</option><option>Edible dormouse</option><option>Chipmunk</option></select>
+      </div>
+      <div class="field">
+        <label for="p-groups">With groups</label>
+        <select class="sqs" id="p-groups">
+          <optgroup label="Tree squirrels"><option>Red squirrel</option><option selected>Grey squirrel</option><option disabled>Caucasian squirrel</option></optgroup>
+          <optgroup label="Dormice"><option>Hazel dormouse</option><option>Edible dormouse</option></optgroup>
+        </select>
+      </div>
+      <div class="field">
+        <label for="p-invalid">Required, with error</label>
+        <select class="sqs" id="p-invalid" aria-invalid="true" aria-describedby="p-invalid-error"><option value="">Please choose …</option><option>Red squirrel</option><option>Hazel dormouse</option></select>
+        <small class="error" id="p-invalid-error">Please choose a species.</small>
+      </div>
+      <div class="field">
+        <label for="p-placeholder">Nothing chosen yet</label>
+        <select class="sqs" id="p-placeholder" required><option value="">Please choose …</option><option>Red squirrel</option><option>Hazel dormouse</option></select>
+      </div>
+      <div class="field">
+        <label for="p-long">Long list</label>
+        <select class="sqs" id="p-long">
+          <option>Austria</option><option>Belgium</option><option>Bulgaria</option><option>Croatia</option><option>Cyprus</option><option>Czechia</option><option>Denmark</option><option>Estonia</option><option>Finland</option><option>France</option><option selected>Germany</option><option>Greece</option><option>Hungary</option><option>Ireland</option><option>Italy</option><option>Latvia</option><option>Lithuania</option><option>Luxembourg</option><option>Malta</option><option>Netherlands</option><option>Poland</option><option>Portugal</option><option>Romania</option><option>Slovakia</option><option>Slovenia</option><option>Spain</option><option>Sweden</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="p-disabled">Disabled</label>
+        <select class="sqs" id="p-disabled" disabled><option>Cannot be changed</option></select>
+      </div>
+    </div>
+    <form class="controls needs-js" id="playground">
+      <fieldset>
+        <legend class="eyebrow">Start from</legend>
+        <div class="row">
+          <label for="preset" class="visually-hidden">Preset</label>
+          <select class="sqs" id="preset">
+            <option value="standard">Default</option>
+            <option value="night">3m5 Night</option>
+            <option value="studio">Studio</option>
+            <option value="compact">Compact, for tables</option>
+          </select>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend class="eyebrow">Colors</legend>
+        <p class="hint">For the preview in <strong id="color-mode">Light</strong>. Switch the preview to <span id="color-other">Dark</span> to set those colors.</p>
+        <div class="row"><label for="c-accent">Accent</label><input type="color" id="c-accent" data-color="accent"><code>--sqs-accent</code></div>
+        <div class="row"><label for="c-text">Text</label><input type="color" id="c-text" data-color="text"><code>--sqs-text</code></div>
+        <div class="row"><label for="c-bg">Field</label><input type="color" id="c-bg" data-color="bg"><code>--sqs-bg</code></div>
+        <div class="row"><label for="c-surface">List</label><input type="color" id="c-surface" data-color="surface"><code>--sqs-surface</code></div>
+        <div class="row"><label for="c-border">Border</label><input type="color" id="c-border" data-color="border"><code>--sqs-border</code></div>
+      </fieldset>
+      <fieldset>
+        <legend class="eyebrow">Shape and size</legend>
+        <div class="row"><label for="n-radius">Corner radius</label><output for="n-radius"></output><input type="range" id="n-radius" data-size="radius"></div>
+        <div class="row"><label for="n-border-width">Border width</label><output for="n-border-width"></output><input type="range" id="n-border-width" data-size="borderWidth"></div>
+        <div class="row"><label for="n-font-size">Font size</label><output for="n-font-size"></output><input type="range" id="n-font-size" data-size="fontSize"></div>
+        <div class="row"><label for="n-pad-block">Padding top and bottom</label><output for="n-pad-block"></output><input type="range" id="n-pad-block" data-size="padBlock"></div>
+        <div class="row"><label for="n-pad-inline">Padding at the sides</label><output for="n-pad-inline"></output><input type="range" id="n-pad-inline" data-size="padInline"></div>
+      </fieldset>
+      <div><button class="button" type="button" id="reset">Reset everything</button></div>
+    </form>
+
+    <div class="output needs-js">
+      <figure class="code">
+        <figcaption><span>Your CSS</span> <button class="button primary" type="button" data-copy="css-output">Copy CSS</button></figcaption>
+        <pre><code id="css-output"></code></pre>
+      </figure>
+      <div class="contrast">
+        <h2>Contrast (<span id="contrast-mode">light</span>)</h2>
+        <ul id="contrast"></ul>
+      </div>
+    </div>
+  </div>
+</main>

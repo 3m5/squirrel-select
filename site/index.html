@@ -1,0 +1,132 @@
+<title>SquirrelSelect – a stylesheet for the native select</title>
+<meta name="description" content="SquirrelSelect styles the native select element with CSS. No rebuild, no JavaScript. Keyboard, screen readers, autofill and form validation stay with the browser.">
+
+<main id="main" class="wide">
+  <section class="hero" aria-labelledby="title">
+    <div class="beam" aria-hidden="true"></div>
+    <p class="vertical-label" aria-hidden="true">Native first</p>
+    <div class="wrap">
+      <div class="hero-head">
+        <svg class="icon hero-icon" viewBox="0 0 64 64" fill="url(#icon-gradient)" fill-rule="evenodd" aria-hidden="true" focusable="false"><defs><linearGradient id="icon-gradient" x1="8" y1="60" x2="56" y2="4" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2340ff"/><stop offset="1" stop-color="#1fd3ff"/></linearGradient></defs><path d="M43.3 19.52L44.41 19.87L44.41 23.89L53.16 23.89L53.16 16.24L47.68 10.76L39.67 10.76L32.73 17.7L32.73 37.03L29.81 34.11L29.81 29.73L26.89 26.81L23.97 26.81L23.97 21.7L19.59 26.81L13.75 26.81L10.84 29.73L10.84 34.11L13.75 38.49L18.13 38.49L15.21 41.41L15.21 48.71L31.27 48.71L31.64 48.34L32.91 49.61L41.49 41.03L41.49 21.33ZM15.94 32.65L15.94 29.73L18.86 29.73L18.86 32.65ZM28.37 57.47L32.91 62L50.25 44.66L50.25 32.65L61.92 32.65L61.92 12.61L51.31 2L36.05 2L33.74 4.31L28.89 2.51L15.57 18.06L10.13 18.06L2.08 26.11L2.08 36.76L6.46 43.33L6.46 57.47ZM6.46 27.92L11.94 22.43L17.58 22.43L25.92 12.7L28.35 13.6L28.52 15.72L37.86 6.38L49.49 6.38L57.54 14.43L57.54 28.27L45.87 28.27L45.87 42.85L32.91 55.81L30.19 53.09L10.84 53.09L10.84 42.01L6.46 35.44Z"/></svg>
+        <p class="eyebrow">CSS for the native select</p>
+        <h1 id="title">A stylesheet for the real select.</h1>
+        <p class="lead">No rebuild from <code>&lt;div&gt;</code>s and no JavaScript. One CSS file, one class. Keyboard, screen readers, autofill and form validation stay with the browser.</p>
+      </div>
+
+      <div class="stage">
+        <figure>
+          <figcaption><span class="eyebrow">Without</span><span>The select as the browser ships it.</span></figcaption>
+          <div class="field">
+            <label for="before">Country</label>
+            <select id="before">
+              <option>Austria</option><option>Belgium</option><option>Croatia</option><option>Czechia</option><option>Denmark</option><option>Estonia</option><option>Finland</option><option>France</option><option selected>Germany</option><option>Ireland</option><option>Italy</option><option>Netherlands</option><option>Poland</option><option>Portugal</option><option>Spain</option><option>Sweden</option>
+            </select>
+          </div>
+          <div></div>
+          <pre class="diff"><code>&lt;select&gt;</code></pre>
+        </figure>
+        <figure>
+          <figcaption><span class="eyebrow">With SquirrelSelect</span><span>The same element, one more class. Tokens control the look.</span></figcaption>
+          <fieldset class="themes">
+            <legend class="eyebrow">Theme</legend>
+            <div class="segments">
+              <label><input type="radio" name="theme" value="neutral" checked> Neutral</label>
+              <label><input type="radio" name="theme" value="night"> 3m5 Night</label>
+              <label><input type="radio" name="theme" value="studio"> Studio</label>
+            </div>
+            <p class="hint" id="theme-hint">SquirrelSelect without any changes.</p>
+          </fieldset>
+          <div class="field" id="theme-target">
+            <label for="after">Country</label>
+            <select class="sqs" id="after" style="--sqs-font-size: 1.125rem" aria-describedby="theme-hint">
+              <option>Austria</option><option>Belgium</option><option>Croatia</option><option>Czechia</option><option>Denmark</option><option>Estonia</option><option>Finland</option><option>France</option><option selected>Germany</option><option>Ireland</option><option>Italy</option><option>Netherlands</option><option>Poland</option><option>Portugal</option><option>Spain</option><option>Sweden</option>
+            </select>
+          </div>
+          <pre class="diff" id="theme-code"><code>&lt;select <ins>class="sqs"</ins>&gt;</code></pre>
+        </figure>
+      </div>
+
+      <p class="path-line">
+        <span>In your browser: <output id="path-name">…</output></span>
+        <a href="docs/how-it-works.html">What does that mean?</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="keeps-title">
+    <div class="wrap">
+      <p class="eyebrow">No rebuild</p>
+      <h2 id="keeps-title">What the browser keeps doing</h2>
+      <p class="intro">The select stays real, so there is none of this to rebuild or to test.</p>
+      <ul class="keeps">
+        <li>Keyboard and type-ahead</li>
+        <li>Screen reader output</li>
+        <li>Autofill</li>
+        <li><span><code>required</code> and form reset</span></li>
+        <li>Native picker on phones</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" id="paths" aria-labelledby="paths-title">
+    <div class="wrap">
+      <p class="eyebrow">Browsers and devices</p>
+      <h2 id="paths-title">Three paths, by device</h2>
+      <p class="intro">The browser decides how much can be styled. The closed field follows your tokens everywhere. The open list is styled only where the browser allows it and where it takes nothing away from people.</p>
+      <ul class="paths">
+        <li data-path="base">
+          <h3>Fully styled <span class="yours eyebrow" hidden>Your browser</span></h3>
+          <div class="schema" aria-hidden="true"><i class="ours"></i><i class="ours list"></i></div>
+          <div>
+            <p>Field and list come from SquirrelSelect, with checkmark, groups and dark mode.</p>
+            <p class="where"><strong>With mouse or trackpad</strong> in Chrome and Edge&nbsp;135+, Safari&nbsp;27+</p>
+          </div>
+        </li>
+        <li data-path="fallback">
+          <h3>Field styled <span class="yours eyebrow" hidden>Your browser</span></h3>
+          <div class="schema" aria-hidden="true"><i class="ours"></i><i class="system list"></i></div>
+          <div>
+            <p>The field matches your design. The operating system draws the list and takes over the basic colors.</p>
+            <p class="where"><strong>Firefox on the desktop</strong> and older browsers</p>
+          </div>
+        </li>
+        <li data-path="touch">
+          <h3>Phone picker <span class="yours eyebrow" hidden>Your browser</span></h3>
+          <div class="schema" aria-hidden="true"><i class="ours"></i><i class="system sheet"></i></div>
+          <div>
+            <p>The field matches your design. Choosing opens the phone’s familiar picker, on purpose.</p>
+            <p class="where"><strong>Touch devices</strong> with iOS and Android</p>
+          </div>
+        </li>
+      </ul>
+      <p class="legend"><span>styled by SquirrelSelect</span><span class="system">drawn by the system</span></p>
+    </div>
+  </section>
+
+  <section class="section" id="install" aria-labelledby="install-title">
+    <div class="wrap">
+      <p class="eyebrow">In one minute</p>
+      <h2 id="install-title">Install</h2>
+      <p class="intro">Load the file, add the class, done. Set your own colors with CSS variables, try them in the playground.</p>
+      <div class="install">
+        <figure class="code">
+          <figcaption><span>With npm</span> <button type="button" data-copy="install-npm">Copy</button></figcaption>
+          <pre><code id="install-npm">npm install @3m5-de/squirrel-select</code></pre>
+          <div class="code-step"><span>Then in your app</span> <button type="button" data-copy="install-import">Copy</button></div>
+          <pre><code id="install-import">import '@3m5-de/squirrel-select/squirrel-select.css'</code></pre>
+        </figure>
+        <figure class="code">
+          <figcaption><span>Or from a CDN</span> <button type="button" data-copy="install-html">Copy</button></figcaption>
+          <pre><code id="install-html">&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@3m5-de/squirrel-select@1/dist/squirrel-select.css"&gt;
+&lt;select class="sqs"&gt;…&lt;/select&gt;</code></pre>
+        </figure>
+      </div>
+      <p class="hint">For production, pin the exact version or host the file yourself, see <a href="docs/recipes/html.html">Plain HTML</a>.</p>
+      <ul class="next">
+        <li><a class="button primary" href="docs/quickstart.html">Quickstart</a></li>
+        <li><a class="button" href="playground.html">Try the playground</a></li>
+        <li><a class="button" href="examples/states.html">See every state</a></li>
+      </ul>
+    </div>
+  </section>
+</main>

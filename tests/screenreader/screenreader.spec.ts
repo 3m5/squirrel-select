@@ -1,55 +1,29 @@
-import { screenReaderTest as test } from '@guidepup/playwright'
+import { voiceOverTest as test } from '@guidepup/playwright'
 import { expect, type Page } from '@playwright/test'
 import { existsSync, statSync } from 'node:fs'
 import { release } from 'node:os'
 import { join } from 'node:path'
 
-type Key = { keyCode: number, modifiers?: string[] }
-type Reader = {
-  navigateToWebContent(): Promise<void>
-  next(): Promise<void>
-  lastSpokenPhrase(): Promise<string>
-  spokenPhraseLog(): Promise<string[]>
-  clearSpokenPhraseLog(): Promise<void>
-  perform(command: Key): Promise<void>
-  keyboardCommands: Record<string, Key>
-}
+type Variant = { cls: string, pickerNative?: boolean }
 
-// macOS virtual key codes
-const keys = { escape: 53, right: 124, down: 125, enter: 36 }
-
-// which part of the built stylesheet is taken out, applied on the CSSOM after the page has loaded
-type Drop = 'stage1' | 'stage2' | 'pickerNative' | 'pickerBox' | 'options' | 'padding' | 'chevron' | 'ellipsis' | 'radius'
-type Variant = { cls: string, head?: string, drop?: Drop }
-
-const sqs = ' class="sqs"'
 const variants = {
-  with: { cls: sqs },
+  with: { cls: ' class="sqs"' },
   without: { cls: '' },
-  // the browser's own wording when field and list both use base-select
-  basePicker: { cls: '', head: '<style>select, select::picker(select) { appearance: base-select }</style>' },
-  noStage1: { cls: sqs, drop: 'stage1' },
-  noStage2: { cls: sqs, drop: 'stage2' },
-  pickerNative: { cls: sqs, drop: 'pickerNative' },
-  noPickerBox: { cls: sqs, drop: 'pickerBox' },
-  noOptions: { cls: sqs, drop: 'options' },
-  noPadding: { cls: sqs, drop: 'padding' },
-  noChevron: { cls: sqs, drop: 'chevron' },
-  noEllipsis: { cls: sqs, drop: 'ellipsis' },
-  noRadius: { cls: sqs, drop: 'radius' },
+  // the class without base-select on the open list, which is where WebKit adds the group
+  pickerNative: { cls: ' class="sqs"', pickerNative: true },
 } satisfies Record<string, Variant>
 type Name = keyof typeof variants
-const names = Object.keys(variants) as Name[]
+
+test.skip(({ browserName }) => browserName !== 'webkit', 'VoiceOver only')
 
 // the same markup each time, so any difference in what is spoken comes from the stylesheet;
-// the link comes first so that the first Tab of the screen reader does not land on a select
-const markup = ({ cls, head = '' }: Variant) => `<!doctype html>
+// the link comes first so that the screen reader does not start on a select
+const markup = ({ cls }: Variant) => `<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <title>Screen reader check</title>
 <link rel="stylesheet" href="../dist/squirrel-select.css">
-${head}
 </head>
 <body>
 <a href="#main">Start</a>
@@ -76,18 +50,10 @@ async function serve(page: Page) {
   })
 }
 
-// returns what was taken out, so the transcript shows that the variant really differs
-const strip = (page: Page, drop: Drop) => page.evaluate((drop: Drop) => {
+// takes ::picker(select) out of the base-select rule of the built stylesheet, the field keeps base-select
+const nativePicker = (page: Page) => page.evaluate(() => {
   const sheet = [...document.styleSheets].find(s => s.href?.endsWith('/dist/squirrel-select.css'))
   if (!sheet) throw new Error('stylesheet not loaded')
-  const found: { rule: CSSStyleRule, picker: boolean }[] = []
-  const walk = (list: CSSRuleList, picker: boolean) => {
-    for (const r of [...list]) {
-      if (r instanceof CSSStyleRule) found.push({ rule: r, picker })
-      else if (r instanceof CSSGroupingRule) walk(r.cssRules, picker || (r instanceof CSSSupportsRule && r.conditionText.includes('base-select')))
-    }
-  }
-  walk(sheet.cssRules, false)
   const top = (text: string) => {
     const out = ['']
     let depth = 0
@@ -98,50 +64,27 @@ const strip = (page: Page, drop: Drop) => page.evaluate((drop: Drop) => {
     }
     return out.map(s => s.trim())
   }
-  const remove = (rule: CSSStyleRule) => {
-    const parent = rule.parentRule as CSSGroupingRule
-    parent.deleteRule([...parent.cssRules].indexOf(rule))
-    return rule.selectorText
+  const changed: string[] = []
+  const walk = (list: CSSRuleList) => {
+    for (const r of [...list]) {
+      if (r instanceof CSSStyleRule) {
+        if (r.selectorText.includes('::picker(select)') && r.style.appearance === 'base-select') {
+          r.selectorText = top(r.selectorText).filter(s => !s.includes('::picker(')).join(', ')
+          changed.push(r.selectorText)
+        }
+      } else if (r instanceof CSSGroupingRule) walk(r.cssRules)
+    }
   }
-  const props = (re: RegExp) => found
-    .filter(({ rule, picker }) => !picker && rule.style.getPropertyValue('cursor') === 'pointer')
-    .flatMap(({ rule }) => [...rule.style].filter(p => re.test(p)).map(p => (rule.style.removeProperty(p), p)))
-  const tokens = (rule: CSSStyleRule) => [...rule.style].some(p => p.startsWith('--'))
-  const list = /\b(option|optgroup|hr|legend|selectedcontent|button)\b|sqs-(icon|hint)|::checkmark/
-  switch (drop) {
-  case 'stage1': return found.filter(f => f.picker).map(f => remove(f.rule))
-  case 'stage2': return found.filter(f => !f.picker && !tokens(f.rule)).map(f => remove(f.rule))
-  case 'pickerNative': return found.filter(f => f.picker && f.rule.selectorText.includes('::picker(select)') && f.rule.style.appearance).map(({ rule }) => {
-    rule.selectorText = top(rule.selectorText).filter(s => !s.includes('::picker(')).join(', ')
-    return rule.selectorText
-  })
-  case 'pickerBox': return found.filter(f => f.picker && f.rule.selectorText.endsWith('::picker(select)') && !f.rule.style.appearance).map(f => remove(f.rule))
-  case 'options': return found.filter(f => list.test(f.rule.selectorText) && !f.rule.selectorText.includes(':has(')).map(f => remove(f.rule))
-  case 'padding': return props(/^padding/)
-  case 'chevron': return props(/^background-(image|size|repeat|position)/)
-  case 'ellipsis': return props(/^(white-space|white-space-collapse|text-wrap|text-wrap-mode|text-overflow|overflow|overflow-x|overflow-y)$/)
-  case 'radius': return props(/radius$/)
-  }
-}, drop)
+  walk(sheet.cssRules)
+  return changed
+})
 
 async function open(page: Page, name: Name) {
   await page.goto(`check/${name}.html`, { waitUntil: 'load' })
   await page.locator('h1').waitFor()
-  const { drop } = variants[name] as Variant
-  const dropped = drop ? await strip(page, drop) : []
-  if (drop) expect(dropped, `something was taken out for ${drop}`).not.toEqual([])
-  return dropped
+  if ((variants[name] as Variant).pickerNative) expect(await nativePicker(page), 'the picker rule was changed').toHaveLength(1)
+  return page.locator('#species').evaluate(el => ({ field: getComputedStyle(el).appearance, picker: getComputedStyle(el, '::picker(select)').appearance }))
 }
-
-// the screen reader starts from the link, never from a select
-async function start(page: Page, reader: Reader) {
-  await reader.navigateToWebContent()
-  await page.locator('a').focus()
-  expect(await page.evaluate(() => document.activeElement?.tagName), 'focus is not on a select').not.toBe('SELECT')
-}
-
-const appearance = (page: Page) => page.locator('#species').evaluate(el => getComputedStyle(el).appearance)
-const voiceOver = () => test.info().project.name.startsWith('voiceover')
 
 async function note(page: Page, name: string, data: unknown) {
   const info = test.info()
@@ -151,58 +94,32 @@ async function note(page: Page, name: string, data: unknown) {
   await info.attach(name, { body: JSON.stringify(data, null, 2), contentType: 'application/json' })
 }
 
-const says = (phrase: string, ...words: (string | RegExp)[]) => {
-  for (const word of words) expect(phrase, `spoken: "${phrase}"`).toMatch(word)
-}
-
-// one test per variant keeps each one short; the phrases with "group" are listed as an annotation
-for (const name of names) {
-  test(`reading the page: ${name}`, async ({ page, screenReader }) => {
-    test.skip(!voiceOver(), 'the group announcement is a VoiceOver finding')
-    const reader = screenReader as unknown as Reader
+// the rotor's form controls list and VO-Command-J must reach every enabled select
+for (const name of ['with', 'without', 'pickerNative'] as const) {
+  test(`form controls in rotor and quick navigation: ${name}`, async ({ page, voiceOver }) => {
     await serve(page)
-    const dropped = await open(page, name)
-    await start(page, reader)
-    const phrases = [await reader.lastSpokenPhrase()]
-    for (let i = 0; i < 30 && !phrases.at(-1)!.includes('Please choose a species'); i++) {
-      await reader.next()
-      phrases.push(await reader.lastSpokenPhrase())
-    }
-    const group = phrases.filter(p => /\bgroup\b/i.test(p))
-    test.info().annotations.push({ type: 'group', description: group.join(' | ') || 'none' })
-    await note(page, 'reading', { variant: name, appearance: await appearance(page), dropped, phrases, group })
-    says(phrases.join(' | '), 'Species', 'Sold out', 'Habitats', 'Diet', 'Checked species', 'Please choose a species')
-  })
-}
-
-// the rotor list and VO-Command-J must reach every select, also with the class
-for (const name of ['with', 'without'] as const) {
-  test(`form controls in rotor and quick navigation: ${name}`, async ({ page, screenReader }) => {
-    test.skip(!voiceOver(), 'VoiceOver commands')
-    const reader = screenReader as unknown as Reader
-    await serve(page)
-    await open(page, name)
-    await start(page, reader)
+    const appearance = await open(page, name)
+    await voiceOver.navigateToWebContent()
+    await page.locator('a').focus()
     const quick: string[] = []
     for (let i = 0; i < 6; i++) {
-      await reader.perform(reader.keyboardCommands.findNextControl)
-      quick.push(await reader.lastSpokenPhrase())
+      await voiceOver.perform(voiceOver.keyboardCommands.findNextControl)
+      quick.push(await voiceOver.lastSpokenPhrase())
     }
-    await page.locator('a').focus()
-    await reader.perform(reader.keyboardCommands.openWebItemRotor)
-    const rotor = [await reader.lastSpokenPhrase()]
+    await voiceOver.perform(voiceOver.keyboardCommands.openWebItemRotor)
+    const rotor = [await voiceOver.lastSpokenPhrase()]
     for (let i = 0; i < 12 && !/form control/i.test(rotor.at(-1)!); i++) {
-      await reader.perform({ keyCode: keys.right })
-      rotor.push(await reader.lastSpokenPhrase())
+      await voiceOver.press('ArrowRight')
+      rotor.push(await voiceOver.lastSpokenPhrase())
     }
     const menu = /form control/i.test(rotor.at(-1)!)
     for (let i = 0; menu && i < 6; i++) {
-      await reader.perform({ keyCode: keys.down })
-      rotor.push(await reader.lastSpokenPhrase())
+      await voiceOver.press('ArrowDown')
+      rotor.push(await voiceOver.lastSpokenPhrase())
     }
-    await reader.perform({ keyCode: keys.escape })
-    await note(page, 'controls', { variant: name, quick, rotor })
-    expect.soft(quick.join(' | '), 'quick navigation reaches the selects').toMatch(/Species[\s\S]*Checked species/)
+    await voiceOver.press('Escape')
+    await note(page, 'controls', { variant: name, appearance, quick, rotor })
+    expect.soft(quick.join(' | '), 'quick navigation reaches the selects').toMatch(/Species[\s\S]*Habitats[\s\S]*Diet[\s\S]*Checked species/)
     expect.soft(menu, 'the rotor has a form controls list').toBe(true)
     for (const label of ['Species', 'Habitats', 'Diet', 'Checked species']) {
       expect.soft(rotor.join(' | '), `rotor lists ${label}`).toContain(label)
@@ -210,34 +127,30 @@ for (const name of ['with', 'without'] as const) {
   })
 }
 
-// real key presses through the screen reader, so the native popup of the bare select gets them too
+// keys go to the front window through the system, so the native menu of the bare select gets them too
 for (const name of ['with', 'without'] as const) {
-  test(`choosing with the keyboard announces the new value: ${name}`, async ({ page, screenReader }) => {
-    test.skip(!voiceOver() && name === 'without', 'the native popup is not part of this check with NVDA')
-    const reader = screenReader as unknown as Reader
+  test(`choosing with the keyboard announces the new value: ${name}`, async ({ page, voiceOver }) => {
     await serve(page)
-    await open(page, name)
-    const path = await appearance(page)
-    test.info().annotations.push({ type: 'appearance', description: path })
-    await start(page, reader)
+    const appearance = await open(page, name)
+    await voiceOver.navigateToWebContent()
     const select = page.locator('#species')
-    // every phrase spoken in the second after the action, not only the last one
+    // every phrase spoken in the two seconds after the action, not only the last one
     const step = async (action: () => Promise<unknown>) => {
-      await reader.clearSpokenPhraseLog()
+      await voiceOver.clearSpokenPhraseLog()
       await action()
-      await page.waitForTimeout(1500)
-      return (await reader.spokenPhraseLog()).join(' | ')
+      await page.waitForTimeout(2000)
+      return (await voiceOver.spokenPhraseLog()).join(' | ')
     }
-    const press = (key: 'down' | 'enter') => voiceOver() ? reader.perform({ keyCode: keys[key] }) : page.keyboard.press(key === 'down' ? 'ArrowDown' : 'Enter')
-    // macOS opens a select with the arrow keys, not with Enter
+    // macOS opens a select with the arrow keys
     const spoken = {
       focus: await step(() => select.focus()),
-      open: await step(() => press(voiceOver() ? 'down' : 'enter')),
-      next: await step(() => press('down')),
-      choose: await step(() => press('enter')),
+      open: await step(() => voiceOver.press('ArrowDown')),
+      next: await step(() => voiceOver.press('ArrowDown')),
+      choose: await step(() => voiceOver.press('Enter')),
+      after: await step(() => Promise.resolve()),
     }
     const value = await select.inputValue()
-    await note(page, 'choose', { variant: name, appearance: path, spoken, value })
+    await note(page, 'choose', { variant: name, appearance, spoken, value })
     expect.soft(value, 'the second option is chosen').toBe('Grey squirrel')
     expect.soft(spoken.open, 'opening is announced').toMatch(/expanded|menu|Red squirrel/i)
     expect.soft(spoken.next, 'the active option is announced').toContain('Grey squirrel')

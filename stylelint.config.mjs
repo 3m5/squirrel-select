@@ -9,4 +9,14 @@ export default {
     // rules are grouped by state; reordering by specificity would not change the cascade
     'no-descending-specificity': null,
   },
+  overrides: [
+    {
+      // page styles set public tokens to show theming and may name their own properties
+      files: ['site/**/*.css'],
+      rules: {
+        'property-disallowed-list': null,
+        'custom-property-pattern': null,
+      },
+    },
+  ],
 }

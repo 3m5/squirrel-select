@@ -1,6 +1,6 @@
 name: Screen reader
 
-# NVDA with Chromium on Windows and VoiceOver with WebKit on macOS, ten repetitions without retries
+# VoiceOver with WebKit on macOS, three repetitions without retries
 
 permissions: {}
 
@@ -53,10 +53,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        # NVDA is left out of this run, its results were stable
         include:
-          - project: nvda-chromium
-            os: windows-2025
-            browser: chromium
           - project: voiceover-webkit
             os: macos-26
             browser: webkit

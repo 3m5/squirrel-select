@@ -1,3 +1,4 @@
+import { readdirSync } from 'node:fs'
 import { test, expect, gotoStates, project } from './fixtures.ts'
 
 // what stylelint cannot see, checked on the CSSOM of the built file
@@ -28,4 +29,18 @@ test('built stylesheet keeps the structure rules', async ({ page }) => {
     return out
   })
   expect(problems).toEqual([])
+})
+
+// native pickers and touch lists show only the text, so a label attribute is not enough
+test('every option on every built page has visible text', async ({ page }) => {
+  test.skip(project() !== 'chromium', 'engine independent')
+  const pages = readdirSync('_site', { recursive: true, encoding: 'utf8' }).filter(f => f.endsWith('.html'))
+  expect(pages).toContain('examples/states.html')
+  const empty: string[] = []
+  for (const path of pages) {
+    await page.goto(path)
+    const found = await page.locator('option').evaluateAll(os => os.filter(o => !o.textContent?.trim()).map(o => o.outerHTML))
+    empty.push(...found.map(html => `${path}: ${html}`))
+  }
+  expect(empty).toEqual([])
 })

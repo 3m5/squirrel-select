@@ -15,13 +15,6 @@ for (const colorScheme of ['light', 'dark'] as const) {
   })
 }
 
-test('every option has visible text (golden rule)', async ({ page }) => {
-  test.skip(project() !== 'chromium', 'engine independent')
-  await gotoStates(page)
-  const empty = await page.locator('option').evaluateAll(os => os.filter(o => !o.textContent?.trim()).map(o => o.outerHTML))
-  expect(empty).toEqual([])
-})
-
 test('focus ring on the field is an outline of at least 2px', async ({ page }) => {
   await gotoStates(page)
   const select = page.locator('#s-default')

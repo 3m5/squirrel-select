@@ -9,7 +9,17 @@ test('built stylesheet keeps the structure rules', async ({ page }) => {
     const sheet = [...document.styleSheets].find(s => s.href?.endsWith('/dist/squirrel-select.css'))
     if (!sheet?.cssRules.length) return ['stylesheet not loaded']
     const out: string[] = []
-    const selectors = (text: string) => text.split(/,(?![^(]*\))/).map(s => s.trim())
+    // split a selector list at top-level commas only, :not(:where(a, b)) nests them
+    const selectors = (text: string) => {
+      const out = ['']
+      let depth = 0
+      for (const ch of text) {
+        depth += ch === '(' ? 1 : ch === ')' ? -1 : 0
+        if (ch === ',' && depth === 0) out.push('')
+        else out[out.length - 1] += ch
+      }
+      return out.map(s => s.trim())
+    }
     const walk = (rules: CSSRuleList, ctx: string[]) => {
       for (const r of rules) {
         if (r instanceof CSSLayerBlockRule) walk(r.cssRules, [...ctx, `layer ${r.name}`])

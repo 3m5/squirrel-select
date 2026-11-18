@@ -7,57 +7,185 @@ on:
     tags:
       - 'v*'
 
+concurrency:
+  group: release
+  cancel-in-progress: false
+
 jobs:
 
-  publish-npm:
+  build:
+    name: Build and check
     runs-on: ubuntu-latest
     permissions:
-      contents: read
-      id-token: write
+      contents: read # checkout only
+    outputs:
+      node: ${{ steps.check.outputs.node }}
+      dist-tag: ${{ steps.check.outputs.dist-tag }}
+      prerelease: ${{ steps.check.outputs.prerelease }}
+      package: ${{ steps.pack.outputs.package }}
+      tarball: ${{ steps.pack.outputs.tarball }}
+      integrity: ${{ steps.pack.outputs.integrity }}
+      skip: ${{ steps.registry.outputs.skip }}
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
       - name: Setup Node
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
-          node-version: '24'
-          registry-url: 'https://registry.npmjs.org'
-      - name: Install dependencies and build 🔧
-        run: npm ci --ignore-scripts && npm run build
-      # Node 24 already ships npm 11.9, but trusted publishing needs >= 11.5.1
-      # and we do not want a release to depend on what the runner happens to ship.
-      - name: Update npm
-        run: npm install -g npm@^11.5
-      - name: Publish package on NPM 📦
-        run: npm publish
+          node-version-file: .nvmrc
+          package-manager-cache: false
+      - name: Check tag and branch
+        id: check
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          version=$(node -p "require('./package.json').version")
+          if [ "v$version" != "$TAG" ]; then
+            echo "::error::Tag $TAG does not match the package version $version"
+            exit 1
+          fi
+          if ! git merge-base --is-ancestor "$GITHUB_SHA" origin/main; then
+            echo "::error::Tag $TAG points to a commit that is not on main"
+            exit 1
+          fi
+          case "$TAG" in
+            *-*) echo "dist-tag=next" >> "$GITHUB_OUTPUT"; echo "prerelease=true" >> "$GITHUB_OUTPUT" ;;
+            *) echo "dist-tag=latest" >> "$GITHUB_OUTPUT"; echo "prerelease=false" >> "$GITHUB_OUTPUT" ;;
+          esac
+          echo "node=$(node --version)" >> "$GITHUB_OUTPUT"
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+      - name: Lint, typecheck, build, size budget, package check
+        run: npm test
+      - name: Pack
+        id: pack
+        run: |
+          mkdir package
+          npm pack --pack-destination package --json > pack.json
+          node -p "const [p] = require('./pack.json'); ['package=' + p.name + '@' + p.version, 'tarball=' + p.filename, 'integrity=' + p.integrity].join('\n')" >> "$GITHUB_OUTPUT"
+      # npm packs reproducibly, so a re-run yields the same integrity as the tarball already published
+      - name: Compare with the registry
+        id: registry
+        env:
+          PACKAGE: ${{ steps.pack.outputs.package }}
+          INTEGRITY: ${{ steps.pack.outputs.integrity }}
+        run: |
+          if published=$(npm view "$PACKAGE" dist.integrity 2> view-error.txt); then
+            :
+          elif grep -q E404 view-error.txt; then
+            published=
+          else
+            cat view-error.txt >&2
+            echo "::error::Could not ask the registry for $PACKAGE"
+            exit 1
+          fi
+          if [ -z "$published" ]; then
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          elif [ "$published" = "$INTEGRITY" ]; then
+            echo "::notice::$PACKAGE is already on npm with this exact tarball, publishing is skipped"
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::error::$PACKAGE is already on npm with different contents, a published version cannot change"
+            exit 1
+          fi
+      - name: Upload the checked tarball
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: package
+          path: package/
+          if-no-files-found: error
+          retention-days: 30
 
-  github-release:
-    needs: publish-npm
+  publish:
+    name: Publish to npm
+    needs: build
+    if: needs.build.outputs.skip != 'true'
+    runs-on: ubuntu-latest
+    environment: release
+    permissions:
+      id-token: write # trusted publishing and provenance, no npm token
+    steps:
+      - name: Download the checked tarball
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: package
+          path: package
+      # no registry-url: setup-node would write an .npmrc with a token placeholder, trusted publishing needs none
+      - name: Setup Node
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: ${{ needs.build.outputs.node }}
+          package-manager-cache: false
+      - name: Check that npm supports trusted publishing
+        run: |
+          version=$(npm --version)
+          if ! node -e "const [a, b, c] = process.argv[1].split('.').map(Number); process.exit(a > 11 || (a === 11 && (b > 5 || (b === 5 && c >= 1))) ? 0 : 1)" "$version"; then
+            echo "::error::npm $version cannot use trusted publishing, it needs 11.5.1 or later"
+            exit 1
+          fi
+      # asked again, because a re-run of this job alone can follow a publish that went through
+      - name: Publish with provenance
+        env:
+          PACKAGE: ${{ needs.build.outputs.package }}
+          INTEGRITY: ${{ needs.build.outputs.integrity }}
+          TARBALL: package/${{ needs.build.outputs.tarball }}
+          DIST_TAG: ${{ needs.build.outputs.dist-tag }}
+        run: |
+          if [ "$(npm view "$PACKAGE" dist.integrity 2>/dev/null)" = "$INTEGRITY" ]; then
+            echo "::notice::$PACKAGE is already on npm with this exact tarball, nothing to publish"
+            exit 0
+          fi
+          npm publish "./$TARBALL" --tag "$DIST_TAG"
+
+  release:
+    name: GitHub release
+    needs: [build, publish]
+    # also when publishing was skipped because the tarball is already on npm
+    if: ${{ !cancelled() && needs.build.result == 'success' && (needs.publish.result == 'success' || needs.publish.result == 'skipped') }}
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: write # create the release
+      pull-requests: read # PR titles and labels for the changelog
     steps:
-      - name: Checkout
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - name: Build Changelog
-        id: build_changelog
-        uses: mikepenz/release-changelog-builder-action@cb021f9b36a51a7c6f18e4679b6fa2cb77a1260c # v6.3.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build changelog
+        id: changelog
+        uses: mikepenz/release-changelog-builder-action@b0db9d18b53447ef9f940a46c8f31653c4d9f621 # v6.5.0
         with:
-          commitMode: true
           failOnError: true
+          ignorePreReleases: ${{ needs.build.outputs.prerelease == 'false' }}
           configurationJson: |
             {
-              "template": "<h2>What's Changed</h2>#{{UNCATEGORIZED}}",
-              "pr_template": "● #{{TITLE}} by @#{{AUTHOR}}\n"
+              "categories": [
+                { "title": "## Breaking changes", "labels": ["breaking"], "consume": true },
+                { "title": "## Visual changes", "labels": ["visual change"], "consume": true },
+                { "title": "## Features", "labels": ["feat"] },
+                { "title": "## Fixes", "labels": ["fix"] },
+                { "title": "## Dependencies", "labels": ["dependencies"] },
+                { "title": "## Other", "labels": [] }
+              ],
+              "label_extractor": [
+                { "pattern": "^(feat|fix)(\\([\\w\\-\\.]+\\))?!?: [\\s\\S]*", "on_property": "title", "target": "$1" },
+                { "pattern": "^\\w+(\\([\\w\\-\\.]+\\))?!: [\\s\\S]*", "on_property": "title", "target": "breaking" }
+              ],
+              "template": "#{{CHANGELOG}}",
+              "pr_template": "- #{{TITLE}} (##{{NUMBER}})",
+              "empty_template": "- no changes"
             }
-      - name: Create Github release
-        uses: ncipollo/release-action@339a81892b84b4eeb0f6e744e4574d79d0d9b8dd # v1.21.0
-        with:
-          artifactErrorsFailBuild: true
-          # a release created by hand for the tag must not fail the job
-          allowUpdates: true
-          # ToDo remove with v1.0.0
-          prerelease: true
-          body: ${{steps.build_changelog.outputs.changelog}}
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          TAG: ${{ github.ref_name }}
+          PRERELEASE: ${{ needs.build.outputs.prerelease }}
+          NOTES: ${{ steps.changelog.outputs.changelog }}
+        run: |
+          if gh release view "$TAG" > /dev/null 2>&1; then
+            echo "Release $TAG already exists, its notes stay as they are"
+            exit 0
+          fi
+          latest=true
+          if [ "$PRERELEASE" = true ]; then latest=false; fi
+          gh release create "$TAG" --verify-tag --title "$TAG" --notes "$NOTES" --prerelease="$PRERELEASE" --latest="$latest"

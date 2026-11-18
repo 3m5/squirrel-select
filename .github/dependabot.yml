@@ -1,13 +1,43 @@
 version: 2
 updates:
+
   - package-ecosystem: npm
     directory: /
     schedule:
       interval: weekly
+    cooldown:
+      default-days: 7
+      semver-major-days: 14
+    versioning-strategy: increase
+    commit-message:
+      prefix: chore
+      include: scope
     groups:
+      # a new Playwright release can change the rendering and with it the reference images
+      playwright:
+        patterns:
+          - '@playwright/test'
       dev-dependencies:
         dependency-type: development
+        update-types:
+          - minor
+          - patch
+    ignore:
+      # types follow the Node version in .nvmrc, not the newest Node release
+      - dependency-name: '@types/node'
+        update-types:
+          - version-update:semver-major
+
   - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: weekly
+    cooldown:
+      default-days: 7
+    commit-message:
+      prefix: ci
+      include: scope
+    groups:
+      actions:
+        patterns:
+          - '*'

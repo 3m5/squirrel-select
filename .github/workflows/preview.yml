@@ -1,0 +1,101 @@
+name: Preview
+
+# Firefox Nightly, weekly: once with the customizable select prefs (images), once without (early warning)
+
+permissions: {}
+
+on:
+  schedule:
+    - cron: '23 4 * * 1'
+  workflow_dispatch:
+
+concurrency:
+  group: preview
+  cancel-in-progress: true
+
+jobs:
+
+  version:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      playwright: ${{ steps.playwright.outputs.version }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Playwright version for the browser image
+        id: playwright
+        run: |
+          version=$(node -p "require('./package-lock.json').packages['node_modules/@playwright/test'].version")
+          [[ "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+  firefox-nightly:
+    needs: version
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    container:
+      image: mcr.microsoft.com/playwright:v${{ needs.version.outputs.playwright }}-noble
+      options: --user 1001
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+      - name: Build library and site
+        run: npm run site
+      - name: Download Firefox Nightly and verify its signature
+        shell: bash
+        run: |
+          set -euo pipefail
+          # primary key of "Mozilla Software Releases"; signing subkeys rotate under it
+          mozilla_release_key=14F26682D0916CDD81E37B6D61B7B526D98F0353
+          dir="$RUNNER_TEMP/firefox-nightly"
+          mkdir -p "$dir/gnupg"
+          chmod 700 "$dir/gnupg"
+          cd "$dir"
+          latest=$(curl -fsS -o /dev/null -w '%{redirect_url}' 'https://download.mozilla.org/?product=firefox-nightly-latest-ssl&os=linux64&lang=en-US')
+          name=$(basename "$latest" .tar.xz)
+          # the dated folder of that build, so tarball, signature and key belong to the same build
+          url=$(curl -fsSL "https://archive.mozilla.org/pub/firefox/nightly/latest-mozilla-central/$name.buildhub.json" \
+            | python3 -c 'import json, sys; print(json.load(sys.stdin)["download"]["url"])')
+          case "$url" in
+            https://archive.mozilla.org/pub/firefox/nightly/20*-mozilla-central/"$name".tar.xz) ;;
+            *) echo "unexpected download URL: $url" >&2; exit 1 ;;
+          esac
+          curl -fsSL -o firefox.tar.xz "$url"
+          curl -fsSL -o firefox.tar.xz.asc "$url.asc"
+          curl -fsSL -o KEY "$(dirname "$url")/KEY"
+          export GNUPGHOME="$dir/gnupg"
+          gpg --batch --quiet --import KEY
+          gpg --batch --status-fd 1 --verify firefox.tar.xz.asc firefox.tar.xz > status.txt
+          # VALIDSIG also appears for expired or revoked keys, GOODSIG only for a valid one
+          grep -q '^\[GNUPG:\] GOODSIG ' status.txt
+          grep -Eq "^\[GNUPG:\] VALIDSIG [0-9A-F]{40} .* $mozilla_release_key\$" status.txt
+          # the image has no xz binary
+          python3 -c 'import sys, tarfile; tarfile.open(sys.argv[1]).extractall(sys.argv[2], filter="tar")' firefox.tar.xz .
+          rm firefox.tar.xz
+          {
+            echo "Firefox Nightly from $url"
+            echo
+            grep -E '^(Version|BuildID)=' firefox/application.ini
+          } >> "$GITHUB_STEP_SUMMARY"
+          echo "FIREFOX_NIGHTLY=$dir/firefox/firefox" >> "$GITHUB_ENV"
+      - name: Browser tests in Firefox Nightly
+        run: npx playwright test --project=firefox-preview --project=firefox-nightly
+      - name: Upload report and diff images
+        if: failure()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: playwright-report-preview
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7

@@ -8,7 +8,7 @@ Every browser gets a working, native select. We never break it. How far the styl
 |---|---|
 | Chrome and Edge 135+, Safari 27+ on desktop, with mouse or trackpad | **Fully styled:** closed field and open list |
 | Firefox, Safari 17.5 to 26, Chrome and Edge 123 to 134 on desktop | **Field styled.** The open list comes from the browser or operating system |
-| Phones and tablets | **Field styled**, at least 16 px text and 44 px high. Choosing opens the native iOS or Android picker, on purpose |
+| Touch devices (phones, tablets without mouse or trackpad) | **Field styled**, at least 16 px text and 44 px high. Choosing opens the native iOS or Android picker, on purpose |
 | Older browsers (Chrome before 123, Firefox before 120, Safari before 17.5) | The browser's default select, fully usable |
 
 The paths come from feature detection, not from a list of versions. When a browser gains a feature, it moves up by itself. When Firefox turns on `appearance: base-select`, you get the full styling without an update.

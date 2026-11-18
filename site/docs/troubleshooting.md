@@ -4,7 +4,7 @@ The most common reasons why a select does not look the way you expect, and how t
 
 ## My styles do not apply
 
-The stylesheet lives in the cascade layer `squirrel`. **Every rule outside a layer wins**, whatever its specificity. That is on purpose, so your CSS always wins. It also means an old global reset overrides us completely:
+The stylesheet lives in the cascade layer `squirrel`. **Every rule outside a layer wins**, whatever its specificity. That is on purpose: your own CSS outside a layer always wins. It also means an old global reset overrides us completely:
 
 ```css
 /* this beats SquirrelSelect */

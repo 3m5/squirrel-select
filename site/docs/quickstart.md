@@ -41,12 +41,12 @@ Set CSS variables on any ancestor, or on the select itself:
 
 ```css
 .filters {
-  --sqs-accent: #b0185a;
+  --sqs-accent: light-dark(#b0185a, #ff8cc6);
   --sqs-radius: 999px;
 }
 ```
 
-All variables are listed in [Theming](theming.html). Your own CSS always wins over ours, because the stylesheet lives in the cascade layer `squirrel`.
+All variables are listed in [Theming](theming.html). Your own CSS outside a layer always wins over ours, because the stylesheet lives in the cascade layer `squirrel`.
 
 For dark mode, declare it on your page. The stylesheet follows your page and never switches on its own:
 

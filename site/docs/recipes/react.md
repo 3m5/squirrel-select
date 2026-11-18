@@ -35,4 +35,4 @@ Controlled and uncontrolled selects both work as usual, because nothing is added
 - `className`, not `class`; `htmlFor`, not `for`.
 - Set the chosen value with `value` or `defaultValue` on the select, not with `selected` on an option.
 - Server rendering is no problem: the core is CSS only.
-- Theming per component: set variables in `style`, for example `style={{ '--sqs-accent': '#b0185a' }}`. In TypeScript this needs a cast, such as `as React.CSSProperties`.
+- Theming per component: set variables in `style`, for example `style={{ '--sqs-accent': 'light-dark(#b0185a, #ff8cc6)' }}`. In TypeScript this needs a cast, such as `as React.CSSProperties`.

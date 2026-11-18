@@ -38,5 +38,5 @@ const species = ref('')
 
 ## Watch out for
 
-- Variables work in `<style scoped>` when the select is in the same template: `.filters { --sqs-accent: #b0185a; }`.
+- Variables work in `<style scoped>` when the select is in the same template: `.filters { --sqs-accent: light-dark(#b0185a, #ff8cc6); }`.
 - Rules for the open list (`::picker(select)`) belong in a global stylesheet, inside `@supports (appearance: base-select)`, see [Theming](../theming.html).

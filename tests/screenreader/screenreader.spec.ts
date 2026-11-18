@@ -16,6 +16,10 @@ const variants = {
   with: { cls: ' class="sqs"', head: '' },
   without: { cls: '', head: '' },
   base: { cls: '', head: '<style>select { appearance: base-select }</style>' },
+  // the declarations the stylesheet adds to a bare select in WebKit, one at a time, to find what VoiceOver reads as a group
+  flex: { cls: '', head: '<style>select { appearance: base-select; display: inline-flex; align-items: center }</style>' },
+  clip: { cls: '', head: '<style>select { appearance: base-select; overflow: clip; overflow-clip-margin: content-box }</style>' },
+  icon: { cls: '', head: '<style>select { appearance: base-select } select::picker-icon { display: none }</style>' },
 }
 type Variant = keyof typeof variants
 
@@ -45,7 +49,7 @@ ${head}
 async function serve(page: Page) {
   await page.context().route('http://sqs.test/**', route => {
     const { pathname } = new URL(route.request().url())
-    const check = pathname.match(/^\/squirrel-select\/check\/(with|without|base)\.html$/)
+    const check = pathname.match(/^\/squirrel-select\/check\/(with|without|base|flex|clip|icon)\.html$/)
     if (check) return route.fulfill({ contentType: 'text/html', body: markup(variants[check[1] as Variant]) })
     const file = join(process.cwd(), '_site', pathname.replace(/^\/squirrel-select\//, ''))
     return pathname.startsWith('/squirrel-select/') && existsSync(file) && statSync(file).isFile() ? route.fulfill({ path: file }) : route.fulfill({ status: 404 })
@@ -75,9 +79,10 @@ test('reading the page sounds the same with and without the class', async ({ pag
   const reader: Reader = screenReader
   await serve(page)
   const transcripts: Record<string, string[]> = {}
-  for (const variant of ['with', 'without', 'base'] as const) {
+  for (const variant of Object.keys(variants) as Variant[]) {
     await open(page, variant)
     await reader.navigateToWebContent()
+    await page.locator('a').focus()
     // on a focused select NVDA stays in focus mode, and next() would change the value instead of reading on
     expect(await page.evaluate(() => document.activeElement?.tagName), 'focus is not on a select').not.toBe('SELECT')
     const phrases = [await reader.lastSpokenPhrase()]
@@ -100,6 +105,8 @@ test('focus announces label, value and state', async ({ page, screenReader }) =>
   for (const variant of ['with', 'without'] as const) {
     await open(page, variant)
     await reader.navigateToWebContent()
+    // the helper clicks the middle of the body, which can leave the screen reader on a select
+    await page.locator('a').focus()
     spoken[variant] = {
       appearance: await appearance(page),
       species: (await reader.capture(() => page.locator('#species').focus())).spokenPhrase,

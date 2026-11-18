@@ -125,7 +125,7 @@ if (pathName) {
 
 // Hero: example themes only set --sqs-* tokens
 const THEMES = {
-  neutral: { hint: 'SquirrelSelect without any changes.', tokens: {} },
+  neutral: { hint: 'Default look, no tokens changed.', tokens: {} },
   night: {
     hint: 'Made-up example in the 3m5 style: navy, cyan, almost square. Tokens only.',
     tokens: {

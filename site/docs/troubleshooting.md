@@ -29,6 +29,10 @@ Declare the layer order before importing Tailwind:
 
 Without the first line, `squirrel` ends up after `utilities`, and classes like `rounded-none` on the select have no effect. With `squirrel` first, Tailwind's reset removes our border radius, background and padding. This order gets both right.
 
+## TypeScript reports the CSS import
+
+TypeScript 6 stops at `import '@3m5-de/squirrel-select/squirrel-select.css'` with "Cannot find module or type declarations for side-effect import" (TS2882), because the package ships no type declarations. Add one line to a declaration file, for example `src/css.d.ts`: `declare module '*.css'`. Vite projects already have this through `vite/client`.
+
 ## Bootstrap and other frameworks
 
 Do not combine `.sqs` with `.form-select` or similar classes. Their CSS is not in a layer and wins.

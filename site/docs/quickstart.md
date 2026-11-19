@@ -14,6 +14,8 @@ npm install @3m5-de/squirrel-select
 import '@3m5-de/squirrel-select/squirrel-select.css'
 ```
 
+If TypeScript reports the import (TS2882), declare CSS modules once, for example in `src/css.d.ts`: `declare module '*.css'`. Vite projects already have this through `vite/client`.
+
 Or straight from a CDN:
 
 ```html

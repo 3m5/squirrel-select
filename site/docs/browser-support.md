@@ -32,7 +32,7 @@ Accessibility is a self-assessment against WCAG 2.2 level AA, not an external ce
 
 We follow semantic versioning. The public API is:
 
-- the class `sqs` and the classes `sqs-icon` and `sqs-hint` for rich content,
+- the class `sqs`, the classes `sqs-icon` and `sqs-hint` for rich content, and the class `sqs-arrow-start`,
 - every CSS variable listed in [Theming](theming.html),
 - the cascade layer name `squirrel`,
 - the file path `@3m5-de/squirrel-select/squirrel-select.css`.

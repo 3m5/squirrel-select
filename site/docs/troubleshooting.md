@@ -69,7 +69,7 @@ In Next, in `package.json`:
 "browserslist": ["chrome 123", "edge 123", "firefox 120", "safari 17.5"]
 ```
 
-Older browsers get the default select anyway, so nothing is lost. Or set `lang` together with `dir`, for example `<html lang="ar" dir="rtl">`.
+Older browsers get the default select anyway, so nothing is lost for the select. In Next the list also applies to your JavaScript. Or set `lang` together with `dir`, for example `<html lang="ar" dir="rtl">`.
 
 ## Bootstrap and other frameworks
 

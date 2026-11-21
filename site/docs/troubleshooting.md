@@ -53,6 +53,24 @@ export default {
 
 Relative imports keep working. Or leave the `@import` to your bundler: Vite and webpack read `exports`.
 
+## The arrow is on the wrong side in right-to-left pages (Vite, Next)
+
+Lightning CSS, the CSS minifier in Vite and in Next with Turbopack, rewrites `:dir(rtl)` into a list of right-to-left languages for older browsers. A page with `dir="rtl"` but without such a `lang` then gets the arrow over the start of the text. The same happens to `sqs-arrow-start` and to the selection bar in lists. Set the CSS targets to the browsers SquirrelSelect needs anyway, in `vite.config.js`:
+
+```js
+export default {
+  build: { cssTarget: ['chrome123', 'edge123', 'firefox120', 'safari17.5'] },
+}
+```
+
+In Next, in `package.json`:
+
+```json
+"browserslist": ["chrome 123", "edge 123", "firefox 120", "safari 17.5"]
+```
+
+Older browsers get the default select anyway, so nothing is lost. Or set `lang` together with `dir`, for example `<html lang="ar" dir="rtl">`.
+
 ## Bootstrap and other frameworks
 
 Do not combine `.sqs` with `.form-select` or similar classes. Their CSS is not in a layer and wins.

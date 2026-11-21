@@ -2,8 +2,14 @@
   /* forced colors: fall back to the native select, which keeps arrow, checkmark and focus in system colors */
   @supports (color: light-dark(#000, #fff)) {
     @media (forced-colors: active) {
+      /* no custom arrow image next to the native arrow, which always sits at the end */
       .sqs {
         appearance: auto;
+        background-image: none;
+      }
+
+      .sqs.sqs-arrow-start:not(:where([multiple], [size]:not([size="0"], [size="1"]))) {
+        padding-inline: var(--_sqs-pad-inline) calc(var(--_sqs-pad-inline) + 2 * var(--_sqs-chev) + var(--_sqs-gap));
       }
 
       .sqs:user-invalid,

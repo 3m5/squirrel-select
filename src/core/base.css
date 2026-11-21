@@ -27,17 +27,22 @@
       overflow: hidden;
       cursor: pointer;
       background-image: var(--_sqs-chevron);
-      background-size: var(--_sqs-chev) var(--_sqs-chev);
+      background-size: calc(2 * var(--_sqs-chev)) var(--_sqs-chev);
       background-repeat: no-repeat;
-      background-position:
-        right calc(var(--_sqs-pad-inline) + var(--_sqs-chev)) center,
-        right var(--_sqs-pad-inline) center;
+      background-position: right var(--_sqs-pad-inline) center;
     }
 
     .sqs:not(:where([multiple], [size]:not([size="0"], [size="1"]))):dir(rtl) {
-      background-position:
-        left var(--_sqs-pad-inline) center,
-        left calc(var(--_sqs-pad-inline) + var(--_sqs-chev)) center;
+      background-position: left var(--_sqs-pad-inline) center;
+    }
+
+    .sqs.sqs-arrow-start:not(:where([multiple], [size]:not([size="0"], [size="1"]))) {
+      padding-inline: calc(var(--_sqs-pad-inline) + 2 * var(--_sqs-chev) + var(--_sqs-gap)) var(--_sqs-pad-inline);
+      background-position: left var(--_sqs-pad-inline) center;
+    }
+
+    .sqs.sqs-arrow-start:not(:where([multiple], [size]:not([size="0"], [size="1"]))):dir(rtl) {
+      background-position: right var(--_sqs-pad-inline) center;
     }
 
     /* Firefox paints its native list with these */

@@ -30,19 +30,20 @@
       --_sqs-focus-offset: var(--sqs-focus-offset, 2px);
       --_sqs-list-max: var(--sqs-list-max-height, 20em);
       --_sqs-check: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.25 8.5 6.5 11.75l6.25-7.5' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-      --_sqs-chev: .3125em;
+      --_sqs-chev: calc(var(--sqs-arrow-size, .625em) / 2);
 
-      /* two gradients instead of an image, so the arrow follows --sqs-arrow and dark mode in every rendering path */
-      --_sqs-chevron:
-        linear-gradient(to top right, transparent calc(50% - .8px), var(--_sqs-arrow) calc(50% - .8px) calc(50% + .8px), transparent calc(50% + .8px)),
-        linear-gradient(to top left, transparent calc(50% - .8px), var(--_sqs-arrow) calc(50% - .8px) calc(50% + .8px), transparent calc(50% + .8px));
+      /* two gradients instead of an image, so the arrow follows --sqs-arrow and dark mode in every rendering path;
+         both fill a box twice as wide as high, each line runs from a top corner to the middle of the bottom edge */
+      --_sqs-chevron: var(--sqs-arrow-image,
+        linear-gradient(45deg, #0000 calc(100% / 3 - .8px), var(--_sqs-arrow) 0 calc(100% / 3 + .8px), #0000 0),
+        linear-gradient(-45deg, #0000 calc(100% / 3 - .8px), var(--_sqs-arrow) 0 calc(100% / 3 + .8px), #0000 0));
       --_sqs-duration: 120ms;
     }
 
-    /* the arrow halves drift apart on fractional pixels; Chromium has round() only from 125, after light-dark() */
+    /* the arrow lines drift apart on fractional pixels; Chromium has round() only from 125, after light-dark() */
     @supports (width: round(1px, 1px)) {
       :where(.sqs, .sqs-search) {
-        --_sqs-chev: round(.3125em, 1px);
+        --_sqs-chev: round(calc(var(--sqs-arrow-size, .625em) / 2), 1px);
       }
     }
 

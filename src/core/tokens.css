@@ -39,6 +39,13 @@
       --_sqs-duration: 120ms;
     }
 
+    /* the arrow halves drift apart on fractional pixels; Chromium has round() only from 125, after light-dark() */
+    @supports (width: round(1px, 1px)) {
+      :where(.sqs, .sqs-search) {
+        --_sqs-chev: round(.3125em, 1px);
+      }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       :where(.sqs, .sqs-search) {
         --_sqs-duration: 0s;

@@ -53,7 +53,7 @@
       .sqs:not(:where([multiple], [size]:not([size="0"], [size="1"]))) option {
         gap: var(--_sqs-gap);
         min-block-size: 2em;
-        padding: .375em .5em;
+        padding: var(--_sqs-option-pad) .5em;
         border-radius: var(--_sqs-radius-option);
         white-space: normal;
         overflow-wrap: anywhere;

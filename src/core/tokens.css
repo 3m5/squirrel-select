@@ -19,9 +19,13 @@
       --_sqs-radius: var(--sqs-radius, .375rem);
 
       /* a pill-shaped field must not turn the list into a pill */
-      --_sqs-radius-panel: min(var(--_sqs-radius), .75em);
+      --_sqs-radius-panel: var(--sqs-list-radius, min(var(--_sqs-radius), .75em));
       --_sqs-radius-option: max(0px, calc(var(--_sqs-radius-panel) - .25em));
       --_sqs-border-width: var(--sqs-border-width, 1px);
+
+      /* 24px is the WCAG minimum target size */
+      --_sqs-height: max(var(--sqs-height, 2.5em), 24px);
+      --_sqs-option-pad: var(--sqs-option-padding-block, .375em);
       --_sqs-pad-block: var(--sqs-padding-block, .5em);
       --_sqs-pad-inline: var(--sqs-padding-inline, .75em);
       --_sqs-gap: var(--sqs-gap, .5em);

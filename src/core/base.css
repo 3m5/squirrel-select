@@ -17,7 +17,7 @@
 
     /* the field: everything but multiple and size > 1; :where keeps the specificity of .sqs */
     .sqs:not(:where([multiple], [size]:not([size="0"], [size="1"]))) {
-      min-block-size: 2.5em;
+      min-block-size: var(--_sqs-height);
       padding-block: var(--_sqs-pad-block);
       padding-inline: var(--_sqs-pad-inline) calc(var(--_sqs-pad-inline) + 2 * var(--_sqs-chev) + var(--_sqs-gap));
       background-color: var(--_sqs-bg);
@@ -92,7 +92,7 @@
     }
 
     .sqs:where([multiple]:not([size="1"]), [size]:not([size="0"], [size="1"])) option {
-      padding: .375em .5em;
+      padding: var(--_sqs-option-pad) .5em;
       border-radius: var(--_sqs-radius-option);
       white-space: normal;
       background-color: transparent;
@@ -141,12 +141,12 @@
       .sqs,
       .sqs-search {
         font-size: max(var(--_sqs-font-size), 16px);
-        min-block-size: max(2.5em, 44px);
+        min-block-size: max(var(--_sqs-height), 44px);
       }
 
       /* option boxes ignore min-block-size in native lists, so the rows grow through padding */
       .sqs:where([multiple]:not([size="1"]), [size]:not([size="0"], [size="1"])) option {
-        padding-block: max(.375em, calc((44px - 1.25em) / 2));
+        padding-block: max(var(--_sqs-option-pad), calc((44px - 1.25em) / 2));
       }
     }
 

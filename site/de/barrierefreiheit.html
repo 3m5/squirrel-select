@@ -14,10 +14,10 @@
       <li><strong>Ziel:</strong> WCAG 2.2, Stufe AA. Damit sind EN 301 549 und BITV 2.0 abgedeckt, die auf die WCAG verweisen.</li>
       <li><strong>Methode:</strong> Selbstbewertung durch die Entwickler. Kein externer Test.</li>
       <li><strong>Automatisch:</strong> axe-core, Kontrastberechnung, Tastatur- und Darstellungstests in Chromium 159, Firefox 159 und WebKit 27.2 (Playwright 1.65.1), bei jeder Änderung. Alle bestanden.</li>
-      <li><strong>Von Hand, vor jedem Minor-Release:</strong> eine kurze Checkliste auf einem echten Android-Smartphone mit TalkBack, dazu Tastatur mit Zoom in Chrome, Edge und Firefox. Patch-Releases bekommen einen kurzen Rauchtest. Für 1.0.0 noch nicht erledigt.</li>
+      <li><strong>Von Hand, vor jedem Minor-Release:</strong> eine kurze Checkliste auf einem echten Android-Smartphone mit TalkBack, dazu Tastatur mit Zoom in Chrome, Edge und Firefox. Patch-Releases bekommen einen kurzen Rauchtest. Für 1.0.0-rc.1 sind Android mit TalkBack und Tastatur mit Zoom am 21. November 2026 bestanden.</li>
       <li><strong>Nicht geprüft:</strong> VoiceOver auf einem echten iPhone (WebKit mit Touch-Emulation wird automatisch geprüft), NVDA, JAWS, VoiceOver unter macOS, die echten Kontrastdesigns von Windows, ein externer BITV-Test.</li>
     </ul>
-    <p><strong>Stand:</strong> <time datetime="2026-11-18">18. November 2026</time>, vor dem Release 1.0.0.</p>
+    <p><strong>Stand:</strong> <time datetime="2026-11-21">21. November 2026</time>, vor dem Release 1.0.0.</p>
   </section>
 
   <section aria-labelledby="automatisch">
@@ -83,8 +83,8 @@
           <tr><th scope="row">NVDA + Firefox (Windows)</th><td>Nicht geprüft</td></tr>
           <tr><th scope="row">VoiceOver + Safari (macOS)</th><td>Nicht geprüft</td></tr>
           <tr><th scope="row">VoiceOver + Safari (iPhone)</th><td>Nicht auf echtem Gerät geprüft. WebKit mit Touch-Emulation wird automatisch geprüft (siehe oben)</td></tr>
-          <tr><th scope="row">TalkBack + Chrome (Android-Smartphone)</th><td>Noch nicht erledigt, geplant vor 1.0.0</td></tr>
-          <tr><th scope="row">Nur Tastatur, Zoom 200 % und 400 % (Chrome, Edge, Firefox)</th><td>Noch nicht erledigt, geplant vor 1.0.0</td></tr>
+          <tr><th scope="row">TalkBack + Chrome (Android-Smartphone)</th><td>Bestanden am 21. November 2026 mit 1.0.0-rc.1: Samsung Galaxy S22 Ultra, Android 16, Chrome 157, TalkBack 16</td></tr>
+          <tr><th scope="row">Nur Tastatur, Zoom 200 % und 400 % (Chrome, Edge, Firefox)</th><td>Bestanden am 21. November 2026 mit 1.0.0-rc.1: Chrome 158 und Firefox 160 unter Linux. Edge nicht eigens geprüft, es nutzt dieselbe Technik wie Chrome. In Firefox öffnet Enter kein Auswahlfeld, mit und ohne SquirrelSelect; Leertaste, Alt+Pfeil nach unten und F4 schon</td></tr>
           <tr><th scope="row">JAWS + Chrome (Windows)</th><td>Nicht geprüft</td></tr>
           <tr><th scope="row">Kontrastdesigns von Windows, echt (Edge)</th><td>Nicht geprüft, nur emuliert (siehe oben)</td></tr>
           <tr><th scope="row">Externer BITV-Test</th><td>Nicht durchgeführt</td></tr>
@@ -129,7 +129,7 @@
         <p><strong>Barrierefreiheit von SquirrelSelect</strong></p>
         <p>SquirrelSelect ist ein Stylesheet für das native HTML-Element <code>&lt;select&gt;</code>. Bedienung per Tastatur, Ausgabe an Screenreader und Formularprüfung übernimmt der Browser selbst. SquirrelSelect verändert nur die Darstellung.</p>
         <p><strong>Prüfgrundlage:</strong> WCAG 2.2, Konformitätsstufe AA. Damit sind die Anforderungen der EN 301 549 V3.2.1, Kapitel 9 (WCAG 2.1 AA), auf die die BITV 2.0 verweist, mit abgedeckt.</p>
-        <p><strong>Prüfmethode:</strong> Selbstbewertung durch die Entwickler, keine externe Zertifizierung. Automatisierte Prüfung (axe-core, Kontrastberechnung, Tastatur- und Darstellungstests in Chromium, Firefox und WebKit) bei jeder Änderung. Manuelle Prüfung vor jedem Minor-Release: eine kurze Checkliste auf einem echten Android-Smartphone mit dem kostenlosen Screenreader TalkBack, dazu Tastatur mit Zoom in Chrome, Edge und Firefox. Patch-Releases bekommen einen kurzen Rauchtest. VoiceOver auf einem echten iPhone, NVDA, JAWS, VoiceOver unter macOS und die echten Kontrastdesigns von Windows sind nicht geprüft. Ergebnisse je Browser und Screenreader: https://3m5.github.io/squirrel-select/de/barrierefreiheit.html, Stand 18. November 2026.</p>
+        <p><strong>Prüfmethode:</strong> Selbstbewertung durch die Entwickler, keine externe Zertifizierung. Automatisierte Prüfung (axe-core, Kontrastberechnung, Tastatur- und Darstellungstests in Chromium, Firefox und WebKit) bei jeder Änderung. Manuelle Prüfung vor jedem Minor-Release: eine kurze Checkliste auf einem echten Android-Smartphone mit dem kostenlosen Screenreader TalkBack, dazu Tastatur mit Zoom in Chrome, Edge und Firefox. Patch-Releases bekommen einen kurzen Rauchtest. VoiceOver auf einem echten iPhone, NVDA, JAWS, VoiceOver unter macOS und die echten Kontrastdesigns von Windows sind nicht geprüft. Ergebnisse je Browser und Screenreader: https://3m5.github.io/squirrel-select/de/barrierefreiheit.html, Stand 21. November 2026.</p>
         <p><strong>Ergebnis:</strong> Bei bestimmungsgemäßer Verwendung erzeugt SquirrelSelect keine bekannten Verstöße gegen WCAG 2.2 AA. Bestimmungsgemäß heißt: Jedes Auswahlfeld hat eine sichtbare Beschriftung (<code>&lt;label&gt;</code>), jede Option enthält Text, Fehlermeldungen stellt die einbindende Seite als Text bereit, und wer die Farbvariablen ändert, hält die dokumentierten Kontrastwerte in hellem und dunklem Farbschema ein.</p>
         <p><strong>Bekannte Einschränkungen:</strong></p>
         <ul>

@@ -33,6 +33,26 @@ Without the first line, `squirrel` ends up after `utilities`, and classes like `
 
 TypeScript 6 stops at `import '@3m5-de/squirrel-select/squirrel-select.css'` with "Cannot find module or type declarations for side-effect import" (TS2882), because the package ships no type declarations. Add one line to a declaration file, for example `src/css.d.ts`: `declare module '*.css'`. Vite projects already have this through `vite/client`.
 
+## postcss-import cannot find the stylesheet
+
+postcss-import stops at `@import "@3m5-de/squirrel-select/squirrel-select.css"` with "Failed to find", because it does not read the `exports` field of a package, and that field is what maps the import to the file. Give it a `resolve` function that uses Node's resolver, in `postcss.config.mjs`:
+
+```js
+import { createRequire } from 'node:module'
+import { join } from 'node:path'
+import postcssImport from 'postcss-import'
+
+export default {
+  plugins: [
+    postcssImport({
+      resolve: (id, base) => createRequire(join(base, 'x.css')).resolve(id),
+    }),
+  ],
+}
+```
+
+Relative imports keep working. Or leave the `@import` to your bundler: Vite and webpack read `exports`.
+
 ## Bootstrap and other frameworks
 
 Do not combine `.sqs` with `.form-select` or similar classes. Their CSS is not in a layer and wins.

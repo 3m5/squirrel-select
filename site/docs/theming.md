@@ -50,11 +50,18 @@ Without `color-scheme`, the select stays light, even if the operating system is 
 | Variable | Default | Used for | Full | Field only |
 |---|---|---|---|---|
 | `--sqs-font-size` | `1rem` | text size, and with it the overall size; all spacing is in `em` | yes | yes, at least 16 px on touch |
-| `--sqs-radius` | `.375rem` | field corners; the list is capped at `.75em` | yes | field |
+| `--sqs-radius` | `.375rem` | field corners | yes | yes |
+| `--sqs-list-radius` | `--sqs-radius`, capped at `.75em` | corners of the open list and of lists; the option corners follow | yes | lists |
 | `--sqs-border-width` | `1px` | border width | yes | yes |
+| `--sqs-height` | `2.5em` | minimum field height; never below 24 px, and 44 px on touch | yes | yes |
 | `--sqs-padding-block` | `.5em` | padding top and bottom | yes | yes |
 | `--sqs-padding-inline` | `.75em` | padding start and end | yes | yes |
 | `--sqs-gap` | `.5em` | space between text and arrow, checkmark or icon and text | yes | text and arrow |
+| `--sqs-option-padding-block` | `.375em` | padding top and bottom of each option; rows stay at least 44 px high on touch | yes | lists, not in Safari |
+| `--sqs-arrow-size` | `.625em` | arrow width; the height is half, rounded to whole pixels | yes | yes |
+| `--sqs-arrow-image` | the chevron | your own arrow, `none` hides it, see Arrow below | yes | yes |
+
+Write lengths with a unit: `0px`, not `0`. Some values have a minimum, such as 24 px for `--sqs-height`, and a bare `0` makes the whole value invalid, so the minimum is lost.
 
 ### Focus and list
 
@@ -69,11 +76,18 @@ If you change colors, check the contrast in light and dark: text at least 4.5:1 
 
 ## Sizes
 
-There are no size classes. Change `--sqs-font-size`, everything else scales:
+There are no size classes. Change `--sqs-font-size`, and height, spacing and arrow scale with it. Three steps that work well:
+
+| Step | `--sqs-font-size` | Text with a 16 px root |
+|---|---|---|
+| Small | `.875rem` | 14 px |
+| Medium | `1rem`, the default | 16 px |
+| Large | `1.125rem` | 18 px |
+
+Set the value where the step applies, for example on a toolbar:
 
 ```css
-.compact { --sqs-font-size: .875rem; }
-.large   { --sqs-font-size: 1.125rem; }
+.toolbar { --sqs-font-size: .875rem; }
 ```
 
 On touch devices the text never gets smaller than 16 px and the field never lower than 44 px. In lists, each row is at least 44 px high in Chrome and Firefox. Below 16 px, iOS zooms into the page when the field gets focus.
@@ -86,12 +100,13 @@ The variables:
 
 - `--sqs-surface` for the background, not `--sqs-bg`
 - `--sqs-text`, `--sqs-muted`, `--sqs-border`, `--sqs-border-width`, `--sqs-invalid`
-- `--sqs-radius`, capped at `.75em` like the open list
+- `--sqs-list-radius` for the corners, by default `--sqs-radius` capped at `.75em`
 - `--sqs-accent` for the bar at checked options and for the focus ring
 - `--sqs-selected` and `--sqs-hover` for the rows
+- `--sqs-option-padding-block` for the row height
 - `--sqs-focus-ring`, `--sqs-focus-offset`, `--sqs-font-size`, `--sqs-list-max-height`
 
-The arrow, padding and gap variables only apply to the field. Safari ignores colors on options, so `--sqs-selected` and `--sqs-hover` have no effect there. See [How it works](how-it-works.html).
+The arrow, height, padding and gap variables only apply to the field. Safari ignores colors and padding on options, so `--sqs-selected`, `--sqs-hover` and `--sqs-option-padding-block` have no effect there. See [How it works](how-it-works.html).
 
 ## Your own rules
 
@@ -112,23 +127,59 @@ Rules for the open list only work with `base-select`. Wrap them in `@supports` a
 }
 ```
 
-## Custom arrow
+## Arrow
 
-The arrow is drawn with two CSS gradients, so it follows `--sqs-arrow` and dark mode. In forced colors the native arrow takes over. To use an image instead, replace the background:
+The arrow is drawn with CSS gradients, so it follows `--sqs-arrow` and dark mode. In forced colors the native arrow takes over, always at the end.
+
+**Size.** `--sqs-arrow-size` sets the width; the height is half of it. Between `.5em` and `1em` works best. The padding next to the arrow grows with it.
+
+**Side.** The arrow belongs at the end of the field, which is on the left under `dir="rtl"`. For special cases, such as a compact "Sort" select in a toolbar, the class `sqs-arrow-start` moves it to the start:
+
+```html
+<select class="sqs sqs-arrow-start">…</select>
+```
+
+**Your own arrow.** One variable replaces the chevron:
+
+```css
+.sqs { --sqs-arrow-image: url("arrow.svg"); }
+```
+
+- The image fills a box as wide as `--sqs-arrow-size` and half as high. An SVG with a `viewBox` fits itself in. For icons from an icon set, crop the `viewBox` to the arrow.
+- An image file keeps its own colors. It does not follow `--sqs-arrow` or dark mode, so check its contrast against the field in both: at least 3:1.
+- `none` hides the arrow. An invalid value, such as a color, shows no arrow either.
+
+To follow `--sqs-arrow` and dark mode, draw the arrow with gradients instead and take the color from `var(--sqs-arrow, light-dark(#596370, #a3adb8))`. The value is resolved where you set `--sqs-arrow-image`, so set it on the select or on the same element as `--sqs-arrow`.
+
+A filled triangle:
 
 ```css
 .sqs {
-  background-image: url("arrow.svg");
-  background-size: .75em;
-  background-position: right .75em center;
-}
-.sqs:dir(rtl) { background-position: left .75em center; }
-@media (forced-colors: active) {
-  .sqs { background-image: none; }
+  --sqs-arrow-size: .5em;
+  --sqs-arrow-image: conic-gradient(from -45deg at 50% 100%, var(--sqs-arrow, light-dark(#596370, #a3adb8)) 90deg, #0000 0);
 }
 ```
 
-An image file does not follow `--sqs-arrow` or dark mode. Make sure it has enough contrast in both, and remove it in forced colors: there the native arrow comes back, and without the last rule the field shows two arrows.
+Two chevrons, up and down. They need two positions, so this one also sets `background-position`, and it keeps the arrow at the end:
+
+```css
+.sqs {
+  --sqs-arrow-size: .5em;
+  --sqs-arrow-image:
+    linear-gradient(135deg, #0000 calc(100% / 3 - .8px), var(--sqs-arrow, light-dark(#596370, #a3adb8)) 0 calc(100% / 3 + .8px), #0000 0),
+    linear-gradient(-135deg, #0000 calc(100% / 3 - .8px), var(--sqs-arrow, light-dark(#596370, #a3adb8)) 0 calc(100% / 3 + .8px), #0000 0),
+    linear-gradient(45deg, #0000 calc(100% / 3 - .8px), var(--sqs-arrow, light-dark(#596370, #a3adb8)) 0 calc(100% / 3 + .8px), #0000 0),
+    linear-gradient(-45deg, #0000 calc(100% / 3 - .8px), var(--sqs-arrow, light-dark(#596370, #a3adb8)) 0 calc(100% / 3 + .8px), #0000 0);
+  background-position:
+    right var(--sqs-padding-inline, .75em) top calc(50% - .21875em), right var(--sqs-padding-inline, .75em) top calc(50% - .21875em),
+    right var(--sqs-padding-inline, .75em) top calc(50% + .21875em), right var(--sqs-padding-inline, .75em) top calc(50% + .21875em);
+}
+.sqs:dir(rtl) {
+  background-position:
+    left var(--sqs-padding-inline, .75em) top calc(50% - .21875em), left var(--sqs-padding-inline, .75em) top calc(50% - .21875em),
+    left var(--sqs-padding-inline, .75em) top calc(50% + .21875em), left var(--sqs-padding-inline, .75em) top calc(50% + .21875em);
+}
+```
 
 ## Long text
 

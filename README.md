@@ -113,7 +113,7 @@ SquirrelSelect only changes how the select looks; the browser keeps doing the re
 
 ## Browser support and versioning
 
-Every browser gets a working, native select. Each change is tested in current Chromium, WebKit and Firefox. By hand, before every minor release: a short checklist on a real Android device with TalkBack, and keyboard with zoom in Chrome, Edge and Firefox. iPhone is not tested on a real device; the automated tests run the Safari engine with touch emulation. Patch releases get a short smoke test. The public API is the class `sqs`, the classes `sqs-icon` and `sqs-hint`, the documented CSS variables, the layer name `squirrel` and the file path; changing any of them needs a major version. Details: [Browser support](https://3m5.github.io/squirrel-select/docs/browser-support.html).
+Every browser gets a working, native select. Each change is tested in current Chromium, WebKit and Firefox. By hand, before every minor release: a short checklist on a real Android device with TalkBack, and keyboard with zoom in Chrome, Edge and Firefox. iPhone is not tested on a real device; the automated tests run the Safari engine with touch emulation. Patch releases get a short smoke test. The public API is the class `sqs`, the classes `sqs-icon`, `sqs-hint` and `sqs-arrow-start`, the documented CSS variables, the layer name `squirrel` and the file path; changing any of them needs a major version. Details: [Browser support](https://3m5.github.io/squirrel-select/docs/browser-support.html).
 
 ## Migrating from 0.x
 

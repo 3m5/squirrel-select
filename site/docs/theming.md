@@ -175,13 +175,13 @@ Two chevrons, up and down. They need two positions, so this one also sets `backg
     linear-gradient(45deg, #0000 calc(100% / 3 - .8px), var(--sqs-arrow, light-dark(#596370, #a3adb8)) 0 calc(100% / 3 + .8px), #0000 0),
     linear-gradient(-45deg, #0000 calc(100% / 3 - .8px), var(--sqs-arrow, light-dark(#596370, #a3adb8)) 0 calc(100% / 3 + .8px), #0000 0);
   background-position:
-    right var(--sqs-padding-inline, .75em) top calc(50% - .21875em), right var(--sqs-padding-inline, .75em) top calc(50% - .21875em),
-    right var(--sqs-padding-inline, .75em) top calc(50% + .21875em), right var(--sqs-padding-inline, .75em) top calc(50% + .21875em);
+    right var(--sqs-arrow-inset, var(--sqs-padding-inline, .75em)) top calc(50% - .21875em), right var(--sqs-arrow-inset, var(--sqs-padding-inline, .75em)) top calc(50% - .21875em),
+    right var(--sqs-arrow-inset, var(--sqs-padding-inline, .75em)) top calc(50% + .21875em), right var(--sqs-arrow-inset, var(--sqs-padding-inline, .75em)) top calc(50% + .21875em);
 }
 .sqs:dir(rtl) {
   background-position:
-    left var(--sqs-padding-inline, .75em) top calc(50% - .21875em), left var(--sqs-padding-inline, .75em) top calc(50% - .21875em),
-    left var(--sqs-padding-inline, .75em) top calc(50% + .21875em), left var(--sqs-padding-inline, .75em) top calc(50% + .21875em);
+    left var(--sqs-arrow-inset, var(--sqs-padding-inline, .75em)) top calc(50% - .21875em), left var(--sqs-arrow-inset, var(--sqs-padding-inline, .75em)) top calc(50% - .21875em),
+    left var(--sqs-arrow-inset, var(--sqs-padding-inline, .75em)) top calc(50% + .21875em), left var(--sqs-arrow-inset, var(--sqs-padding-inline, .75em)) top calc(50% + .21875em);
 }
 ```
 

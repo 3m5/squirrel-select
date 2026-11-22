@@ -10,9 +10,9 @@
 >
 > To try the release candidate: `npm install @3m5-de/squirrel-select@next`, or from a CDN `https://cdn.jsdelivr.net/npm/@3m5-de/squirrel-select@1.0.0-rc.3/dist/squirrel-select.css`.
 
-**Not a dropdown widget. A stylesheet for the native `<select>`.**
+**Keep the select. Change the look.**
 
-One class, no JavaScript. Keyboard, screen readers, autofill and form validation stay with the browser, because it is still the real `<select>`.
+SquirrelSelect is a stylesheet for the native `<select>`. One class, no JavaScript, under 3 kB gzipped, no dependencies. Keyboard, screen readers, autofill and form validation stay with the browser, because it is still the real `<select>`.
 
 ![The same select in Chrome (field and list styled), Firefox (field styled, list from the system) and the Safari engine with touch emulation (field styled, native picker), in light and dark mode](.github/readme-hero.png)
 
@@ -36,12 +36,12 @@ Make it yours with CSS variables, on any parent element:
 .filters { --sqs-accent: light-dark(#b0185a, #ff8cc6); --sqs-radius: 999px; }
 ```
 
-[Documentation](https://3m5.github.io/squirrel-select/docs/index.html) · [Quickstart](https://3m5.github.io/squirrel-select/docs/quickstart.html) · [All states](https://3m5.github.io/squirrel-select/examples/states.html) · [Playground](https://3m5.github.io/squirrel-select/playground.html)
+[Documentation](https://3m5.github.io/squirrel-select/docs/index.html) · [Quickstart](https://3m5.github.io/squirrel-select/docs/quickstart.html) · [Every state](https://3m5.github.io/squirrel-select/examples/states.html) · [Playground](https://3m5.github.io/squirrel-select/playground.html)
 
 ## What it is not
 
-- **Not pixel-identical everywhere.** Chrome, Edge and Safari 27+ on desktop get a fully styled list. In Firefox, and in Safari and Chrome without `base-select`, the closed select follows your design, but the open list comes from the browser or operating system. Browsers older than Chrome 123, Firefox 120 and Safari 17.5 get the browser's default select.
-- **Not a custom picker on phones.** The closed select follows your design, but choosing an option opens the native iOS or Android picker. That is on purpose.
+- **Not pixel-identical everywhere.** Chrome, Edge and Safari 27+ on desktop get a fully styled list. In Firefox, and in Safari and Chrome without `base-select`, the field follows your design, but the open list comes from the browser or operating system. Browsers older than Chrome 123, Firefox 120 and Safari 17.5 get the browser's default select.
+- **Not a custom list on phones.** The field follows your design, but choosing an option opens the native iOS or Android picker. That is on purpose.
 - **Not a component.** No init call, no wrapper, no React or Vue package. If your template can write `<select class="sqs">`, it works.
 - **No search.** The core stays CSS only. An optional search module is planned for 1.1.
 
@@ -51,12 +51,12 @@ Make it yours with CSS variables, on any parent element:
 |---|---|---|
 | Chrome and Edge 135+, Safari 27+ on desktop, with mouse or trackpad | styled | styled |
 | Firefox, Safari 17.5 to 26, Chrome and Edge 123 to 134 on desktop | styled | from the browser or system |
-| Touch devices (phones, tablets without mouse or trackpad) | styled, at least 16 px text and 44 px high | native picker |
+| Touch devices (phones, tablets without mouse or trackpad) | styled, at least 16px text and 44px high | native picker |
 | Older browsers (Chrome < 123, Firefox < 120, Safari < 17.5) | browser default | browser default |
 
-Lists with `multiple` or `size` greater than 1 are styled in every browser as well: box, rows and checked options. Choosing and focus stay the browser's own.
+List boxes, selects with `multiple` or a `size` greater than 1, are styled in every browser as well: box, rows and checked options. Choosing and focus stay the browser's own.
 
-The goal is the same tokens, not the same pixels. Screenshots from our test runs and the reasons behind each path: [How it works](https://3m5.github.io/squirrel-select/docs/how-it-works.html).
+The goal is the same CSS variables, not the same pixels. Screenshots from our test runs and the reasons behind each path: [How it works](https://3m5.github.io/squirrel-select/docs/how-it-works.html).
 
 ## Install
 
@@ -92,18 +92,18 @@ All styles live in the cascade layer `squirrel`, so your own CSS outside a layer
 
 | Variable | Default (light / dark) | Used for |
 |---|---|---|
-| `--sqs-accent` | `#2754c5` / `#8fb1ff` | focus ring, checkmark, selection in lists |
+| `--sqs-accent` | `#2754c5` / `#8fb1ff` | focus ring, checkmark, selection in list boxes |
 | `--sqs-radius` | `.375rem` | corners |
 | `--sqs-font-size` | `1rem` | text size and overall size |
 | `--sqs-border` | `#7d8691` / `#77818c` | border |
 | `--sqs-bg` | `#fff` / `#1b1f24` | field background |
 | `--sqs-text` | `#1c2024` / `#e4e7eb` | text |
 
-For dark mode, declare `color-scheme: light dark` on your page. All variables, and where each one takes effect: [Theming](https://3m5.github.io/squirrel-select/docs/theming.html).
+For dark mode, declare `color-scheme: light dark` on your page. Where to set variables, sizes and your own arrow: [Theming](https://3m5.github.io/squirrel-select/docs/theming.html). Every variable, with its default and where it takes effect: [CSS variables](https://3m5.github.io/squirrel-select/docs/variables.html).
 
-## Recipes
+## Frameworks
 
-[Plain HTML](https://3m5.github.io/squirrel-select/docs/recipes/html.html) · [React](https://3m5.github.io/squirrel-select/docs/recipes/react.html) · [Vue](https://3m5.github.io/squirrel-select/docs/recipes/vue.html) · [Svelte](https://3m5.github.io/squirrel-select/docs/recipes/svelte.html) · [Angular](https://3m5.github.io/squirrel-select/docs/recipes/angular.html) · [TYPO3 Fluid](https://3m5.github.io/squirrel-select/docs/recipes/typo3-fluid.html) · [Symfony and Twig](https://3m5.github.io/squirrel-select/docs/recipes/symfony-twig.html) · [Laravel Blade](https://3m5.github.io/squirrel-select/docs/recipes/laravel-blade.html)
+[Plain HTML](https://3m5.github.io/squirrel-select/docs/frameworks/html.html) · [React](https://3m5.github.io/squirrel-select/docs/frameworks/react.html) · [Vue](https://3m5.github.io/squirrel-select/docs/frameworks/vue.html) · [Svelte](https://3m5.github.io/squirrel-select/docs/frameworks/svelte.html) · [Angular](https://3m5.github.io/squirrel-select/docs/frameworks/angular.html) · [TYPO3 Fluid](https://3m5.github.io/squirrel-select/docs/frameworks/typo3-fluid.html) · [Symfony and Twig](https://3m5.github.io/squirrel-select/docs/frameworks/symfony-twig.html) · [Laravel Blade](https://3m5.github.io/squirrel-select/docs/frameworks/laravel-blade.html)
 
 Styles not applying, or using Tailwind CSS? See [Troubleshooting](https://3m5.github.io/squirrel-select/docs/troubleshooting.html).
 
@@ -113,7 +113,7 @@ SquirrelSelect only changes how the select looks; the browser keeps doing the re
 
 ## Browser support and versioning
 
-Every browser gets a working, native select. Each change is tested in current Chromium, WebKit and Firefox. By hand, before every minor release: a short checklist on a real Android device with TalkBack, and keyboard with zoom in Chrome, Edge and Firefox. iPhone is not tested on a real device; the automated tests run the Safari engine with touch emulation. Patch releases get a short smoke test. The public API is the class `sqs`, the classes `sqs-icon`, `sqs-hint` and `sqs-arrow-start`, the documented CSS variables, the layer name `squirrel` and the file path; changing any of them needs a major version. Details: [Browser support](https://3m5.github.io/squirrel-select/docs/browser-support.html).
+Every browser gets a working native select. Each change is tested in current Chromium, WebKit and Firefox. By hand, before every minor release: a short checklist on a real Android device with TalkBack, and keyboard with zoom in Chrome, Edge and Firefox. iPhone is not tested on a real device; the automated tests run the Safari engine with touch emulation. Patch releases get a short smoke test. The public API is the class `sqs`, the classes `sqs-icon`, `sqs-hint` and `sqs-arrow-start`, the documented CSS variables, the layer name `squirrel` and the file path; changing any of them needs a major version. Details: [Browser support](https://3m5.github.io/squirrel-select/docs/browser-support.html).
 
 ## Migrating from 0.x
 

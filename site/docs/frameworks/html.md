@@ -1,6 +1,6 @@
 # Plain HTML
 
-No build step needed: link the stylesheet and add the class.
+Use SquirrelSelect without a build step: link the stylesheet from a CDN or your own server and add `class="sqs"` to your selects.
 
 ## Stylesheet
 
@@ -41,4 +41,4 @@ Or host the file yourself: copy `dist/squirrel-select.css` from the npm package 
 
 - An unpinned `@1` can change with every release. Use it for trying out, not for production.
 - An `integrity` hash only fits one exact version.
-- For a list with several choices, add `multiple` and set the visible rows with `size`, for example `<select class="sqs" name="colors" multiple size="5">`.
+- For a list box with several choices, add `multiple` and set the visible rows with `size`, for example `<select class="sqs" name="colors" multiple size="5">`.

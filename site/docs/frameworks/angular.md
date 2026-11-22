@@ -1,6 +1,6 @@
 # Angular
 
-It is a normal `<select>`. Load the stylesheet globally, add `class="sqs"`, and bind it with reactive forms or `ngModel` as usual.
+Use SquirrelSelect in Angular: load the stylesheet globally, add `class="sqs"` to a normal `<select>`, and bind it with reactive forms or `ngModel`.
 
 ## Stylesheet
 

@@ -1,13 +1,14 @@
 <title>Playground – SquirrelSelect</title>
-<meta name="description" content="Try the SquirrelSelect tokens with sliders and color pickers, check the contrast in light and dark, and copy the CSS.">
+<meta name="description" content="Try SquirrelSelect’s CSS variables with sliders and color pickers, check the contrast in light and dark, and copy the CSS.">
 
 <main id="main">
   <h1>Playground</h1>
-  <p>Move a slider, look at the result, copy the CSS. The output lists only the values you changed. The preview is neutral on purpose, like a page without its own style.</p>
-  <noscript><p><strong>The playground needs JavaScript.</strong> The preview below shows the default look. Every token is listed in <a href="docs/theming.html">Theming</a>.</p></noscript>
+  <p>Move a slider, look at the result, copy the CSS. The output lists only the CSS variables you changed. The preview is neutral on purpose, like a page without its own style.</p>
+  <noscript><p><strong>The playground needs JavaScript.</strong> The preview below shows the default look. Every CSS variable is listed in <a href="docs/variables.html">CSS variables</a>.</p></noscript>
 
   <div class="pg">
     <div class="preview-bar needs-js">
+      <p class="hint preview-hint">Open a list to see the list colors.</p>
       <div class="field">
         <label for="preview-scheme">Preview colors</label>
         <select class="sqs" id="preview-scheme"><option value="light">Light</option><option value="dark">Dark</option></select>
@@ -88,7 +89,7 @@
         <pre><code id="css-output"></code></pre>
       </figure>
       <div class="contrast">
-        <h2>Contrast (<span id="contrast-mode">light</span>)</h2>
+        <h2>Contrast in <span id="contrast-mode">light</span> mode</h2>
         <ul id="contrast"></ul>
       </div>
     </div>

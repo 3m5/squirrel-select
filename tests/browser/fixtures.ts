@@ -1,16 +1,24 @@
-import { test as base, expect, type Locator, type Page } from '@playwright/test'
+import { test as base, expect, type BrowserContext, type Locator, type Page } from '@playwright/test'
 import { existsSync, statSync } from 'node:fs'
 import { join } from 'node:path'
 
 // serves the built _site/ under the same subpath as the live site, so absolute links fail here too; no server process needed
+// unknown paths get 404.html with status 404, as GitHub Pages does for project sites
+export async function routeSite(context: BrowserContext) {
+  await context.route('http://sqs.test/**', route => {
+    const { pathname } = new URL(route.request().url())
+    const path = pathname.replace(/^\/squirrel-select\//, '').replace(/(^|\/)$/, '$1index.html')
+    const file = join(process.cwd(), '_site', path)
+    const notFound = join(process.cwd(), '_site', '404.html')
+    if (pathname.startsWith('/squirrel-select/') && existsSync(file) && statSync(file).isFile()) return route.fulfill({ path: file })
+    if (pathname.startsWith('/squirrel-select/') && existsSync(notFound)) return route.fulfill({ status: 404, path: notFound, contentType: 'text/html; charset=utf-8' })
+    return route.fulfill({ status: 404 })
+  })
+}
+
 export const test = base.extend({
   context: async ({ context }, use) => {
-    await context.route('http://sqs.test/**', route => {
-      const { pathname } = new URL(route.request().url())
-      const path = pathname.replace(/^\/squirrel-select\//, '').replace(/(^|\/)$/, '$1index.html')
-      const file = join(process.cwd(), '_site', path)
-      return pathname.startsWith('/squirrel-select/') && existsSync(file) && statSync(file).isFile() ? route.fulfill({ path: file }) : route.fulfill({ status: 404 })
-    })
+    await routeSite(context)
     await use(context)
   },
 })

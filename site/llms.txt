@@ -1,0 +1,41 @@
+# SquirrelSelect
+
+> A stylesheet for the native HTML `<select>`. Add `class="sqs"` to a `<select>` and load one CSS file. No JavaScript, no wrapper component, no init call. Keyboard, screen readers, autofill and form validation stay with the browser.
+
+Key facts:
+
+- Package: `@3m5-de/squirrel-select`. Import `@3m5-de/squirrel-select/squirrel-select.css`, or link `https://cdn.jsdelivr.net/npm/@3m5-de/squirrel-select@1/dist/squirrel-select.css`.
+- One class: `sqs`. Optional classes: `sqs-icon` and `sqs-hint` inside options, `sqs-arrow-start` on the select.
+- Customize with CSS variables named `--sqs-*`, set on the select or any ancestor. The stylesheet lives in the cascade layer `squirrel`, so any unlayered rule wins without `!important`.
+- Dark mode follows the page: declare `color-scheme: light dark`.
+- The open list is fully styled in Chrome and Edge 135+ and Safari 27+ with a mouse or trackpad. Firefox and older browsers show the system list with a styled field. Phones open the native picker on purpose.
+- Every `<option>` needs visible text. Every select needs a visible `<label>`.
+- Do not combine `sqs` with Bootstrap's `form-select` or similar classes.
+- For list boxes use `multiple` with `size` of 4 or more. `multiple` with `size="1"` stays unstyled.
+- No search, tags or remote options. An optional search module is planned.
+
+## Docs
+
+- [Quickstart](https://3m5.github.io/squirrel-select/docs/quickstart.html): install, add the class, change a color
+- [How it works](https://3m5.github.io/squirrel-select/docs/how-it-works.html): what each browser shows, and why
+- [Theming](https://3m5.github.io/squirrel-select/docs/theming.html): where to set variables, own rules, arrow, recipes
+- [CSS variables](https://3m5.github.io/squirrel-select/docs/variables.html): every variable with its default
+- [Troubleshooting](https://3m5.github.io/squirrel-select/docs/troubleshooting.html): styles not applying, Tailwind, Sass, TypeScript
+
+## Frameworks
+
+- [Plain HTML](https://3m5.github.io/squirrel-select/docs/frameworks/html.html)
+- [React and Next.js](https://3m5.github.io/squirrel-select/docs/frameworks/react.html)
+- [Vue and Nuxt](https://3m5.github.io/squirrel-select/docs/frameworks/vue.html)
+- [Svelte and SvelteKit](https://3m5.github.io/squirrel-select/docs/frameworks/svelte.html)
+- [Angular](https://3m5.github.io/squirrel-select/docs/frameworks/angular.html)
+- [TYPO3 Fluid](https://3m5.github.io/squirrel-select/docs/frameworks/typo3-fluid.html)
+- [Symfony and Twig](https://3m5.github.io/squirrel-select/docs/frameworks/symfony-twig.html)
+- [Laravel Blade](https://3m5.github.io/squirrel-select/docs/frameworks/laravel-blade.html)
+
+## Optional
+
+- [Browser support and versioning](https://3m5.github.io/squirrel-select/docs/browser-support.html)
+- [Accessibility test results](https://3m5.github.io/squirrel-select/accessibility.html)
+- [Migrating from 0.x](https://3m5.github.io/squirrel-select/docs/migrating.html)
+- [Source on GitHub](https://github.com/3m5/squirrel-select)

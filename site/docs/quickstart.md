@@ -22,7 +22,7 @@ Or straight from a CDN:
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@3m5-de/squirrel-select@1/dist/squirrel-select.css">
 ```
 
-The file is already minified and comes with a source map. For production, pin the exact version and add an `integrity` hash, see the [plain HTML recipe](recipes/html.html).
+The file is already minified and comes with a source map. For production, pin the exact version and add an `integrity` hash, see the [plain HTML recipe](frameworks/html.html).
 
 ## 2. Add the class
 
@@ -37,7 +37,7 @@ The file is already minified and comes with a source map. For production, pin th
 
 An option with `value=""` works as a placeholder: it is shown in a muted color, and `required` makes the browser ask for a real choice.
 
-For a list where people can choose several options, add `multiple`, and `size` for the number of visible rows. The same class styles it. See [Lists](how-it-works.html).
+For a list box where people can choose several options, add `multiple`, and `size` for the number of visible rows. The same class styles it. See [List boxes](how-it-works.html#list-boxes).
 
 ## 3. Make it yours
 
@@ -50,7 +50,7 @@ Set CSS variables on any ancestor, or on the select itself:
 }
 ```
 
-All variables are listed in [Theming](theming.html). Your own CSS outside a layer always wins over ours, because the stylesheet lives in the cascade layer `squirrel`. That includes old global rules such as `select { border: 0; }` from a reset: they override the styling, see "My styles do not apply" in [Troubleshooting](troubleshooting.html).
+All variables are listed in [CSS variables](variables.html). Your own CSS outside a layer always wins over ours, because the stylesheet lives in the cascade layer `squirrel`. That includes old global rules such as `select { border: 0; }` from a reset: they override the styling, see "My styles do not apply" in [Troubleshooting](troubleshooting.html).
 
 For dark mode, declare it on your page. The stylesheet follows your page and never switches on its own:
 
@@ -69,5 +69,5 @@ If you change colors, keep the contrast in light and dark: at least 4.5:1 for te
 ## Next steps
 
 - [How it works](how-it-works.html): why Firefox and phones look a little different.
-- [Recipes](index.html) for your framework or CMS.
+- [Frameworks](frameworks/html.html) for your framework or CMS.
 - [Troubleshooting](troubleshooting.html) if your styles do not apply.

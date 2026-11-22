@@ -60,3 +60,19 @@ test('touch, closed', async ({ page }) => {
   await gotoStates(page)
   await expect(page).toHaveScreenshot('touch.png', { fullPage: true })
 })
+
+// the picture in the hero of the start page is this snapshot, copied into the site by the build
+test.describe('hero picture', () => {
+  // tall enough that both frames are in view and each list opens downwards
+  test.use({ deviceScaleFactor: 2, viewport: { width: 1024, height: 1000 } })
+  for (const variant of ['dark', 'light'] as const) {
+    test(`hero, ${variant}`, async ({ page }) => {
+      only('chromium')
+      await page.goto('examples/hero.html')
+      await page.evaluate(() => document.fonts.ready)
+      const frame = page.locator(`#hero-${variant}`)
+      await openPicker(page, frame.locator('select'))
+      await expect(page).toHaveScreenshot(`hero-${variant}.png`, { clip: (await frame.boundingBox())!, omitBackground: true, scale: 'device' })
+    })
+  }
+})

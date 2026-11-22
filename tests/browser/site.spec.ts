@@ -2,7 +2,7 @@ import AxeBuilder from '@axe-core/playwright'
 import { type Locator, type Page } from '@playwright/test'
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs'
 import { join, sep } from 'node:path'
-import { test as base, expect, project } from './fixtures.ts'
+import { test as base, expect, project, routeSite } from './fixtures.ts'
 
 const root = join(process.cwd(), '_site')
 const origin = 'http://sqs.test'
@@ -11,7 +11,7 @@ const pages = existsSync(root)
   ? readdirSync(root, { recursive: true, encoding: 'utf8' }).map(f => f.split(sep).join('/')).filter(f => f.endsWith('.html')).sort()
   : []
 const placeholder = /\{\{(lang|title|description|head|main|root|page)\}\}/
-const tags = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa']
+const tags = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa', 'best-practice']
 
 function fileFor(url: URL) {
   if (url.origin !== origin || !url.pathname.startsWith(subpath)) return
@@ -79,9 +79,10 @@ const colorScheme = (page: Page) => page.evaluate(() => getComputedStyle(documen
 test('the site is built', () => {
   test.skip(project() !== 'chromium', 'checks files only')
   expect(pages, 'run npm run site first').toEqual(expect.arrayContaining([
-    'index.html', 'playground.html', 'accessibility.html', 'de/barrierefreiheit.html', 'docs/index.html', 'examples/states.html',
+    'index.html', 'playground.html', 'accessibility.html', 'de/barrierefreiheit.html', 'docs/index.html', 'examples/states.html', '404.html',
   ]))
-  const all = readdirSync(root, { recursive: true, encoding: 'utf8' })
+  const all = readdirSync(root, { recursive: true, encoding: 'utf8' }).map(f => f.split(sep).join('/'))
+  expect(all).toEqual(expect.arrayContaining(['llms.txt', 'sitemap.xml']))
   expect(all.filter(f => f.endsWith('.md') || f.endsWith('_layout.html'))).toEqual([])
 })
 
@@ -96,6 +97,8 @@ for (const path of pages) {
 
     test('axe finds no violations in light and dark', async ({ page }) => {
       test.skip(!desktop(), 'same markup as on desktop')
+      // colour transitions would otherwise be measured halfway after switching the theme
+      await page.emulateMedia({ reducedMotion: 'reduce' })
       for (const scheme of ['light', 'dark'] as const) {
         if (withLayout(path)) {
           await visit(page, path)
@@ -118,12 +121,14 @@ for (const path of pages) {
       if (withLayout(path)) await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /\S/)
 
       const refs = await page.evaluate(() => [
-        ...[...document.querySelectorAll('a[href], link[href]')].map(el => ({ tag: el.localName, raw: el.getAttribute('href')!, url: (el as HTMLAnchorElement).href })),
+        ...[...document.querySelectorAll('a[href], link[href]:not([rel="canonical"], [rel="alternate"])')].map(el => ({ tag: el.localName, raw: el.getAttribute('href')!, url: (el as HTMLAnchorElement).href })),
         ...[...document.querySelectorAll('img[src], script[src], source[src], iframe[src], video[src]')].map(el => ({ tag: el.localName, raw: el.getAttribute('src')!, url: (el as HTMLImageElement).src })),
       ])
       const broken: string[] = []
       for (const { tag, raw, url: href } of refs) {
-        if (/^\/(?!\/)/.test(raw)) { broken.push(`${tag} ${raw}: root-absolute path`); continue }
+        // the 404 page is served at any depth, so only it may use paths from the domain root
+        const rootAbsoluteAllowed = path === '404.html' && raw.startsWith(subpath)
+        if (/^\/(?!\/)/.test(raw) && !rootAbsoluteAllowed) { broken.push(`${tag} ${raw}: root-absolute path`); continue }
         const url = new URL(href)
         if (['javascript:', 'mailto:', 'data:'].includes(url.protocol)) continue
         if (url.origin !== origin) {
@@ -162,8 +167,25 @@ for (const path of pages) {
 test('the "in your browser" line names the path the stylesheet takes', async ({ page }) => {
   await visit(page, 'index.html')
   const appearance = await page.getByRole('main').locator('select.sqs').first().evaluate(el => getComputedStyle(el).appearance)
-  const expected = appearance === 'base-select' ? /base-select/ : desktop() ? /drawn by the browser/ : /own picker/
-  await expect(page.locator('#path-name')).toHaveText(expected)
+  const expected = appearance === 'base-select' ? 'base' : desktop() ? 'fallback' : 'touch'
+  await expect(page.locator('#path-name')).toHaveAttribute('data-path', expected)
+  await expect(page.locator('#path-name')).toHaveText(/\S/)
+})
+
+test('without a stored choice the page follows the system colour scheme, with and without JavaScript', async ({ browser }) => {
+  test.skip(project() !== 'chromium', 'one engine is enough for the default')
+  for (const javaScriptEnabled of [true, false]) {
+    for (const colorScheme of ['light', 'dark'] as const) {
+      const context = await browser.newContext({ baseURL: test.info().project.use.baseURL, javaScriptEnabled, colorScheme })
+      await routeSite(context)
+      const page = await context.newPage()
+      await visit(page, 'index.html')
+      const lightness = await backgroundLightness(page)
+      expect(colorScheme === 'dark' ? lightness < 0.5 : lightness > 0.5, `${colorScheme}, JavaScript ${javaScriptEnabled}`).toBe(true)
+      if (javaScriptEnabled) await expect(themeSwitch(page).locator('option:checked')).toHaveText(/system/i)
+      await context.close()
+    }
+  }
 })
 
 test('appearance switch sets the colour scheme of the page', async ({ page, problems }) => {

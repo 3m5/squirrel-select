@@ -1,27 +1,26 @@
 <title>Accessibility – SquirrelSelect</title>
 <meta name="description" content="What we test, with which browsers and screen readers, what is not tested yet, and what you need to do. With a statement text for public sector projects.">
 
-<main id="main">
+<main id="main" data-toc>
   <h1>Accessibility</h1>
   <p><a href="de/barrierefreiheit.html" hreflang="de" lang="de">Deutsche Fassung</a></p>
 
   <section aria-labelledby="summary">
     <h2 id="summary">In short</h2>
-    <p>SquirrelSelect only changes how the native <code>&lt;select&gt;</code> looks. Keyboard, screen reader output and form validation stay with the browser.</p>
-    <p>Lists (<code>multiple</code> and <code>size</code>) keep the browser’s own keyboard and mouse behavior and screen reader output. Only borders, colors, spacing and the bold text of chosen options change.</p>
-    <ul>
-      <li><strong>Target:</strong> WCAG 2.2, level AA. This includes EN 301 549 and BITV 2.0, which refer to WCAG.</li>
-      <li><strong>Method:</strong> self-assessment by the developers. No external audit.</li>
-      <li><strong>Automated:</strong> axe-core, contrast calculation, keyboard and layout tests in Chromium 159, Firefox 159 and WebKit 27.2 (Playwright 1.65.1), on every change. All pass.</li>
-      <li><strong>By hand, before every minor release:</strong> a short checklist on a real Android phone with TalkBack, and keyboard with zoom in Chrome, Edge and Firefox. Patch releases get a short smoke test. For 1.0.0-rc.1, Android with TalkBack and keyboard with zoom passed on 21 November 2026.</li>
-      <li><strong>Not tested:</strong> VoiceOver on a real iPhone (WebKit with touch emulation is checked automatically), NVDA, JAWS, VoiceOver on macOS, the real Windows contrast themes, an external BITV test.</li>
+    <ul class="tiles">
+      <li><strong>Automated, on every change</strong> Chromium 159, Firefox 159 and WebKit 27.2, light and dark, also with touch emulation: axe, contrast, keyboard, text at 200% and layout at 320px. All pass where they run. <a href="#automated">Automated checks</a></li>
+      <li><strong>By hand, before every minor release</strong> TalkBack on a real Android phone, and keyboard with zoom in Chrome and Firefox. Passed for 1.0.0-rc.1 on <time datetime="2026-11-21">November 21, 2026</time>. Patch releases get a short smoke test. <a href="#manual">Checks by hand</a></li>
+      <li><strong>Not tested yet</strong> VoiceOver with Safari on a Mac or an iPhone, NVDA, JAWS, the real Windows contrast themes, an external audit. VoiceOver ran in three automated trials with WebKit, not Safari. <a href="#manual">What is not tested</a></li>
     </ul>
-    <p><strong>Status:</strong> <time datetime="2026-11-21">21 November 2026</time>, before the 1.0.0 release.</p>
+    <p class="summary-line"><strong>Target:</strong> WCAG 2.2, level AA (EN 301 549 and BITV 2.0 refer to it) · <strong>Method:</strong> self-assessment, no external audit · <strong>Status:</strong> <time datetime="2026-11-21">November 21, 2026</time>, before the 1.0.0 release</p>
+    <p>SquirrelSelect only changes how the native <code>&lt;select&gt;</code> looks. Keyboard, screen reader output and form validation stay with the browser.</p>
+    <p>List boxes (<code>multiple</code> and <code>size</code>) keep the browser’s own keyboard and mouse behavior and screen reader output. Only borders, colors, spacing and the bold text of chosen options change.</p>
   </section>
+
 
   <section aria-labelledby="automated">
     <h2 id="automated">Automated checks</h2>
-    <p>These run in real browser engines on every pull request, on a test page with every state of the select: placeholder, selected, disabled, invalid, groups, long text, right-to-left, rich options, three color themes, and lists with <code>multiple</code> and <code>size</code>.</p>
+    <p>These run with Playwright 1.65.1 in real browser engines on every pull request, on a test page with every state of the select: placeholder, selected, disabled, invalid, groups, long text, right-to-left, rich options, three color themes, and list boxes with <code>multiple</code> and <code>size</code>.</p>
     <div class="table-scroll" role="region" aria-labelledby="automated-caption" tabindex="0">
       <table>
         <caption id="automated-caption">Automated checks by browser engine</caption>
@@ -46,15 +45,15 @@
           <tr><th scope="row">Contrast mode (forced colors), emulated: browser’s own select, dashed border when invalid</th><td>1.4.11</td><td>Pass</td><td>Pass</td><td>Not run, see note 4</td></tr>
           <tr><th scope="row">Reduced motion: no transitions</th><td>2.3.3 (AAA, beyond the target)</td><td>Pass</td><td>Pass</td><td>Pass</td></tr>
           <tr><th scope="row">Every option has visible text</th><td>1.3.1, 4.1.2</td><td>Pass</td><td colspan="2">Same HTML, checked once</td></tr>
-          <tr><th scope="row">Lists: name, role, state and chosen options the same as without the stylesheet</th><td>1.3.1, 4.1.2</td><td>Pass</td><td>Pass</td><td>Pass</td></tr>
-          <tr><th scope="row">Lists: keyboard and mouse work as without the stylesheet, focus stays on the list</th><td>2.1.1, 3.2.1</td><td>Pass</td><td>Pass</td><td>Keyboard: pass. Mouse: not run, see note 5</td></tr>
-          <tr><th scope="row">Lists: chosen options have an accent bar and bold text, not color alone</th><td>1.4.1</td><td>Pass</td><td>Pass</td><td>System highlight, see note 5</td></tr>
-          <tr><th scope="row">Lists: text at least 4.5:1, bar and border at least 3:1</th><td>1.4.3, 1.4.11</td><td>Pass</td><td>Same colors, see note 2</td><td>Pass, text on the system highlight</td></tr>
-          <tr><th scope="row">Lists: focus ring of at least 2px, the browser’s own highlight and active option stay</th><td>2.4.7</td><td>Pass</td><td>Pass</td><td>Pass</td></tr>
-          <tr><th scope="row">Lists: rows at least 24px high</th><td>2.5.8</td><td>Pass</td><td>Pass</td><td>Row height from the browser, see note 5</td></tr>
-          <tr><th scope="row">Lists at 320px, text at 200% and increased text spacing: no horizontal scrolling, all rows shown</th><td>1.4.10, 1.4.4, 1.4.12</td><td>Pass</td><td>Pass</td><td>Pass</td></tr>
-          <tr><th scope="row">Lists: form value, reset, invalid state after a failed submit</th><td>3.3.1, with your error text</td><td>Pass</td><td>Pass</td><td>Pass</td></tr>
-          <tr><th scope="row">Lists in the contrast mode, emulated: system colors for chosen options, dashed border when invalid</th><td>1.4.11</td><td>Pass</td><td>Pass</td><td>Not run, see note 4</td></tr>
+          <tr><th scope="row">List boxes: name, role, state and chosen options the same as without the stylesheet</th><td>1.3.1, 4.1.2</td><td>Pass</td><td>Pass</td><td>Pass</td></tr>
+          <tr><th scope="row">List boxes: keyboard and mouse work as without the stylesheet, focus stays on the list box</th><td>2.1.1, 3.2.1</td><td>Pass</td><td>Pass</td><td>Keyboard: pass. Mouse: not run, see note 5</td></tr>
+          <tr><th scope="row">List boxes: chosen options have an accent bar and bold text, not color alone</th><td>1.4.1</td><td>Pass</td><td>Pass</td><td>System highlight, see note 5</td></tr>
+          <tr><th scope="row">List boxes: text at least 4.5:1, bar and border at least 3:1</th><td>1.4.3, 1.4.11</td><td>Pass</td><td>Same colors, see note 2</td><td>Pass, text on the system highlight</td></tr>
+          <tr><th scope="row">List boxes: focus ring of at least 2px, the browser’s own highlight and active option stay</th><td>2.4.7</td><td>Pass</td><td>Pass</td><td>Pass</td></tr>
+          <tr><th scope="row">List boxes: rows at least 24px high</th><td>2.5.8</td><td>Pass</td><td>Pass</td><td>Row height from the browser, see note 5</td></tr>
+          <tr><th scope="row">List boxes at 320px, text at 200% and increased text spacing: no horizontal scrolling, all rows shown</th><td>1.4.10, 1.4.4, 1.4.12</td><td>Pass</td><td>Pass</td><td>Pass</td></tr>
+          <tr><th scope="row">List boxes: form value, reset, invalid state after a failed submit</th><td>3.3.1, with your error text</td><td>Pass</td><td>Pass</td><td>Pass</td></tr>
+          <tr><th scope="row">List boxes in the contrast mode, emulated: system colors for chosen options, dashed border when invalid</th><td>1.4.11</td><td>Pass</td><td>Pass</td><td>Not run, see note 4</td></tr>
         </tbody>
       </table>
     </div>
@@ -63,7 +62,7 @@
       <li>Colors are measured once in Chromium. They resolve to the same values in every engine. Measured for the default colors and three example themes, each in light and dark.</li>
       <li>Firefox on the desktop, phones and tablets show the browser’s or system’s own list. We do not style it, so focus, size and keyboard come from the browser.</li>
       <li>Only Chromium and Firefox can emulate the contrast mode. The real Windows contrast themes are not tested.</li>
-      <li>In WebKit, chosen options in a list keep the browser’s grey highlight, and the browser sets the row height (about 21px at 16px text). Neither can be changed with CSS. Playwright cannot click options in a WebKit list, so the mouse check runs in Chromium and Firefox only.</li>
+      <li>In WebKit, chosen options in a list box keep the browser’s gray highlight, and the browser sets the row height (about 21px at 16px text). Neither can be changed with CSS. Playwright cannot click options in a WebKit list box, so the mouse check runs in Chromium and Firefox only.</li>
     </ol>
     <p>The fields, the axe check and the rendering path are also checked with touch emulation at 390px, in Chromium and WebKit.</p>
   </section>
@@ -81,9 +80,10 @@
           <tr><th scope="row">NVDA + Chrome (Windows)</th><td>Not tested</td></tr>
           <tr><th scope="row">NVDA + Firefox (Windows)</th><td>Not tested</td></tr>
           <tr><th scope="row">VoiceOver + Safari (macOS)</th><td>Not tested</td></tr>
+          <tr><th scope="row">VoiceOver + WebKit (macOS, automated)</th><td>Three automated runs on <time datetime="2026-11-18">November 18, 2026</time>, WebKit 27.2 on macOS 26: name, value and state read in full; WebKit adds “group”, see Known limits. Not Safari</td></tr>
           <tr><th scope="row">VoiceOver + Safari (iPhone)</th><td>Not tested on a real device. WebKit with touch emulation is checked automatically (see above)</td></tr>
-          <tr><th scope="row">TalkBack + Chrome (Android phone)</th><td>Passed on 21 November 2026 with 1.0.0-rc.1: Samsung Galaxy S22 Ultra, Android 16, Chrome 157, TalkBack 16</td></tr>
-          <tr><th scope="row">Keyboard only, zoom 200% and 400% (Chrome, Edge, Firefox)</th><td>Passed on 21 November 2026 with 1.0.0-rc.1: Chrome 158 and Firefox 160 on Linux. Edge not tested separately, it uses the same engine as Chrome. In Firefox, Enter does not open a select, with or without SquirrelSelect; Space, Alt+Down and F4 do</td></tr>
+          <tr><th scope="row">TalkBack + Chrome (Android phone)</th><td>Passed on November 21, 2026 with 1.0.0-rc.1: Samsung Galaxy S22 Ultra, Android 16, Chrome 157, TalkBack 16</td></tr>
+          <tr><th scope="row">Keyboard only, zoom 200% and 400% (Chrome, Edge, Firefox)</th><td>Passed on November 21, 2026 with 1.0.0-rc.1: Chrome 158 and Firefox 160 on Linux. Edge not tested separately, it uses the same engine as Chrome. In Firefox, Enter does not open a select, with or without SquirrelSelect; Space, Alt+Down and F4 do</td></tr>
           <tr><th scope="row">JAWS + Chrome (Windows)</th><td>Not tested</td></tr>
           <tr><th scope="row">Windows contrast themes, real (Edge)</th><td>Not tested, only emulated (see above)</td></tr>
           <tr><th scope="row">External BITV test</th><td>Not done</td></tr>
@@ -111,10 +111,10 @@
     <h2 id="limits">Known limits</h2>
     <ul>
       <li>In Firefox on the desktop and in older browsers, the open list uses the system style. It is fully accessible, but does not match the rest of the design.</li>
-      <li>On phones and tablets, the system’s own picker opens on purpose.</li>
+      <li>On phones and tablets, the native picker opens on purpose.</li>
       <li>In the Windows contrast mode, the browser’s own select appears on purpose, in the colors the user chose.</li>
-      <li>In Safari, selected options in a list keep the system highlight, and the row height comes from the browser. In Firefox and Safari, long option text in a list is cut off.</li>
-      <li>VoiceOver on macOS adds the word “group” to a select whose open list is styled. This comes from WebKit: one line of CSS without SquirrelSelect is enough. Name, value and state are read in full. Found in an automated trial, not yet confirmed in Safari on a real Mac.</li>
+      <li>In Safari, selected options in a list box keep the system highlight, and the row height comes from the browser. In Firefox and Safari, long option text in a list box is cut off.</li>
+      <li>VoiceOver on macOS adds the word “group” to a select whose open list is styled. This comes from WebKit: one line of CSS without SquirrelSelect is enough. Name, value and state are read in full. Found in automated runs with WebKit, not yet confirmed in Safari on a real Mac.</li>
     </ul>
     <p>This page covers the stylesheet. The search module gets its own rows when it ships.</p>
   </section>
@@ -128,15 +128,15 @@
         <p><strong>Accessibility of SquirrelSelect</strong></p>
         <p>SquirrelSelect is a stylesheet for the native HTML <code>&lt;select&gt;</code> element. Keyboard use, screen reader output and form validation are handled by the browser. SquirrelSelect only changes the appearance.</p>
         <p><strong>Standard:</strong> WCAG 2.2, level AA. This covers the requirements of EN 301 549 V3.2.1, chapter 9 (WCAG 2.1 AA), which BITV 2.0 refers to.</p>
-        <p><strong>Method:</strong> self-assessment by the developers, no external certification. Automated checks (axe-core, contrast calculation, keyboard and layout tests in Chromium, Firefox and WebKit) on every change. Checks by hand before every minor release: a short checklist on a real Android phone with the free screen reader TalkBack, and keyboard with zoom in Chrome, Edge and Firefox. Patch releases get a short smoke test. VoiceOver on a real iPhone, NVDA, JAWS, VoiceOver on macOS and the real Windows contrast themes are not tested. Results by browser and screen reader: https://3m5.github.io/squirrel-select/accessibility.html, status 21 November 2026.</p>
+        <p><strong>Method:</strong> self-assessment by the developers, no external certification. Automated checks (axe-core, contrast calculation, keyboard and layout tests in Chromium, Firefox and WebKit) on every change. Checks by hand before every minor release: a short checklist on a real Android phone with the free screen reader TalkBack, and keyboard with zoom in Chrome, Edge and Firefox. Patch releases get a short smoke test. VoiceOver on a real iPhone, NVDA, JAWS, VoiceOver on macOS and the real Windows contrast themes are not tested. Results by browser and screen reader: https://3m5.github.io/squirrel-select/accessibility.html, status November 21, 2026.</p>
         <p><strong>Result:</strong> Used as intended, SquirrelSelect causes no known violations of WCAG 2.2 AA. As intended means: every select has a visible label, every option contains text, the page provides error messages as text, and anyone who changes the color variables keeps the documented contrast values in light and dark mode.</p>
         <p><strong>Known limits:</strong></p>
         <ul>
           <li>In Firefox on the desktop and in older browsers, the open list uses the system style. It is fully accessible, but does not match the rest of the design.</li>
-          <li>On phones and tablets, the system’s own picker opens on purpose.</li>
+          <li>On phones and tablets, the native picker opens on purpose.</li>
           <li>In the Windows contrast mode, the browser’s own select appears on purpose, in the colors the user chose.</li>
-          <li>In Safari, selected options in a list keep the system highlight, and the row height comes from the browser. In Firefox and Safari, long option text in a list is cut off.</li>
-          <li>VoiceOver on macOS adds the word “group” to a select whose open list is styled. This comes from WebKit: one line of CSS without SquirrelSelect is enough. Name, value and state are read in full. Found in an automated trial, not yet confirmed in Safari on a real Mac.</li>
+          <li>In Safari, selected options in a list box keep the system highlight, and the row height comes from the browser. In Firefox and Safari, long option text in a list box is cut off.</li>
+          <li>VoiceOver on macOS adds the word “group” to a select whose open list is styled. This comes from WebKit: one line of CSS without SquirrelSelect is enough. Name, value and state are read in full. Found in automated runs with WebKit, not yet confirmed in Safari on a real Mac.</li>
         </ul>
         <p>SquirrelSelect does not assess the accessibility of the whole website. The accessibility statement of the respective organization applies to that. Report barriers at: https://github.com/3m5/squirrel-select/issues</p>
       </div>

@@ -1,6 +1,6 @@
 # Troubleshooting
 
-The most common reasons why a select does not look the way you expect, and how to check your page in ten seconds.
+The most common reasons why a select does not look the way you expect, and a console check for your page.
 
 ## My styles do not apply
 
@@ -87,15 +87,15 @@ Do not combine `.sqs` with `.form-select` or similar classes. Their CSS is not i
 
 ## The open list ignores my rule
 
-Rules with `::picker(select)`, `::checkmark` or `:open` must not share a selector list with other selectors. Firefox does not know them and drops the whole rule, including the parts it knows. Write them on their own, inside `@supports (appearance: base-select)`. See [Theming](theming.html). Lists with `multiple` or `size` never use `base-select`, so these rules do not apply to them.
+Rules with `::picker(select)`, `::checkmark` or `:open` must not share a selector list with other selectors. Firefox does not know them and drops the whole rule, including the parts it knows. Write them on their own, inside `@supports (appearance: base-select)`. See [Theming](theming.html). List boxes with `multiple` or `size` never use `base-select`, so these rules do not apply to them.
 
 ## A `multiple` select with `size="1"` looks unstyled
 
-Expected. `multiple` with `size="1"` stays native: it gets no styling, not even the 16 px text on touch devices. Use a `size` of 4 or more for lists.
+Expected. `multiple` with `size="1"` stays native: it gets no styling, not even the 16px text on touch devices. Use a `size` of 4 or more for list boxes.
 
-## The selection in a list changes color on focus
+## The selection in a list box changes color on focus
 
-Expected. While a list has focus, the browser paints the checked options in its own selection color. The accent bar comes back when focus leaves. Safari always uses its own colors for options. See [How it works](how-it-works.html).
+Expected. While a list box has focus, the browser paints the checked options in its own selection color. The accent bar comes back when focus leaves. Safari always uses its own colors for options. See [How it works](how-it-works.html).
 
 ## Dark mode does not switch
 

@@ -1,7 +1,7 @@
 <title>Compare – SquirrelSelect</title>
 <meta name="description" content="How SquirrelSelect compares with the plain native select, daisyUI, Tom Select, Choices.js and Slim Select. Sourced and dated.">
 
-<main id="main">
+<main id="main" data-toc>
   <h1>Compare</h1>
   <p>
     SquirrelSelect styles the browser's own <code>&lt;select&gt;</code>. Most select
@@ -10,7 +10,7 @@
     tool for your form.
   </p>
   <p>
-    <strong>As of <time datetime="2026-11-18">18 November 2026</time>.</strong> Every cell is
+    <strong>As of <time datetime="2026-11-18">November 18, 2026</time>.</strong> Every cell is
     based on the official documentation, repository or published npm package listed under
     <a href="#sources">Sources</a>. Version numbers and sizes were checked on that date.
     If you spot something outdated, please open an issue.
@@ -49,10 +49,10 @@
       documentation; it may still be possible.
     </p>
 
-    <div class="table-scroll" role="region" aria-labelledby="compare-caption" tabindex="0">
+    <div class="table-scroll compare-table" role="region" aria-labelledby="compare-caption" tabindex="0">
       <table>
         <caption id="compare-caption">
-          SquirrelSelect 1.0 compared with five alternatives, as of 18 November 2026.
+          SquirrelSelect 1.0 compared with five alternatives, as of November 18, 2026.
           Scroll sideways to see all columns.
         </caption>
         <thead>
@@ -114,7 +114,7 @@
           </tr>
           <tr>
             <th scope="row">Size, gzip<sup><a href="#note-size" id="ref-size">1<span class="visually-hidden"> (how we measured)</span></a></sup></th>
-            <td>2.2 kB CSS</td>
+            <td>2.6 kB CSS</td>
             <td>0</td>
             <td>Not comparable: compiled into your Tailwind CSS build</td>
             <td>17.8 kB JS + 2.1 kB CSS</td>
@@ -122,7 +122,7 @@
             <td>19.4 kB JS + 2.8 kB CSS</td>
           </tr>
           <tr>
-            <th scope="row">Licence</th>
+            <th scope="row">License</th>
             <td>MIT</td>
             <td>—</td>
             <td>MIT</td>
@@ -134,10 +134,10 @@
             <th scope="row">Latest release</th>
             <td>This release</td>
             <td>—</td>
-            <td>15 Nov 2026</td>
-            <td>7 Nov 2026</td>
-            <td>23 Aug 2026</td>
-            <td>12 Nov 2026</td>
+            <td>Nov 15, 2026</td>
+            <td>Nov 7, 2026</td>
+            <td>Aug 23, 2026</td>
+            <td>Nov 12, 2026</td>
           </tr>
           <tr>
             <th scope="row">Open list, desktop Chrome, Edge, Safari 27+</th>
@@ -164,7 +164,7 @@
             <td>Browser-drawn styled list where supported, which replaces the native picker; native picker elsewhere</td>
             <td>Library list</td>
             <td>Library list</td>
-            <td>Library panel, centred modal on mobile by default</td>
+            <td>Library panel, centered modal on mobile by default</td>
           </tr>
           <tr>
             <th scope="row">Submitted value</th>
@@ -252,8 +252,8 @@
     </div>
 
     <p class="notes" id="note-size">
-      <sup>1</sup> Measured on 18 November 2026 with <code>gzip -9</code> on the files the
-      packages publish: <code>dist/squirrel-select.css</code>;
+      <sup>1</sup> Measured with <code>gzip -9</code> on the files the packages publish,
+      SquirrelSelect on November 22, 2026 (1.0.0-rc.3), the others on November 18, 2026: <code>dist/squirrel-select.css</code>;
       <code>tom-select.complete.min.js</code> and <code>tom-select.min.css</code>;
       <code>choices.min.js</code> and <code>choices.min.css</code>;
       <code>slimselect.js</code> and <code>slimselect.css</code>.
@@ -287,7 +287,7 @@
 
   <section aria-labelledby="sources-title" id="sources">
     <h2 id="sources-title">Sources</h2>
-    <p>Checked on 18 November 2026.</p>
+    <p>Checked on November 18, 2026.</p>
     <ul>
       <li>
         Native select:
@@ -301,7 +301,7 @@
         <a href="https://daisyui.com/components/select/">select component</a>,
         <a href="https://github.com/saadeghi/daisyui">repository</a>,
         <a href="https://www.npmjs.com/package/daisyui">npm package</a>
-        (version, licence; select styles read from <code>components/select.css</code>)
+        (version, license; select styles read from <code>components/select.css</code>)
       </li>
       <li>
         Tom Select:

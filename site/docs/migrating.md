@@ -1,6 +1,6 @@
 # Migrating from 0.x to 1.0
 
-Version 1.0 removes the JavaScript dropdown. You keep your `<select>`, add the class `sqs` and one stylesheet, and delete the old init call and the CSS you wrote for the old dropdown.
+Version 1.0 replaces the JavaScript dropdown with a stylesheet. Keep your `<select>`, add the class `sqs`, and delete the old init call and your dropdown CSS.
 
 ## Why this is a breaking change
 

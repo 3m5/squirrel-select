@@ -189,7 +189,11 @@ test('mouse behaves as without the stylesheet', async ({ page }) => {
     await setCore(page, core)
     const steps: string[] = []
     for (const [index, modifier] of [[3, ''], [4, 'Control'], [0, 'Shift']] as const) {
-      const [x, y] = await page.locator(lists.multiple).evaluate((el, index) => {
+      const [x, y] = await page.locator(lists.multiple).evaluate(async (el, index) => {
+        // Chromium scrolls the list to the last clicked option in a later task; let it finish first
+        const frame = () => new Promise(resolve => requestAnimationFrame(() => setTimeout(resolve)))
+        await frame()
+        await frame()
         const option = (el as HTMLSelectElement).options[index]
         option.scrollIntoView({ block: 'nearest' })
         const r = option.getBoundingClientRect()

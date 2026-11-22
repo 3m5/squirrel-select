@@ -45,7 +45,7 @@
       background-position: right var(--_sqs-arrow-inset) center;
     }
 
-    /* Firefox paints its native list with these */
+    /* for native lists that take their colors from the page; Firefox's open list ignores them */
     .sqs option,
     .sqs optgroup {
       color: var(--_sqs-text);

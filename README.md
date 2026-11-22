@@ -8,7 +8,7 @@
 > [!NOTE]
 > Version 1.0 is in preparation. The package on npm today (0.1.x) is the old JavaScript dropdown; its documentation is in the tag [v0.1.5](https://github.com/3m5/squirrel-select/tree/v0.1.5). The CDN path `@1` and the documentation site work once 1.0 is released.
 >
-> To try the release candidate: `npm install @3m5-de/squirrel-select@next`, or from a CDN `https://cdn.jsdelivr.net/npm/@3m5-de/squirrel-select@1.0.0-rc.2/dist/squirrel-select.css`.
+> To try the release candidate: `npm install @3m5-de/squirrel-select@next`, or from a CDN `https://cdn.jsdelivr.net/npm/@3m5-de/squirrel-select@1.0.0-rc.3/dist/squirrel-select.css`.
 
 **Not a dropdown widget. A stylesheet for the native `<select>`.**
 

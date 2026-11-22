@@ -1,6 +1,6 @@
 # Symfony and Twig
 
-Load the stylesheet with your asset setup and give the form field the class `sqs`.
+Use SquirrelSelect in Symfony and Twig: load the stylesheet with your asset setup and give the form field the class `sqs`.
 
 ## Stylesheet
 
@@ -40,4 +40,4 @@ $builder->add('species', ChoiceType::class, [
 ## Watch out for
 
 - The form theme `bootstrap_5_layout.html.twig` adds `form-select` to every select. Bootstrap's CSS is not in a layer and wins over ours. Render these fields without the Bootstrap theme or override the theme block for them.
-- For several choices, set `'multiple' => true` and leave `expanded` at `false`; the list gets the same `attr` class.
+- For several choices, set `'multiple' => true` and leave `expanded` at `false`; the list box gets the same `attr` class.

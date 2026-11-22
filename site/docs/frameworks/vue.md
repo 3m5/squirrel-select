@@ -1,6 +1,6 @@
 # Vue and Nuxt
 
-It is a normal `<select>`. Import the stylesheet once, add `class="sqs"`, and bind it with `v-model` as usual.
+Use SquirrelSelect in Vue and Nuxt: import the stylesheet once, add `class="sqs"` to a normal `<select>`, and bind it with `v-model` as usual.
 
 ## Stylesheet
 

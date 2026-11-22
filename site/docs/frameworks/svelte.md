@@ -1,6 +1,6 @@
 # Svelte and SvelteKit
 
-It is a normal `<select>`. Import the stylesheet once, add `class="sqs"`, and bind it with `bind:value`.
+Use SquirrelSelect in Svelte and SvelteKit: import the stylesheet once, add `class="sqs"` to a normal `<select>`, and bind it with `bind:value`.
 
 ## Stylesheet
 

@@ -1,6 +1,6 @@
 # Laravel Blade
 
-Import the stylesheet with Vite and add `class="sqs"` to your selects.
+Use SquirrelSelect in Laravel Blade: import the stylesheet with Vite and add `class="sqs"` to your selects, including errors from the server.
 
 ## Stylesheet
 

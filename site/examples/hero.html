@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hero picture – SquirrelSelect</title>
+<meta name="description" content="Test page for the picture of the open list on the start page.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../dist/squirrel-select.css">
+<style>
+  @font-face {
+    font-family: "Atkinson Hyperlegible Next";
+    src: url("../assets/fonts/atkinson-hyperlegible-next-latin-wght.woff2") format("woff2");
+    font-weight: 200 800;
+    font-display: block;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 24px;
+    font: 17px/1.5 "Atkinson Hyperlegible Next", sans-serif;
+  }
+  h1 {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  /* One picture each. The field sits where the notes on the start page expect it,
+     and the room below holds the whole open list. */
+  .picture {
+    inline-size: 344px;
+    block-size: 384px;
+    padding: 16px 28px 0;
+  }
+  .picture .sqs { inline-size: 18rem; }
+  .picture + .picture { margin-block-start: 24px; }
+  /* for dark pages */
+  #hero-dark {
+    color-scheme: dark;
+
+    --sqs-bg: #1b1650; --sqs-surface: #231d6e; --sqs-text: #fff; --sqs-muted: #b8b4ec;
+    --sqs-border: #7c7ff5; --sqs-accent: #1fd3ff; --sqs-radius: 2px;
+  }
+  /* for light pages, in the colors of the site */
+  #hero-light {
+    color-scheme: light;
+
+    --sqs-bg: #fff; --sqs-surface: #fff; --sqs-text: #15123d; --sqs-muted: #4a4775;
+    --sqs-border: #7d7aa8; --sqs-accent: #2340ff; --sqs-radius: 8px;
+  }
+</style>
+</head>
+<body>
+<main>
+<h1>Hero picture</h1>
+<div class="picture" id="hero-dark">
+  <select class="sqs" aria-label="Country, dark picture">
+    <optgroup label="Central Europe"><option>Austria</option><option selected>Germany</option><option>Switzerland</option></optgroup>
+    <hr>
+    <optgroup label="Nordics"><option>Denmark</option><option>Finland</option><option disabled>Iceland (no shipping)</option><option>Sweden</option></optgroup>
+  </select>
+</div>
+<div class="picture" id="hero-light">
+  <select class="sqs" aria-label="Country, light picture">
+    <optgroup label="Central Europe"><option>Austria</option><option selected>Germany</option><option>Switzerland</option></optgroup>
+    <hr>
+    <optgroup label="Nordics"><option>Denmark</option><option>Finland</option><option disabled>Iceland (no shipping)</option><option>Sweden</option></optgroup>
+  </select>
+</div>
+</main>
+</body>
+</html>

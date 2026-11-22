@@ -1,131 +1,227 @@
-<title>SquirrelSelect – a stylesheet for the native select</title>
-<meta name="description" content="SquirrelSelect styles the native select element with CSS. No rebuilt dropdown, no JavaScript. Keyboard, screen readers, autofill and form validation stay with the browser.">
+<title>SquirrelSelect – style the native select with one CSS file</title>
+<meta name="description" content="One stylesheet and one class style the native &lt;select&gt;. No JavaScript, under 3 kB. Keyboard, screen readers, autofill and validation stay with the browser.">
+<meta name="og-title" content="Keep the select. Change the look.">
+<meta name="og-description" content="A stylesheet for the native &lt;select&gt;. One class, no JavaScript, under 3 kB, tested in Chromium, Firefox and WebKit on every change.">
 
-<main id="main" class="wide">
+<main id="main" class="home">
   <section class="hero" aria-labelledby="title">
-    <div class="beam" aria-hidden="true"></div>
-    <p class="vertical-label" aria-hidden="true">Native first</p>
-    <div class="wrap">
-      <div class="hero-head">
-        <svg class="icon hero-icon" viewBox="0 0 64 64" fill="url(#icon-gradient)" fill-rule="evenodd" aria-hidden="true" focusable="false"><defs><linearGradient id="icon-gradient" x1="8" y1="60" x2="56" y2="4" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2340ff"/><stop offset="1" stop-color="#1fd3ff"/></linearGradient></defs><path d="M43.3 19.52L44.41 19.87L44.41 23.89L53.16 23.89L53.16 16.24L47.68 10.76L39.67 10.76L32.73 17.7L32.73 37.03L29.81 34.11L29.81 29.73L26.89 26.81L23.97 26.81L23.97 21.7L19.59 26.81L13.75 26.81L10.84 29.73L10.84 34.11L13.75 38.49L18.13 38.49L15.21 41.41L15.21 48.71L31.27 48.71L31.64 48.34L32.91 49.61L41.49 41.03L41.49 21.33ZM15.94 32.65L15.94 29.73L18.86 29.73L18.86 32.65ZM28.37 57.47L32.91 62L50.25 44.66L50.25 32.65L61.92 32.65L61.92 12.61L51.31 2L36.05 2L33.74 4.31L28.89 2.51L15.57 18.06L10.13 18.06L2.08 26.11L2.08 36.76L6.46 43.33L6.46 57.47ZM6.46 27.92L11.94 22.43L17.58 22.43L25.92 12.7L28.35 13.6L28.52 15.72L37.86 6.38L49.49 6.38L57.54 14.43L57.54 28.27L45.87 28.27L45.87 42.85L32.91 55.81L30.19 53.09L10.84 53.09L10.84 42.01L6.46 35.44Z"/></svg>
-        <p class="eyebrow">CSS for the native select</p>
-        <h1 id="title">A stylesheet for the real select.</h1>
-        <p class="lead">No dropdown rebuilt from <code>&lt;div&gt;</code>s and no JavaScript. One CSS file, one class. Keyboard, screen readers, autofill and form validation stay with the browser.</p>
-      </div>
-
-      <div class="stage">
-        <figure>
-          <figcaption><span class="eyebrow">Without</span><span>The select as the browser ships it.</span></figcaption>
-          <div class="field">
-            <label for="before">Country</label>
-            <select id="before">
-              <option>Austria</option><option>Belgium</option><option>Croatia</option><option>Czechia</option><option>Denmark</option><option>Estonia</option><option>Finland</option><option>France</option><option selected>Germany</option><option>Ireland</option><option>Italy</option><option>Netherlands</option><option>Poland</option><option>Portugal</option><option>Spain</option><option>Sweden</option>
-            </select>
-          </div>
-          <div></div>
-          <pre class="diff"><code>&lt;select&gt;</code></pre>
-        </figure>
-        <figure>
-          <figcaption><span class="eyebrow">With SquirrelSelect</span><span>The same element, one more class. Tokens control the look.</span></figcaption>
-          <fieldset class="themes">
-            <legend class="eyebrow">Theme</legend>
-            <div class="segments">
-              <label><input type="radio" name="theme" value="neutral" checked> Neutral</label>
-              <label><input type="radio" name="theme" value="night"> 3m5 Night</label>
-              <label><input type="radio" name="theme" value="studio"> Studio</label>
-            </div>
-            <p class="hint" id="theme-hint">Default look, no tokens changed.</p>
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow">CSS for the native &lt;select&gt;</p>
+        <h1 id="title"><span>Keep the select.</span> <span>Change the look.</span></h1>
+        <p class="lead">Add one class to a native <code>&lt;select&gt;</code> and it takes your colors, corners and spacing. Keyboard, screen readers, autofill and form validation stay with the browser.</p>
+        <ul class="facts">
+          <li><strong>0 kB</strong> <span>JavaScript</span></li>
+          <li><a href="docs/browser-support.html#file-size"><strong>Under 3 kB</strong> <span>CSS, gzipped</span></a></li>
+          <li><strong>0</strong> <span>dependencies</span></li>
+          <li><a href="accessibility.html#automated"><strong>3 engines</strong> <span>tested on every change</span></a></li>
+        </ul>
+        <div class="hero-install">
+          <fieldset class="install-tabs">
+            <legend class="visually-hidden">Install with</legend>
+            <label><input type="radio" name="install" value="npm" checked> npm</label>
+            <label><input type="radio" name="install" value="cdn"> CDN</label>
           </fieldset>
-          <div class="field" id="theme-target">
-            <label for="after">Country</label>
-            <select class="sqs" id="after" style="--sqs-font-size: 1.125rem" aria-describedby="theme-hint">
-              <option>Austria</option><option>Belgium</option><option>Croatia</option><option>Czechia</option><option>Denmark</option><option>Estonia</option><option>Finland</option><option>France</option><option selected>Germany</option><option>Ireland</option><option>Italy</option><option>Netherlands</option><option>Poland</option><option>Portugal</option><option>Spain</option><option>Sweden</option>
-            </select>
+          <div class="command" data-install="npm">
+            <span class="command-label">npm</span>
+            <pre class="plain"><code id="hero-npm">npm install <span class="nobr">@3m5-de/</span><wbr><span class="nobr">squirrel-select</span></code></pre>
+            <button type="button" data-copy="hero-npm" aria-describedby="hero-npm">Copy</button>
           </div>
-          <pre class="diff" id="theme-code"><code>&lt;select <ins>class="sqs"</ins>&gt;</code></pre>
-        </figure>
+          <div class="command" data-install="cdn">
+            <span class="command-label">CDN</span>
+            <pre class="plain"><code id="hero-cdn">&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@3m5-de/squirrel-select@1/dist/squirrel-select.css"&gt;</code></pre>
+            <button type="button" data-copy="hero-cdn" aria-describedby="hero-cdn">Copy</button>
+          </div>
+        </div>
+        <ul class="actions">
+          <li><a class="button primary" href="docs/quickstart.html">Get started</a></li>
+          <li><a class="button" href="playground.html">Try the playground</a></li>
+        </ul>
       </div>
-
-      <p class="path-line">
-        <span>In your browser: <output id="path-name">…</output></span>
-        <a href="docs/how-it-works.html">What does that mean?</a>
-      </p>
+      <figure class="hero-shot">
+        <div class="beam" aria-hidden="true"></div>
+        <div class="shot">
+          <div class="shot-figure">
+          <picture>
+            <source srcset="assets/ci/hero-light-chromium-linux.png" media="(prefers-color-scheme: light)" width="344" height="384">
+            <img src="assets/ci/hero-dark-chromium-linux.png" width="344" height="384" fetchpriority="high" alt="An open select styled with SquirrelSelect: two option groups with a separator, a checkmark next to Germany and a dimmed disabled option.">
+          </picture>
+          <ul class="shot-notes">
+            <li class="note-field"><span><code>class="sqs"</code> + your CSS variables</span></li>
+            <li class="note-check"><span>checkmark in your accent color</span></li>
+            <li class="note-group"><span><code>&lt;optgroup&gt;</code> and <code>&lt;hr&gt;</code></span></li>
+            <li class="note-disabled"><span><code>&lt;option disabled&gt;</code></span></li>
+          </ul>
+          </div>
+        </div>
+        <figcaption><strong class="shot-path" hidden></strong> The open list in Chrome, Edge and Safari 27+ with a mouse or trackpad, from our test run. Firefox and phones show the system list next to your styled field.</figcaption>
+      </figure>
     </div>
   </section>
 
-  <section class="section" aria-labelledby="keeps-title">
+  <section class="section versus-section" aria-labelledby="versus-title">
     <div class="wrap">
-      <p class="eyebrow">No rebuild</p>
-      <h2 id="keeps-title">What the browser keeps doing</h2>
-      <p class="intro">The select stays real, so there is none of this to rebuild or to test.</p>
-      <ul class="keeps">
-        <li>Keyboard and type-ahead</li>
-        <li>Screen reader output</li>
-        <li>Autofill</li>
-        <li><span><code>required</code> and form reset</span></li>
-        <li>Native picker on phones</li>
-      </ul>
+      <div class="section-head">
+        <p class="eyebrow">Live demo</p>
+        <h2 id="versus-title">Still a real select. Open one.</h2>
+        <p class="intro">Both sides use the same three <code>&lt;select&gt;</code> elements. On the right they have <code>class="sqs"</code> and, with an example theme, a few CSS variables. Use the keyboard, switch the theme.</p>
+      </div>
+      <div class="versus">
+        <figure class="side before">
+          <figcaption><span class="side-name">Without</span> <span class="side-note">The browser default.</span> <code>&lt;select&gt;</code></figcaption>
+          <div class="demo-form">
+            <div class="field">
+              <label for="before-country">Country</label>
+              <select id="before-country">
+                <option>Austria</option><option>Belgium</option><option>Croatia</option><option>Czechia</option><option>Denmark</option><option>Estonia</option><option>Finland</option><option>France</option><option selected>Germany</option><option>Ireland</option><option>Italy</option><option>Netherlands</option><option>Poland</option><option>Portugal</option><option>Spain</option><option>Sweden</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="before-shipping">Shipping</label>
+              <select id="before-shipping" required aria-invalid="true" aria-describedby="before-shipping-error">
+                <option value="">Choose a method …</option><option>Standard, 3 to 5 days</option><option>Express, next day</option><option>Pick up in store</option>
+              </select>
+              <p class="error" id="before-shipping-error">Please choose a shipping method.</p>
+            </div>
+            <div class="field">
+              <label for="before-wrap">Gift wrap</label>
+              <select id="before-wrap" disabled><option>Not available for this order</option></select>
+            </div>
+          </div>
+        </figure>
+        <figure class="side after">
+          <figcaption><span class="side-name">With SquirrelSelect</span> <span class="side-note">Same elements, one more class.</span> <code>&lt;select <ins>class="sqs"</ins>&gt;</code></figcaption>
+          <div class="demo-form" id="theme-target">
+            <div class="field">
+              <label for="after-country">Country</label>
+              <select class="sqs" id="after-country">
+                <option>Austria</option><option>Belgium</option><option>Croatia</option><option>Czechia</option><option>Denmark</option><option>Estonia</option><option>Finland</option><option>France</option><option selected>Germany</option><option>Ireland</option><option>Italy</option><option>Netherlands</option><option>Poland</option><option>Portugal</option><option>Spain</option><option>Sweden</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="after-shipping">Shipping</label>
+              <select class="sqs" id="after-shipping" required aria-invalid="true" aria-describedby="after-shipping-error">
+                <option value="">Choose a method …</option><option>Standard, 3 to 5 days</option><option>Express, next day</option><option>Pick up in store</option>
+              </select>
+              <p class="error" id="after-shipping-error">Please choose a shipping method.</p>
+            </div>
+            <div class="field">
+              <label for="after-wrap">Gift wrap</label>
+              <select class="sqs" id="after-wrap" disabled><option>Not available for this order</option></select>
+            </div>
+          </div>
+        </figure>
+        <fieldset class="themes">
+          <legend>Example theme</legend>
+          <div class="segments">
+            <label><input type="radio" name="theme" value="neutral" checked> Default</label>
+            <label><input type="radio" name="theme" value="night"> 3m5 Night</label>
+            <label><input type="radio" name="theme" value="studio"> Studio</label>
+          </div>
+          <p class="hint" id="theme-hint">Default look, no CSS variables changed.</p>
+          <details class="theme-css">
+            <summary>Show the CSS</summary>
+            <pre class="plain" id="theme-code"><code>/* Default look: no CSS variables changed. */</code></pre>
+          </details>
+        </fieldset>
+      </div>
+      <div class="versus-foot">
+        <p class="path-line"><output id="path-name">What you see here depends on your browser.</output> <a href="docs/how-it-works.html">Why browsers differ</a></p>
+        <p class="more-links"><a href="docs/variables.html">Every CSS variable</a> <a href="playground.html">Build your own theme in the playground</a></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section split" aria-labelledby="keeps-title">
+    <div class="wrap split-grid">
+      <div class="section-head">
+        <p class="eyebrow">No rebuild</p>
+        <h2 id="keeps-title">Why rebuild what the browser already does?</h2>
+        <p class="intro">SquirrelSelect styles the select and leaves everything else to the browser.</p>
+        <p class="how-we-test">Our test run checks keyboard use, form behavior and the phone path on every change. <a href="docs/browser-support.html#how-we-test">How we test</a></p>
+      </div>
+      <dl class="keeps">
+        <div><dt>Keyboard</dt><dd>The browser’s own keys, including type-ahead.</dd></div>
+        <div><dt><a href="accessibility.html#automated">Screen readers<span class="visually-hidden">: test results</span></a></dt><dd>The same name, role and value as without the stylesheet.</dd></div>
+        <div><dt>Forms</dt><dd>Value, reset and <code>required</code> work as before.</dd></div>
+        <div><dt>Autofill</dt><dd>Handled by the browser, like for any select.</dd></div>
+        <div><dt><a href="docs/how-it-works.html">Phones<span class="visually-hidden">: how it works</span></a></dt><dd>The native picker opens, on purpose.</dd></div>
+      </dl>
     </div>
   </section>
 
   <section class="section" id="paths" aria-labelledby="paths-title">
     <div class="wrap">
-      <p class="eyebrow">Browsers and devices</p>
-      <h2 id="paths-title">Three paths, by device</h2>
-      <p class="intro">The browser decides how much can be styled. The closed field follows your tokens everywhere. The open list is styled only where the browser allows it and where it takes nothing away from people.</p>
+      <div class="section-head">
+        <p class="eyebrow">Browser support</p>
+        <h2 id="paths-title">Styled as far as each browser allows</h2>
+        <p class="intro">The field follows your design in every current browser. How far the open list goes depends on the browser.</p>
+      </div>
       <ul class="paths">
         <li data-path="base">
-          <h3>Fully styled <span class="yours eyebrow" hidden>Your browser</span></h3>
-          <div class="schema" aria-hidden="true"><i class="ours"></i><i class="ours list"></i></div>
-          <div>
-            <p>Field and list come from SquirrelSelect, with checkmark, groups and dark mode.</p>
-            <p class="where"><strong>With mouse or trackpad</strong> in Chrome and Edge&nbsp;135+, Safari&nbsp;27+</p>
-          </div>
+          <div class="schema" aria-hidden="true"><i class="field-ours"></i><i class="list-ours"><b></b><b class="on"></b><b></b></i></div>
+          <h3>Fully styled <span class="yours" hidden>Your browser</span></h3>
+          <p>Field and open list, with checkmark, groups and dark mode.</p>
+          <p class="where">Chrome and Edge 135+, Safari 27+, with a mouse or trackpad</p>
         </li>
         <li data-path="fallback">
-          <h3>Field styled <span class="yours eyebrow" hidden>Your browser</span></h3>
-          <div class="schema" aria-hidden="true"><i class="ours"></i><i class="system list"></i></div>
-          <div>
-            <p>The field matches your design. The operating system draws the list and takes over the basic colors.</p>
-            <p class="where"><strong>Firefox on the desktop</strong> and older browsers</p>
-          </div>
+          <div class="schema" aria-hidden="true"><i class="field-ours"></i><i class="list-system"><b></b><b></b><b></b></i></div>
+          <h3>Field styled <span class="yours" hidden>Your browser</span></h3>
+          <p>Your field; the system draws the open list.</p>
+          <p class="where">Firefox on the desktop, older Chrome, Edge and Safari</p>
         </li>
         <li data-path="touch">
-          <h3>Phone picker <span class="yours eyebrow" hidden>Your browser</span></h3>
-          <div class="schema" aria-hidden="true"><i class="ours"></i><i class="system sheet"></i></div>
-          <div>
-            <p>The field matches your design. Choosing opens the phone’s familiar picker, on purpose.</p>
-            <p class="where"><strong>Touch devices</strong> with iOS and Android</p>
-          </div>
+          <div class="schema" aria-hidden="true"><i class="field-ours"></i><i class="sheet-system"><b></b><b></b><b></b></i></div>
+          <h3>Native picker <span class="yours" hidden>Your browser</span></h3>
+          <p>Your field; choosing opens the iOS or Android picker, on purpose.</p>
+          <p class="where">Phones and tablets without a mouse or trackpad</p>
         </li>
       </ul>
-      <p class="legend"><span>styled by SquirrelSelect</span><span class="system">drawn by the system</span></p>
+      <div class="paths-foot">
+        <p class="legend"><span class="ours">styled by SquirrelSelect</span><span class="system">drawn by the system</span></p>
+        <p class="hint">List boxes (<code>multiple</code>, <code>size</code>) are styled in every browser. Details and versions: <a href="docs/browser-support.html">Browser support</a>.</p>
+      </div>
     </div>
   </section>
 
-  <section class="section" id="install" aria-labelledby="install-title">
-    <div class="wrap">
-      <p class="eyebrow">In one minute</p>
-      <h2 id="install-title">Install</h2>
-      <p class="intro">Load the file, add the class, done. Set your own colors with CSS variables, try them in the playground.</p>
-      <div class="install">
-        <figure class="code">
-          <figcaption><span>With npm</span> <button type="button" data-copy="install-npm">Copy</button></figcaption>
-          <pre><code id="install-npm">npm install @3m5-de/squirrel-select</code></pre>
-          <div class="code-step"><span>Then in your app</span> <button type="button" data-copy="install-import">Copy</button></div>
-          <pre><code id="install-import">import '@3m5-de/squirrel-select/squirrel-select.css'</code></pre>
-        </figure>
-        <figure class="code">
-          <figcaption><span>Or from a CDN</span> <button type="button" data-copy="install-html">Copy</button></figcaption>
-          <pre><code id="install-html">&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@3m5-de/squirrel-select@1/dist/squirrel-select.css"&gt;
-&lt;select class="sqs"&gt;…&lt;/select&gt;</code></pre>
-        </figure>
+  <section class="section duo" aria-labelledby="duo-title">
+    <h2 class="visually-hidden" id="duo-title">Tested today, more to come</h2>
+    <div class="wrap duo-grid">
+      <div>
+        <p class="eyebrow">Accessibility</p>
+        <h3>Tested, with the results published</h3>
+        <p>Every change runs in Chromium, Firefox and WebKit: axe, contrast, keyboard, text at 200%, 320px layout and screenshots of every state. The page lists what we have not tested yet, too.</p>
+        <p><a class="more" href="accessibility.html">See every result</a></p>
       </div>
-      <p class="hint">For production, pin the exact version or host the file yourself, see <a href="docs/recipes/html.html">Plain HTML</a>.</p>
-      <ul class="next">
+      <div>
+        <p class="eyebrow">What comes next</p>
+        <h3>Next: search for long lists</h3>
+        <p>The core stays CSS only. An optional search module for long lists is planned. It will only run where you switch it on.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section stack-section" id="get-started" aria-labelledby="stack-title">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Get started</p>
+        <h2 id="stack-title">Works with your stack</h2>
+        <p class="intro">If your template can write <code>&lt;select class="sqs"&gt;</code>, it works. Each guide shows where the stylesheet goes, the markup, and what to watch out for.</p>
+      </div>
+      <ul class="stack">
+        <li><a href="docs/frameworks/html.html">Plain HTML</a> <code>&lt;link rel="stylesheet"&gt;</code></li>
+        <li><a href="docs/frameworks/react.html">React and Next.js</a> <code>className="sqs"</code></li>
+        <li><a href="docs/frameworks/vue.html">Vue and Nuxt</a> <code>v-model</code></li>
+        <li><a href="docs/frameworks/svelte.html">Svelte and SvelteKit</a> <code>bind:value</code></li>
+        <li><a href="docs/frameworks/angular.html">Angular</a> <code>formControlName</code></li>
+        <li><a href="docs/frameworks/typo3-fluid.html">TYPO3 Fluid</a> <code>f:form.select</code></li>
+        <li><a href="docs/frameworks/symfony-twig.html">Symfony and Twig</a> <code>attr: {class: 'sqs'}</code></li>
+        <li><a href="docs/frameworks/laravel-blade.html">Laravel Blade</a> <code>@error</code></li>
+      </ul>
+      <p class="hint stack-hint">For production, pin the exact version or host the file yourself. See <a href="docs/frameworks/html.html">Plain HTML</a>.</p>
+      <ul class="actions">
         <li><a class="button primary" href="docs/quickstart.html">Quickstart</a></li>
         <li><a class="button" href="playground.html">Try the playground</a></li>
-        <li><a class="button" href="examples/states.html">See every state</a></li>
       </ul>
     </div>
   </section>

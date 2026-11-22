@@ -3,7 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>States · SquirrelSelect</title>
+<title>Every state – SquirrelSelect</title>
+<meta name="description" content="Every state of a select styled with SquirrelSelect, on one page: placeholder, disabled, invalid, groups, long text, right to left and list boxes.">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="canonical" href="https://3m5.github.io/squirrel-select/examples/states.html">
 <link rel="stylesheet" href="../dist/squirrel-select.css">
 <style>
   @font-face {
@@ -64,12 +67,26 @@
     --sqs-invalid: light-dark(#8f1d5c, #ff8fc8);
     --sqs-radius: 999px; --sqs-border-width: 2px; --sqs-font-size: 1.0625rem;
   }
+  .bar { margin: -1.5rem -1rem 1.5rem; padding: .75rem 1rem; border-block-end: 1px solid var(--page-line); background: var(--page-card); }
+  .bar-in { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem 1.5rem; max-inline-size: 64rem; margin-inline: auto; }
+  .bar-brand { display: inline-flex; align-items: center; gap: .5rem; margin-inline-end: auto; font-weight: 700; text-decoration: none; }
+  .bar-brand svg { inline-size: 1.5rem; block-size: 1.5rem; }
+  .bar a:not(.bar-brand) { font-size: .9375rem; text-underline-offset: .2em; }
+  .bar a:focus-visible { outline: 2px solid currentcolor; outline-offset: 2px; }
+  .intro { max-inline-size: 44rem; margin: .25rem 0 1.5rem; color: var(--page-muted); }
 </style>
 </head>
 <body>
+<header class="bar">
+  <nav class="bar-in" aria-label="Site">
+    <a class="bar-brand" href="../index.html"><svg viewBox="0 0 64 64" fill="currentColor" fill-rule="evenodd" aria-hidden="true" focusable="false"><path d="M43.3 19.52L44.41 19.87L44.41 23.89L53.16 23.89L53.16 16.24L47.68 10.76L39.67 10.76L32.73 17.7L32.73 37.03L29.81 34.11L29.81 29.73L26.89 26.81L23.97 26.81L23.97 21.7L19.59 26.81L13.75 26.81L10.84 29.73L10.84 34.11L13.75 38.49L18.13 38.49L15.21 41.41L15.21 48.71L31.27 48.71L31.64 48.34L32.91 49.61L41.49 41.03L41.49 21.33ZM15.94 32.65L15.94 29.73L18.86 29.73L18.86 32.65ZM28.37 57.47L32.91 62L50.25 44.66L50.25 32.65L61.92 32.65L61.92 12.61L51.31 2L36.05 2L33.74 4.31L28.89 2.51L15.57 18.06L10.13 18.06L2.08 26.11L2.08 36.76L6.46 43.33L6.46 57.47ZM6.46 27.92L11.94 22.43L17.58 22.43L25.92 12.7L28.35 13.6L28.52 15.72L37.86 6.38L49.49 6.38L57.54 14.43L57.54 28.27L45.87 28.27L45.87 42.85L32.91 55.81L30.19 53.09L10.84 53.09L10.84 42.01L6.46 35.44Z"/></svg> SquirrelSelect</a>
+    <a href="../docs/index.html">Docs</a>
+    <a href="https://github.com/3m5/squirrel-select">GitHub</a>
+  </nav>
+</header>
 <main>
-<h1>SquirrelSelect states</h1>
-<p><a href="../">Back to the start page</a></p>
+<h1>Every state</h1>
+<p class="intro">Every state of a select styled with SquirrelSelect, on one page. Our browser tests run against this page in Chromium, Firefox and WebKit on every change, and the screenshots in <a href="../docs/how-it-works.html">How it works</a> come from it.</p>
 
 <div class="cases">
 <figure class="fall" id="fall-default">

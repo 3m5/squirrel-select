@@ -1,6 +1,6 @@
 # TYPO3 Fluid
 
-Copy the stylesheet into your site package, include it with Fluid or TypoScript, and add `class="sqs"` to your selects. There is no TYPO3 extension; you do not need one.
+Use SquirrelSelect in TYPO3 Fluid and the form framework: include the stylesheet from your site package and add `class="sqs"`. No extension needed.
 
 ## Stylesheet
 

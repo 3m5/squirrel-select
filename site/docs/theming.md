@@ -1,6 +1,8 @@
 # Theming
 
-Change the look with CSS variables, or write your own rules. Both work without `!important`, because the whole stylesheet lives in the cascade layer `squirrel`.
+Change the look with CSS variables, or with your own rules. Both work without `!important`, because the whole stylesheet lives in the cascade layer `squirrel`.
+
+Every variable, with its default and where it takes effect, is listed in [CSS variables](variables.html).
 
 ## Where to set variables
 
@@ -23,70 +25,15 @@ For dark mode, give both values with `light-dark()` and declare `color-scheme` o
 
 Without `color-scheme`, the select stays light, even if the operating system is dark.
 
-## Variables
-
-"Full" means Chrome, Edge and Safari 27+ with a mouse or trackpad. "Field only" means Firefox, older browsers and touch devices, where the open list comes from the system. See [How it works](how-it-works.html). Lists with `multiple` or `size` use fewer variables, see Lists below.
-
-### Colors
-
-| Variable | Default light / dark | Used for | Full | Field only |
-|---|---|---|---|---|
-| `--sqs-text` | `#1c2024` / `#e4e7eb` | text in field and list | yes | yes, also in the Firefox list |
-| `--sqs-muted` | `#596370` / `#a3adb8` | placeholder, group labels, hints, disabled | yes | yes |
-| `--sqs-bg` | `#fff` / `#1b1f24` | field background | yes | yes |
-| `--sqs-surface` | `#fff` / `#252b32` | list background | yes | only the Firefox list |
-| `--sqs-border` | `#7d8691` / `#77818c` | border of field and list | yes | yes |
-| `--sqs-border-hover` | 45 % text mixed into border | border of the field on hover | yes | yes |
-| `--sqs-accent` | `#2754c5` / `#8fb1ff` | focus ring, checkmark, border while open | yes | focus ring only |
-| `--sqs-invalid` | `#b3261e` / `#ff9b91` | error border | yes | yes |
-| `--sqs-arrow` | same as `--sqs-muted` | arrow color | yes | yes |
-| `--sqs-hover` | 8 % text mixed into surface | hovered and focused option | yes | no |
-| `--sqs-selected` | 14 % accent mixed into surface | checked option | yes | no |
-| `--sqs-mark` | 28 % accent, transparent | highlighted matches in the search module, planned for 1.1; no effect in 1.0 | no | no |
-
-`--sqs-hover` and `--sqs-selected` are mixed from your text and accent colors. If you only change `--sqs-accent`, they follow.
-
-### Shape, spacing, type
-
-| Variable | Default | Used for | Full | Field only |
-|---|---|---|---|---|
-| `--sqs-font-size` | `1rem` | text size, and with it the overall size; all spacing is in `em` | yes | yes, at least 16 px on touch |
-| `--sqs-radius` | `.375rem` | field corners | yes | yes |
-| `--sqs-list-radius` | `--sqs-radius`, capped at `.75em` | corners of the open list and of lists; the option corners follow | yes | lists |
-| `--sqs-border-width` | `1px` | border width | yes | yes |
-| `--sqs-height` | `2.5em` | minimum field height; never below 24 px, and 44 px on touch | yes | yes |
-| `--sqs-padding-block` | `.5em` | padding top and bottom; one value, or two for top and bottom | yes | yes |
-| `--sqs-padding-inline` | `.75em` | padding start and end; one value only, because the arrow position is calculated from it | yes | yes |
-| `--sqs-gap` | `.5em` | space between text and arrow, checkmark or icon and text | yes | text and arrow |
-| `--sqs-option-padding-block` | `.375em` | padding top and bottom of each option; rows stay at least 44 px high on touch | yes | lists, not in Safari |
-| `--sqs-arrow-size` | `.625em` | arrow width; the height is half, rounded to whole pixels | yes | yes |
-| `--sqs-arrow-height` | half of `--sqs-arrow-size` | arrow height, for images that are not twice as wide as high | yes | yes |
-| `--sqs-arrow-inset` | `--sqs-padding-inline` | distance between arrow and edge | yes | yes |
-| `--sqs-arrow-image` | the chevron | your own arrow, `none` hides it, see Arrow below | yes | yes |
-| `--sqs-arrow-image-open` | `--sqs-arrow-image` | arrow while the list is open | yes | no |
-
-Write lengths with a unit: `0px`, not `0`. Some values have a minimum, such as 24 px for `--sqs-height`, and a bare `0` makes the whole value invalid, so the minimum is lost.
-
-### Focus and list
-
-| Variable | Default | Used for | Full | Field only |
-|---|---|---|---|---|
-| `--sqs-focus-ring` | `2px solid` accent | focus outline (shorthand) | yes | yes |
-| `--sqs-focus-offset` | `2px` | focus outline offset | yes | yes |
-| `--sqs-shadow` | soft shadow, stronger in dark | list shadow | yes | no |
-| `--sqs-list-max-height` | `20em` | maximum list height, also capped to the viewport | yes | no |
-
-If you change colors, check the contrast in light and dark: text at least 4.5:1 on field and list, border and focus ring at least 3:1 against field and page.
-
 ## Sizes
 
 There are no size classes. Change `--sqs-font-size`, and height, spacing and arrow scale with it. Three steps that work well:
 
-| Step | `--sqs-font-size` | Text with a 16 px root |
+| Step | `--sqs-font-size` | Text with a 16px root |
 |---|---|---|
-| Small | `.875rem` | 14 px |
-| Medium | `1rem`, the default | 16 px |
-| Large | `1.125rem` | 18 px |
+| Small | `.875rem` | 14px |
+| Medium | `1rem`, the default | 16px |
+| Large | `1.125rem` | 18px |
 
 Set the value where the step applies, for example on a toolbar:
 
@@ -94,23 +41,13 @@ Set the value where the step applies, for example on a toolbar:
 .toolbar { --sqs-font-size: .875rem; }
 ```
 
-On touch devices the text never gets smaller than 16 px and the field never lower than 44 px. In lists, each row is at least 44 px high in Chrome and Firefox. Below 16 px, iOS zooms into the page when the field gets focus.
+On touch devices the text never gets smaller than 16px and the field never lower than 44px. In list boxes, each row is at least 44px high in Chrome and Firefox. Below 16px, iOS zooms into the page when the field gets focus.
 
-## Lists
+## List boxes
 
-Lists with `multiple` or `size` greater than 1 read these variables. `multiple` with `size="1"` stays native: it gets no styling, not even the 16 px text on touch devices.
+List boxes read fewer variables, listed in [CSS variables](variables.html#list-boxes). The arrow, height, padding and gap variables only apply to the field. Safari ignores colors and padding on options.
 
-The variables:
-
-- `--sqs-surface` for the background, not `--sqs-bg`
-- `--sqs-text`, `--sqs-muted`, `--sqs-border`, `--sqs-border-hover`, `--sqs-border-width`, `--sqs-invalid`
-- `--sqs-list-radius` for the corners, by default `--sqs-radius` capped at `.75em`
-- `--sqs-accent` for the bar at checked options and for the focus ring
-- `--sqs-selected` and `--sqs-hover` for the rows
-- `--sqs-option-padding-block` for the row height
-- `--sqs-focus-ring`, `--sqs-focus-offset`, `--sqs-font-size`, `--sqs-list-max-height`
-
-The arrow, height, padding and gap variables only apply to the field. Safari ignores colors and padding on options, so `--sqs-selected`, `--sqs-hover` and `--sqs-option-padding-block` have no effect there. See [How it works](how-it-works.html).
+`multiple` with `size="1"` stays native: it gets no styling, not even the 16px text on touch devices.
 
 ## Your own rules
 
@@ -122,7 +59,7 @@ Any rule outside a cascade layer beats the stylesheet, whatever its specificity:
 
 Keep two things: the focus outline, and the native look in forced colors. Do not remove `outline` on focus, and do not set `forced-color-adjust: none` on the select.
 
-Rules for the open list only work with `base-select`. Wrap them in `@supports` and never put them in a selector list with other selectors. Firefox does not know `::picker(select)` and would drop the whole rule. Lists never use `base-select`, so these rules do not reach them.
+Rules for the open list only work with `base-select`. Wrap them in `@supports` and never put them in a selector list with other selectors. Firefox does not know `::picker(select)` and would drop the whole rule. List boxes never use `base-select`, so these rules do not reach them.
 
 ```css
 @supports (appearance: base-select) {
@@ -151,7 +88,7 @@ The arrow is drawn with CSS gradients, so it follows `--sqs-arrow` and dark mode
 <select class="sqs sqs-arrow-start">…</select>
 ```
 
-**Vertical position.** The arrow sits in the middle of the field. To move it, set `background-position-y`, for example 13 px above the bottom edge:
+**Vertical position.** The arrow sits in the middle of the field. To move it, set `background-position-y`, for example 13px above the bottom edge:
 
 ```css
 .sqs { background-position-y: bottom 13px; }
@@ -211,7 +148,7 @@ Two chevrons, up and down. They need two positions, so this one also sets `backg
 }
 ```
 
-**A tall arrow.** For an image that is not twice as wide as high, such as 9 × 25 px, set both sides:
+**A tall arrow.** For an image that is not twice as wide as high, such as 9px × 25px, set both sides:
 
 ```css
 .sqs {
@@ -221,7 +158,7 @@ Two chevrons, up and down. They need two positions, so this one also sets `backg
 }
 ```
 
-The width is rounded to an even number of pixels, here 10 px; an SVG with a `viewBox` stays centered in it. Keep the image lower than the field. The chevron and the recipes above are drawn for a box twice as wide as high and get distorted with another height.
+The width is rounded to an even number of pixels, here 10px; an SVG with a `viewBox` stays centered in it. Keep the image lower than the field. The chevron and the recipes above are drawn for a box twice as wide as high and get distorted with another height.
 
 ## More recipes
 
@@ -254,7 +191,7 @@ An error shows in a second way besides the color: the stylesheet adds an inner l
 }
 ```
 
-The checked option keeps its background: `--sqs-selected`, plus the bar in lists, and its own gray in Safari lists. That is then the only cue, so keep it clearly visible.
+The checked option keeps its background: `--sqs-selected`, plus the bar in list boxes, and its own gray in Safari list boxes. That is then the only cue, so keep it clearly visible.
 
 **Different text in field and list.**
 
@@ -281,8 +218,8 @@ Long option text ends with "…" in the closed field. In Chrome and Edge with `b
 </select>
 ```
 
-For icons and hints in options, see [rich content](how-it-works.html).
+For icons and hints in options, see [Icons and hints in options](icons-and-hints.html).
 
 ## Right to left
 
-Nothing to do. Under `dir="rtl"` the arrow moves to the left automatically, and in lists the bar at checked options moves to the right.
+Nothing to do. Under `dir="rtl"` the arrow moves to the left automatically, and in list boxes the bar at checked options moves to the right.

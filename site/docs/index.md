@@ -1,34 +1,43 @@
 # Documentation
 
-SquirrelSelect is a stylesheet for the native `<select>`. You add one class and keep everything the browser already does: keyboard, screen readers, autofill and form validation.
+SquirrelSelect is one stylesheet for the native `<select>`. Install it, change the look with CSS variables, and see what each browser shows.
+
+## The short version
+
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@3m5-de/squirrel-select@1/dist/squirrel-select.css">
+<select class="sqs">…</select>
+```
+
+That is the whole setup. Everything below is detail.
 
 ## Start here
 
-- [Quickstart](quickstart.html): install, add the class, change a color.
-- [How it works](how-it-works.html): what you get in which browser, with screenshots from our test runs.
+- **[Quickstart](quickstart.html)**
 
-## Customize
+  From install to your first color in three steps.
 
-- [Theming](theming.html): every CSS variable, its default and where it takes effect.
+- **[Frameworks](frameworks/html.html)**
 
-## Recipes
+  React, Vue, Svelte, Angular, TYPO3, Symfony, Laravel or plain HTML.
 
-- [Plain HTML](recipes/html.html)
-- [React and Next.js](recipes/react.html)
-- [Vue and Nuxt](recipes/vue.html)
-- [Svelte and SvelteKit](recipes/svelte.html)
-- [Angular](recipes/angular.html)
-- [TYPO3 Fluid](recipes/typo3-fluid.html)
-- [Symfony and Twig](recipes/symfony-twig.html)
-- [Laravel Blade](recipes/laravel-blade.html)
+- **[Theming](theming.html)**
+
+  Where to set CSS variables, sizes, your own arrow, recipes.
+
+- **[How it works](how-it-works.html)**
+
+  Why Firefox and phones show the system list, with screenshots from our tests.
 
 ## Help
 
-- [Troubleshooting](troubleshooting.html)
-- [Browser support and versioning](browser-support.html)
-- [Migrating from 0.x](migrating.html)
-- [Accessibility](../accessibility.html)
-- [All states on one page](../examples/states.html)
+- Something looks wrong? [Troubleshooting](troubleshooting.html) covers the usual causes and has a console check for your page.
+- Coming from 0.x? [Migrating](migrating.html) walks you through it step by step.
+- Looking up a value? [CSS variables](variables.html) lists every variable with its default.
+
+## What you can rely on
+
+SquirrelSelect follows semantic versioning. The class names, the CSS variables, the layer name `squirrel` and the file path only change in a major version. Details in [Browser support and versioning](browser-support.html). Test results by browser and screen reader are on the [accessibility page](../accessibility.html).
 
 ## What comes next
 

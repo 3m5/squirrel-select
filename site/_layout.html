@@ -1,13 +1,16 @@
 <!doctype html>
-<html lang="{{lang}}" data-scheme="dark">
+<html lang="{{lang}}" data-scheme="system">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{{title}}</title>
 <meta name="description" content="{{description}}">
+{{meta}}
+<meta name="theme-color" content="#f3f4fb" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#15123d" media="(prefers-color-scheme: dark)">
 <script>
   document.documentElement.classList.add('js')
-  try { document.documentElement.dataset.scheme = localStorage.getItem('squirrel-select-scheme') || 'dark' } catch {}
+  try { document.documentElement.dataset.scheme = localStorage.getItem('squirrel-select-scheme') || 'system' } catch {}
 </script>
 <link rel="icon" href="{{root}}assets/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="{{root}}assets/favicon-32.png" sizes="32x32" type="image/png">
@@ -28,23 +31,38 @@
     </a>
     <nav class="site-nav" aria-label="Main">
       <ul>
-        <li><a href="{{root}}index.html">Home</a></li>
+        <li><a href="{{root}}docs/index.html" data-section="docs/">Docs</a></li>
         <li><a href="{{root}}examples/states.html">Examples</a></li>
         <li><a href="{{root}}playground.html">Playground</a></li>
-        <li><a href="{{root}}docs/index.html" data-section="docs/">Docs</a></li>
-        <li><a href="{{root}}accessibility.html" data-section="de/">Accessibility</a></li>
         <li><a href="{{root}}compare.html">Compare</a></li>
-        <li><a href="https://github.com/3m5/squirrel-select/releases">Changelog</a></li>
-        <li><a href="https://github.com/3m5/squirrel-select">GitHub</a></li>
+        <li><a href="{{root}}accessibility.html" data-section="de/">Accessibility</a></li>
       </ul>
     </nav>
     <div class="header-tools">
-      <label for="site-scheme" class="visually-hidden">Appearance</label>
-      <select class="sqs" id="site-scheme">
-        <option value="system">System</option>
-        <option value="light">Light</option>
-        <option value="dark">Dark</option>
-      </select>
+      <a class="version" href="https://github.com/3m5/squirrel-select/releases">v{{version}}<span class="visually-hidden">, release notes</span></a>
+      <a class="github" href="https://github.com/3m5/squirrel-select">GitHub</a>
+      <details class="menu">
+        <summary><svg viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3 5.5h14M3 10h14M3 14.5h14"/></svg><span>Menu</span></summary>
+        <nav aria-label="Main">
+          <ul>
+            <li><a href="{{root}}docs/index.html" data-section="docs/">Docs</a></li>
+            <li><a href="{{root}}examples/states.html">Examples</a></li>
+            <li><a href="{{root}}playground.html">Playground</a></li>
+            <li><a href="{{root}}compare.html">Compare</a></li>
+            <li><a href="{{root}}accessibility.html" data-section="de/">Accessibility</a></li>
+            <li><a href="https://github.com/3m5/squirrel-select">GitHub</a></li>
+          </ul>
+        </nav>
+      </details>
+      <span class="scheme">
+        <svg class="scheme-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="7"/><path d="M10 3a7 7 0 0 1 0 14Z"/></svg>
+        <label for="site-scheme">Appearance</label>
+        <select class="sqs" id="site-scheme">
+          <option value="system">System</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </span>
     </div>
   </div>
 </header>
@@ -54,8 +72,55 @@
 </div>
 <footer class="site-footer" lang="en">
   <div class="wrap">
-    <p><strong>SquirrelSelect</strong> · <a href="https://github.com/3m5/squirrel-select/blob/main/LICENSE">MIT License</a> · a project by 3m5.</p>
-    <p>Every select on this site uses SquirrelSelect.</p>
+    <div class="footer-cols">
+      <div class="footer-about">
+        <a class="brand" href="{{root}}index.html">
+          <svg class="icon" viewBox="0 0 64 64" fill="currentColor" fill-rule="evenodd" aria-hidden="true" focusable="false"><path d="M43.3 19.52L44.41 19.87L44.41 23.89L53.16 23.89L53.16 16.24L47.68 10.76L39.67 10.76L32.73 17.7L32.73 37.03L29.81 34.11L29.81 29.73L26.89 26.81L23.97 26.81L23.97 21.7L19.59 26.81L13.75 26.81L10.84 29.73L10.84 34.11L13.75 38.49L18.13 38.49L15.21 41.41L15.21 48.71L31.27 48.71L31.64 48.34L32.91 49.61L41.49 41.03L41.49 21.33ZM15.94 32.65L15.94 29.73L18.86 29.73L18.86 32.65ZM28.37 57.47L32.91 62L50.25 44.66L50.25 32.65L61.92 32.65L61.92 12.61L51.31 2L36.05 2L33.74 4.31L28.89 2.51L15.57 18.06L10.13 18.06L2.08 26.11L2.08 36.76L6.46 43.33L6.46 57.47ZM6.46 27.92L11.94 22.43L17.58 22.43L25.92 12.7L28.35 13.6L28.52 15.72L37.86 6.38L49.49 6.38L57.54 14.43L57.54 28.27L45.87 28.27L45.87 42.85L32.91 55.81L30.19 53.09L10.84 53.09L10.84 42.01L6.46 35.44Z"/></svg>
+          SquirrelSelect
+        </a>
+        <p>A stylesheet for the native select. Every select on this site uses it.</p>
+        <p>Version {{version}} · <a href="https://github.com/3m5/squirrel-select/releases">Changelog</a></p>
+      </div>
+      <nav class="footer-nav" aria-label="Footer">
+        <div>
+          <h2 id="footer-docs">Docs</h2>
+          <ul>
+            <li><a href="{{root}}docs/quickstart.html">Quickstart</a></li>
+            <li><a href="{{root}}docs/how-it-works.html">How it works</a></li>
+            <li><a href="{{root}}docs/theming.html">Theming</a></li>
+            <li><a href="{{root}}docs/variables.html">CSS variables</a></li>
+            <li><a href="{{root}}docs/frameworks/html.html">Frameworks</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2 id="footer-project">Project</h2>
+          <ul>
+            <li><a href="https://github.com/3m5/squirrel-select">GitHub</a></li>
+            <li><a href="https://www.npmjs.com/package/@3m5-de/squirrel-select">npm</a></li>
+            <li><a href="https://github.com/3m5/squirrel-select/issues">Report an issue</a></li>
+            <li><a href="https://github.com/3m5/squirrel-select/blob/main/SECURITY.md">Security</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2 id="footer-a11y">Accessibility</h2>
+          <ul>
+            <li><a href="{{root}}accessibility.html">Test results</a></li>
+            <li><a href="{{root}}de/barrierefreiheit.html" hreflang="de" lang="de">Barrierefreiheit</a></li>
+            <li><a href="{{root}}examples/states.html">Every state</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-legal">
+        <p><a href="https://github.com/3m5/squirrel-select/blob/main/LICENSE">MIT License</a> · © 2024–2026 3m5. Media GmbH · <a href="https://www.3m5.de/impressum" hreflang="de">Legal notice<span class="visually-hidden">, in German</span></a> · <a href="https://www.3m5.de/datenschutz" hreflang="de">Privacy<span class="visually-hidden">, in German</span></a></p>
+        <p>No tracking, no cookies, no third-party requests.</p>
+      </div>
+      <a class="maker" href="https://www.3m5.de">
+        <span>Made and maintained by</span>
+        <svg viewBox="0 0 210 60" fill="currentColor" role="img" aria-label="3m5." focusable="false"><path d="M59.52 0H.48C.22 0 0 .22 0 .48v9.04c0 .26.22.48.48.48h49.04c.26 0 .48.22.48.48v39.04c0 .26-.22.48-.48.48H.48c-.26 0-.48.22-.48.48v9.04c0 .26.22.48.48.48h59.04c.26 0 .48-.22.48-.48V.48c0-.26-.22-.48-.48-.48ZM150 25.48v9.04c0 .26.22.48.48.48h49.04c.26 0 .48.22.48.48v14.04c0 .26-.22.48-.48.48h-49.04c-.26 0-.48.22-.48.48v9.04c0 .26.22.48.48.48h59.04c.26 0 .48-.22.48-.48V25.48c0-.26-.22-.48-.48-.48h-59.04c-.26 0-.48.22-.48.48Z"/><rect y="25" width="35" height="10" rx=".48"/><rect x="75" width="10" height="60" rx=".48"/><rect x="100" width="10" height="60" rx=".48"/><rect x="125" width="10" height="60" rx=".48"/><rect x="150" width="60" height="10" rx=".48"/></svg>
+      </a>
+    </div>
   </div>
 </footer>
 </body>

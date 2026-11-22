@@ -4,16 +4,25 @@ const $$ = (s, root = document) => [...root.querySelectorAll(s)]
 const live = Object.assign(document.createElement('div'), { className: 'visually-hidden' })
 live.setAttribute('aria-live', 'polite')
 document.body.append(live)
+// Same rule as the CSS container queries: the page width in rem of the page, so larger text counts
+const widerThan = rem => document.body.clientWidth / parseFloat(getComputedStyle(document.documentElement).fontSize) > rem
+
 const announce = text => {
   live.textContent = ''
   requestAnimationFrame(() => { live.textContent = text })
 }
 
-// Appearance
+// Appearance. The hero picture follows a manual choice; without one the system decides.
+const shotSource = $('.hero-shot source')
+const syncShot = value => {
+  if (shotSource) shotSource.media = { light: 'all', dark: 'not all' }[value] ?? '(prefers-color-scheme: light)'
+}
 const scheme = $('#site-scheme')
+syncShot(document.documentElement.dataset.scheme)
 if (scheme) {
   scheme.value = document.documentElement.dataset.scheme
   scheme.addEventListener('change', () => {
+    syncShot(scheme.value)
     document.documentElement.dataset.scheme = scheme.value
     try { localStorage.setItem('squirrel-select-scheme', scheme.value) } catch { /* private mode */ }
   })
@@ -37,9 +46,8 @@ if (subnav) {
   summary.textContent = [subnav.getAttribute('aria-label'), current].filter(Boolean).join(' · ')
   details.append(summary, ...subnav.childNodes)
   subnav.append(details)
-  const wide = matchMedia('(width > 60rem)')
-  const sync = () => { details.open = wide.matches }
-  wide.addEventListener('change', sync)
+  const sync = () => { details.open = widerThan(60) }
+  addEventListener('resize', sync)
   sync()
 }
 
@@ -69,7 +77,7 @@ const copyText = COPY_TEXT[document.documentElement.lang.slice(0, 2)] ?? COPY_TE
 // Code blocks without their own caption get one with a copy button
 let codeCount = 0
 for (const pre of $$('main pre')) {
-  if (pre.closest('figure.code') || pre.matches('.diff')) continue
+  if (pre.closest('figure.code') || pre.matches('.diff, .plain')) continue
   const code = $('code', pre) ?? pre
   code.id ||= `code-${++codeCount}`
   const lang = code.className.match(/language-(\w+)/)?.[1]
@@ -104,11 +112,11 @@ document.addEventListener('click', async event => {
 const pathName = $('#path-name')
 if (pathName) {
   const names = {
-    base: 'field and list styled (base-select)',
-    fallback: 'field styled, list drawn by the browser',
-    touch: 'field styled, the phone’s own picker',
-    forced: 'the native select in your contrast colors',
-    old: 'the browser’s default select (too old for the stylesheet)',
+    base: 'Your browser shows the field and the open list styled.',
+    fallback: 'Your browser shows the styled field with the system list.',
+    touch: 'Your device shows the styled field and opens the native picker.',
+    forced: 'Your browser shows the native select in your contrast colors.',
+    old: 'Your browser shows its default select; it is too old for the stylesheet.',
   }
   const media = q => matchMedia(q).matches
   const path = !CSS.supports('color', 'light-dark(#000, #fff)') ? 'old'
@@ -116,6 +124,17 @@ if (pathName) {
       : CSS.supports('appearance', 'base-select') && media('(hover: hover) and (pointer: fine)') ? 'base'
         : media('(pointer: coarse)') ? 'touch' : 'fallback'
   pathName.textContent = names[path]
+  pathName.dataset.path = path
+  const shotPath = $('.shot-path')
+  const shotText = {
+    base: 'Your browser shows the open list like this.',
+    fallback: 'Your browser shows the system list instead, next to your styled field.',
+    touch: 'Your device opens the native picker instead; the field is styled.',
+  }[path]
+  if (shotPath && shotText) {
+    shotPath.textContent = shotText
+    shotPath.hidden = false
+  }
   for (const li of $$('.paths > li')) {
     const mine = li.dataset.path === path
     li.classList.toggle('current', mine)
@@ -123,11 +142,11 @@ if (pathName) {
   }
 }
 
-// Hero: example themes only set --sqs-* tokens
+// Before and after: example themes only set --sqs-* tokens
 const THEMES = {
-  neutral: { hint: 'Default look, no tokens changed.', tokens: {} },
+  neutral: { hint: 'Default look, no CSS variables changed.', tokens: {} },
   night: {
-    hint: 'Made-up example in the 3m5 style: navy, cyan, almost square. Tokens only.',
+    hint: 'Example theme in the 3m5 style: navy, cyan, almost square corners. CSS variables only.',
     tokens: {
       '--sqs-bg': '#1b1650', '--sqs-surface': '#231d6e', '--sqs-text': '#fff', '--sqs-muted': '#b8b4ec',
       '--sqs-border': '#7c7ff5', '--sqs-accent': '#1fd3ff', '--sqs-invalid': '#ff9b91', '--sqs-radius': '2px',
@@ -135,7 +154,7 @@ const THEMES = {
     },
   },
   studio: {
-    hint: 'Made-up example: warm paper, orange, pill shape. Tokens only.',
+    hint: 'Example theme: warm paper, orange, pill shape. CSS variables only.',
     tokens: {
       '--sqs-bg': '#fffaf2', '--sqs-surface': '#fffaf2', '--sqs-text': '#2a2118', '--sqs-muted': '#6b5d4d',
       '--sqs-border': '#8a7a66', '--sqs-accent': '#c2410c', '--sqs-invalid': '#b3261e', '--sqs-radius': '999px',
@@ -145,20 +164,41 @@ const THEMES = {
 }
 const themeTarget = $('#theme-target')
 if (themeTarget) {
-  const escape = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;')
   const apply = name => {
     const { hint, tokens } = THEMES[name]
     for (const key of Object.values(THEMES).flatMap(t => Object.keys(t.tokens))) themeTarget.style.removeProperty(key)
     for (const [key, value] of Object.entries(tokens)) themeTarget.style.setProperty(key, value)
+    themeTarget.closest('.side').dataset.theme = name
     $('#theme-hint').textContent = hint
     const lines = Object.entries(tokens).map(([k, v]) => `  ${k}: ${v};`).join('\n')
-    $('#theme-code').innerHTML = lines
-      ? `<code>.my-theme {\n${escape(lines)}\n}\n&lt;select <ins>class="sqs"</ins>&gt;</code>`
-      : '<code>&lt;select <ins>class="sqs"</ins>&gt;</code>'
+    $('#theme-code code').textContent = lines ? `.my-form {\n${lines}\n}` : '/* Default look: no CSS variables changed. */'
   }
   for (const radio of $$('input[name="theme"]')) radio.addEventListener('change', () => apply(radio.value))
   apply($('input[name="theme"]:checked').value)
 }
+
+// "On this page": open beside the content on wide screens, collapsed above it on small ones
+const toc = $('main .toc')
+if (toc) {
+  const title = $('h2', toc)
+  const details = document.createElement('details')
+  const summary = document.createElement('summary')
+  summary.textContent = title.textContent
+  title.classList.add('visually-hidden')
+  details.append(summary, ...[...toc.childNodes].filter(node => node !== title))
+  toc.append(details)
+  const sync = () => { details.open = widerThan(76) }
+  addEventListener('resize', sync)
+  sync()
+}
+
+// Menu on small screens: Escape closes it and returns focus to the button
+const menu = $('.site-header .menu')
+menu?.addEventListener('keydown', event => {
+  if (event.key !== 'Escape' || !menu.open) return
+  menu.open = false
+  $('summary', menu).focus()
+})
 
 // Playground. Defaults are the library defaults.
 const form = $('#playground')
@@ -222,7 +262,7 @@ if (form) {
     }
     $('#css-output').textContent = lines.length
       ? `/* Any container works instead of :root. */\n:root {\n${lines.join('\n')}\n}`
-      : '/* Nothing changed yet. Move a slider. */'
+      : '/* No CSS variables changed yet. */'
     for (const input of $$('[data-color]', form)) input.value = color(input.dataset.color)
     for (const input of $$('[data-size]', form)) {
       const k = input.dataset.size
@@ -237,7 +277,7 @@ if (form) {
     ].map(([name, a, b, min]) => ({ name, min, r: ratio(a, b), ok: ratio(a, b) >= min }))
     $('#contrast-mode').textContent = mode
     $('#contrast').innerHTML = checks.map(({ name, min, r, ok }) =>
-      `<li><span>${name}</span><span class="value" data-ok="${ok}">${r.toFixed(1)} : 1 ${ok ? '✓' : '✗'}</span><small>${ok ? 'enough' : 'too weak'}, needs at least ${min} : 1</small></li>`).join('')
+      `<li><span>${name}</span><span class="value" data-ok="${ok}">${r.toFixed(1)}:1 · ${ok ? 'enough' : 'too weak'}</span><small>needs at least ${min}:1</small></li>`).join('')
     const changed = lastOk ? checks.filter((c, i) => c.ok !== lastOk[i]) : []
     if (changed.length) announce(changed.map(c => `${c.name}: ${c.ok ? 'enough' : 'too weak'}`).join('. '))
     lastOk = checks.map(c => c.ok)

@@ -1,6 +1,6 @@
 # React and Next.js
 
-It is a normal `<select>`. Import the stylesheet once and use `className="sqs"`. There is no wrapper component, and you do not need one.
+Use SquirrelSelect in React and Next.js: import the stylesheet once and put `className="sqs"` on a normal `<select>`. No wrapper component needed.
 
 ## Stylesheet
 

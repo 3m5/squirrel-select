@@ -131,6 +131,14 @@ Rules for the open list only work with `base-select`. Wrap them in `@supports` a
 }
 ```
 
+While the list is open, the border takes `--sqs-accent`. To keep the normal border color, set it for `:open` in a rule of its own inside the same block:
+
+```css
+@supports (appearance: base-select) {
+  .sqs:open { border-color: var(--sqs-border, light-dark(#7d8691, #77818c)); }
+}
+```
+
 ## Arrow
 
 The arrow is drawn with CSS gradients, so it follows `--sqs-arrow` and dark mode. In forced colors the native arrow takes over, always at the end.
@@ -142,6 +150,14 @@ The arrow is drawn with CSS gradients, so it follows `--sqs-arrow` and dark mode
 ```html
 <select class="sqs sqs-arrow-start">…</select>
 ```
+
+**Vertical position.** The arrow sits in the middle of the field. To move it, set `background-position-y`, for example 13 px above the bottom edge:
+
+```css
+.sqs { background-position-y: bottom 13px; }
+```
+
+Right to left and `sqs-arrow-start` keep working, because they only change the horizontal position.
 
 **Your own arrow.** One variable replaces the chevron:
 

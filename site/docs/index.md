@@ -41,4 +41,4 @@ SquirrelSelect follows semantic versioning. The class names, the CSS variables, 
 
 ## What comes next
 
-The core stays CSS only. An optional search module for long lists is planned for version 1.1. It will only run where you switch it on.
+The core stays CSS only. An optional search module for long lists is planned. It will only run where you switch it on.

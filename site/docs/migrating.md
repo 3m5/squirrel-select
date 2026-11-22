@@ -76,7 +76,7 @@ The 0.x variables never took effect, but if you copied them into your own CSS:
 | `--sqs-dropdown-options-max-height` | `--sqs-list-max-height` |
 | `--sqs-dropdown-trigger-height` | `--sqs-height` |
 | `--sqs-dropdown-option-padding` | `--sqs-option-padding-block` for top and bottom |
-| `--sqs-dropdown-icon-path`, `--sqs-dropdown-icon-open-path` | `--sqs-arrow-image` for another shape, `--sqs-arrow` for the color, see [Theming](theming.html). There is no separate arrow for the open state. |
+| `--sqs-dropdown-icon-path`, `--sqs-dropdown-icon-open-path` | `--sqs-arrow-image` for another shape, `--sqs-arrow-image-open` while the list is open (only with `base-select`), `--sqs-arrow` for the color, see [Theming](theming.html). |
 
 ## What looks and behaves different
 
@@ -86,3 +86,15 @@ The 0.x variables never took effect, but if you copied them into your own CSS:
 - **Keyboard:** now the browser's own behavior. Type-to-select works with any letter, including umlauts and accents. 0.x only matched a to z.
 - **Screen readers:** the select is announced as a real select with all its options. 0.x had no ARIA roles.
 - **Search:** 0.x had none beyond type-to-select, and neither does the 1.0 core. An optional search module is planned for 1.1.
+
+## End-to-end tests
+
+Tests for 0.x clicked through the old list of `<div>`s. In 1.0 there is only the real `<select>`, so test it like any select. In Playwright, choose by value and check the visible text of the checked option:
+
+```js
+const price = page.getByLabel('Price')
+await price.selectOption('basic')
+await expect(price.locator('option:checked')).toHaveText('1.234,50 €')
+```
+
+Option texts formatted with `Intl`, such as prices and numbers, contain non-breaking spaces (U+00A0 or U+202F). Before version 1.60, Playwright compares `selectOption({ label })` exactly, so a label typed with a normal space is not found. `toHaveText` treats all spaces alike.

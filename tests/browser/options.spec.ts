@@ -280,3 +280,65 @@ test('list radius follows --sqs-list-radius in list boxes and the open list, not
     await page.keyboard.press('Escape')
   }
 })
+
+test('arrow height: --sqs-arrow-height sets the box height, the width and the space stay with --sqs-arrow-size', async ({ page }) => {
+  await open(page, field('t-size', '--sqs-arrow-size: 10px') + field('t-tall', '--sqs-arrow-size: 10px; --sqs-arrow-height: 25px'))
+  const [size, tall] = await Promise.all(['t-size', 't-tall'].map(id => metrics(page, id)))
+  expect(size.arrow).toEqual({ width: 10, height: 5 })
+  expect(tall.arrow).toEqual({ width: 10, height: 25 })
+  expect([tall.start, tall.end]).toEqual([size.start, size.end])
+})
+
+test('arrow inset: --sqs-arrow-inset moves the arrow from the edge, at the end, at the start and in RTL', async ({ page }) => {
+  const inset = '--sqs-arrow-inset: 4px'
+  await open(page, field('t-end') + field('t-inset', inset) + field('t-start-inset', inset, 'sqs-arrow-start')
+    + `<div dir="rtl">${field('t-rtl-inset', inset) + field('t-rtl-start-inset', inset, 'sqs-arrow-start')}</div>`)
+  const [end, ends, starts, rtl, rtlStart] = await Promise.all(['t-end', 't-inset', 't-start-inset', 't-rtl-inset', 't-rtl-start-inset'].map(id => metrics(page, id)))
+
+  // the text keeps its padding, the space for the arrow shrinks by the difference
+  expect(ends.start).toBe(end.start)
+  expect(ends.end).toBe(end.end - (end.start - 4))
+  expect([starts.start, starts.end]).toEqual([ends.end, ends.start])
+  expect([rtl.start, rtl.end, rtlStart.start, rtlStart.end]).toEqual([ends.start, ends.end, starts.start, starts.end])
+
+  const fromRight = async (id: string, m: typeof end) => m.width - ink(await shoot(page, id)).box!.right - m.border
+  const fromLeft = async (id: string, m: typeof end) => ink(await shoot(page, id)).box!.left - m.border
+  expect(Math.abs((await fromRight('t-inset', ends)) - 4)).toBeLessThanOrEqual(1)
+  expect(Math.abs((await fromLeft('t-start-inset', starts)) - 4)).toBeLessThanOrEqual(1)
+  expect(Math.abs((await fromLeft('t-rtl-inset', rtl)) - 4)).toBeLessThanOrEqual(1)
+  expect(Math.abs((await fromRight('t-rtl-start-inset', rtlStart)) - 4)).toBeLessThanOrEqual(1)
+})
+
+test('border hover: --sqs-border-hover sets the border color on hover', async ({ page }) => {
+  await open(page, field('t-hover', '--sqs-border-hover: rgb(0 128 0)'))
+  const select = page.locator('#t-hover')
+  const border = () => select.evaluate(el => getComputedStyle(el).borderTopColor)
+  expect(await border()).not.toBe('rgb(0, 128, 0)')
+  await select.hover()
+  // the border color fades in over 120ms
+  await expect.poll(border).toBe('rgb(0, 128, 0)')
+})
+
+test('open arrow: --sqs-arrow-image-open replaces the arrow while the list is open, not in forced colors', async ({ page }) => {
+  test.skip(!isBaseSelect(), 'only the styled list has an open state for the field')
+  const svg = 'url(data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%202%201%22%3E%3Cpath%20d=%22M0%201h2L1%200z%22/%3E%3C/svg%3E)'
+  await open(page, field('t-default', '', '', 'Red squirrel') + field('t-open', `--sqs-arrow-image-open: ${svg}`, '', 'Red squirrel'))
+  const image = (id: string) => page.locator(`#${id}`).evaluate(el => getComputedStyle(el).backgroundImage)
+  const closed = await image('t-default')
+  expect(await image('t-open')).toBe(closed)
+
+  await openPicker(page, page.locator('#t-default'))
+  expect(await image('t-default')).toBe(closed)
+  await page.keyboard.press('Escape')
+
+  await openPicker(page, page.locator('#t-open'))
+  expect(await image('t-open')).toMatch(/^url\(/)
+  await page.keyboard.press('Escape')
+  await expect.poll(() => image('t-open')).toBe(closed)
+
+  // the native list opens here too, next to the native arrow
+  if (!forcedColorsProjects.includes(project())) return
+  await page.emulateMedia({ forcedColors: 'active' })
+  await openPicker(page, page.locator('#t-open'))
+  expect(await image('t-open')).toBe('none')
+})

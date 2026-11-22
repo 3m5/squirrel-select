@@ -33,6 +33,7 @@
 
       .sqs:not(:where([multiple], [size]:not([size="0"], [size="1"]))):open {
         border-color: var(--_sqs-accent);
+        background-image: var(--sqs-arrow-image-open, var(--_sqs-chevron));
       }
 
       .sqs:not(:where([multiple], [size]:not([size="0"], [size="1"])))::picker(select) {

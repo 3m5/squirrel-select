@@ -14,7 +14,7 @@
       --_sqs-selected: var(--sqs-selected, color-mix(in oklab, var(--_sqs-accent) 14%, var(--_sqs-surface)));
       --_sqs-mark: var(--sqs-mark, color-mix(in oklab, var(--_sqs-accent) 28%, transparent));
       --_sqs-selected-strong: color-mix(in oklab, var(--_sqs-accent) 24%, var(--_sqs-surface));
-      --_sqs-border-hover: color-mix(in oklab, var(--_sqs-border), var(--_sqs-text) 45%);
+      --_sqs-border-hover: var(--sqs-border-hover, color-mix(in oklab, var(--_sqs-border), var(--_sqs-text) 45%));
       --_sqs-font-size: var(--sqs-font-size, 1rem);
       --_sqs-radius: var(--sqs-radius, .375rem);
 
@@ -35,6 +35,8 @@
       --_sqs-list-max: var(--sqs-list-max-height, 20em);
       --_sqs-check: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.25 8.5 6.5 11.75l6.25-7.5' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
       --_sqs-chev: calc(var(--sqs-arrow-size, .625em) / 2);
+      --_sqs-arrow-h: var(--sqs-arrow-height, var(--_sqs-chev));
+      --_sqs-arrow-inset: var(--sqs-arrow-inset, var(--_sqs-pad-inline));
 
       /* two gradients instead of an image, so the arrow follows --sqs-arrow and dark mode in every rendering path;
          both fill a box twice as wide as high, each line runs from a top corner to the middle of the bottom edge */

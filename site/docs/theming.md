@@ -80,7 +80,27 @@ While the list is open, the border takes `--sqs-accent`. To keep the normal bord
 
 The arrow is drawn with CSS gradients, so it follows `--sqs-arrow` and dark mode. In forced colors the native arrow takes over, always at the end.
 
-**Size.** `--sqs-arrow-size` sets the width; the height is half of it. Between `.5em` and `1em` works best. The padding next to the arrow grows with it. `--sqs-arrow-inset` sets the distance from the edge, by default the same as `--sqs-padding-inline`.
+**Size.** `--sqs-arrow-size` sets the width; the height is half of it. Between `.5em` and `1em` works best. `--sqs-arrow-inset` sets the distance from the edge, by default the same as `--sqs-padding-inline`.
+
+**Space at the end.** The field keeps room for the arrow, so long text is cut off before it and never runs under it. The padding at the end is the sum of three values:
+
+```text
+padding at the end = --sqs-arrow-inset + arrow width + --sqs-gap
+```
+
+With the defaults that is `.75em + .625em + .5em`, 30px at a font size of 16px. A larger arrow or inset makes it grow. The arrow width is rounded to an even number of pixels, so a `9px` arrow takes up 10px.
+
+`--sqs-padding-inline` only sets the start. To match an exact padding at the end, for example from an existing design, change `--sqs-gap`. For 40px with a 17px inset and a 10px arrow:
+
+```css
+.sqs {
+  --sqs-arrow-inset: 17px;
+  --sqs-arrow-size: 10px;
+  --sqs-gap: 13px; /* 17px + 10px + 13px = 40px */
+}
+```
+
+`--sqs-gap` is also the space between checkmark or icon and text in the open list. With `sqs-arrow-start`, the same sum applies at the start and `--sqs-padding-inline` sets the end.
 
 **Side.** The arrow belongs at the end of the field, which is on the left under `dir="rtl"`. For special cases, such as a compact "Sort" select in a toolbar, the class `sqs-arrow-start` moves it to the start:
 

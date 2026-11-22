@@ -33,7 +33,7 @@ Every CSS variable SquirrelSelect reads, with its default in light and dark mode
 | `--sqs-border-width` | `1px` | border width | yes | yes |
 | `--sqs-height` | `2.5em` | minimum field height; never below `24px`, and `44px` on touch | yes | yes |
 | `--sqs-padding-block` | `.5em` | padding top and bottom; one value, or two for top and bottom | yes | yes |
-| `--sqs-padding-inline` | `.75em` | padding start and end; one value only, because the arrow position is calculated from it | yes | yes |
+| `--sqs-padding-inline` | `.75em` | padding at the start, and the default for `--sqs-arrow-inset`; one value only. The padding at the end is calculated, see [Arrow](theming.html#arrow) | yes | yes |
 | `--sqs-gap` | `.5em` | space between text and arrow, checkmark or icon and text | yes | text and arrow |
 | `--sqs-option-padding-block` | `.375em` | padding top and bottom of each option; rows stay at least `44px` high on touch | yes | list boxes, not in Safari |
 | `--sqs-arrow-size` | `.625em` | arrow width; the height is half, rounded to whole pixels | yes | yes |

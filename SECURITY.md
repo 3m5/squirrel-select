@@ -49,5 +49,5 @@ Out of scope are your own CSS that overrides ours, markup and option text alread
 attacker's control, and browser bugs that SquirrelSelect cannot work around. If you are
 unsure, report it anyway.
 
-The optional search module, planned for 1.1, adds JavaScript. This section will be extended
-when it ships.
+Optional JavaScript modules are planned after 1.0. This section will be extended when the
+first one ships.

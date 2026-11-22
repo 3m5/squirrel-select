@@ -43,7 +43,7 @@ Make it yours with CSS variables, on any parent element:
 - **Not pixel-identical everywhere.** Chrome, Edge and Safari 27+ on desktop get a fully styled list. In Firefox, and in Safari and Chrome without `base-select`, the field follows your design, but the open list comes from the browser or operating system. Browsers older than Chrome 123, Firefox 120 and Safari 17.5 get the browser's default select.
 - **Not a custom list on phones.** The field follows your design, but choosing an option opens the native iOS or Android picker. That is on purpose.
 - **Not a component.** No init call, no wrapper, no React or Vue package. If your template can write `<select class="sqs">`, it works.
-- **No search.** The core stays CSS only. An optional search module is planned for 1.1.
+- **No search.** The core stays CSS only. An optional search module is planned.
 
 ## How it works
 

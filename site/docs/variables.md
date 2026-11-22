@@ -19,7 +19,7 @@ Every CSS variable SquirrelSelect reads, with its default in light and dark mode
 | `--sqs-arrow` | same as `--sqs-muted` | arrow color | yes | yes |
 | `--sqs-hover` | 8% text mixed into surface | hovered and focused option | yes | no |
 | `--sqs-selected` | 14% accent mixed into surface | checked option | yes | no |
-| `--sqs-mark` | 28% accent, transparent | highlighted matches in the search module, planned for 1.1; no effect in 1.0 | no | no |
+| `--sqs-mark` | 28% accent, transparent | highlighted matches in the planned search module; no effect yet | no | no |
 
 `--sqs-hover` and `--sqs-selected` are mixed from your text and accent colors. If you only change `--sqs-accent`, they follow.
 

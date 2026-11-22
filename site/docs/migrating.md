@@ -76,7 +76,7 @@ The 0.x variables never took effect, but if you copied them into your own CSS:
 | `--sqs-dropdown-options-max-height` | `--sqs-list-max-height` |
 | `--sqs-dropdown-trigger-height` | `--sqs-height` |
 | `--sqs-dropdown-option-padding` | `--sqs-option-padding-block` for top and bottom |
-| `--sqs-dropdown-icon-path`, `--sqs-dropdown-icon-open-path` | `--sqs-arrow-image` for another shape, `--sqs-arrow` for the color, see [Theming](theming.html). There is no separate arrow for the open state. |
+| `--sqs-dropdown-icon-path`, `--sqs-dropdown-icon-open-path` | `--sqs-arrow-image` for another shape, `--sqs-arrow-image-open` while the list is open (only with `base-select`), `--sqs-arrow` for the color, see [Theming](theming.html). |
 
 ## What looks and behaves different
 

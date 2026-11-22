@@ -36,6 +36,7 @@ Without `color-scheme`, the select stays light, even if the operating system is 
 | `--sqs-bg` | `#fff` / `#1b1f24` | field background | yes | yes |
 | `--sqs-surface` | `#fff` / `#252b32` | list background | yes | only the Firefox list |
 | `--sqs-border` | `#7d8691` / `#77818c` | border of field and list | yes | yes |
+| `--sqs-border-hover` | 45 % text mixed into border | border of the field on hover | yes | yes |
 | `--sqs-accent` | `#2754c5` / `#8fb1ff` | focus ring, checkmark, border while open | yes | focus ring only |
 | `--sqs-invalid` | `#b3261e` / `#ff9b91` | error border | yes | yes |
 | `--sqs-arrow` | same as `--sqs-muted` | arrow color | yes | yes |
@@ -59,7 +60,10 @@ Without `color-scheme`, the select stays light, even if the operating system is 
 | `--sqs-gap` | `.5em` | space between text and arrow, checkmark or icon and text | yes | text and arrow |
 | `--sqs-option-padding-block` | `.375em` | padding top and bottom of each option; rows stay at least 44 px high on touch | yes | lists, not in Safari |
 | `--sqs-arrow-size` | `.625em` | arrow width; the height is half, rounded to whole pixels | yes | yes |
+| `--sqs-arrow-height` | half of `--sqs-arrow-size` | arrow height, for images that are not twice as wide as high | yes | yes |
+| `--sqs-arrow-inset` | `--sqs-padding-inline` | distance between arrow and edge | yes | yes |
 | `--sqs-arrow-image` | the chevron | your own arrow, `none` hides it, see Arrow below | yes | yes |
+| `--sqs-arrow-image-open` | `--sqs-arrow-image` | arrow while the list is open | yes | no |
 
 Write lengths with a unit: `0px`, not `0`. Some values have a minimum, such as 24 px for `--sqs-height`, and a bare `0` makes the whole value invalid, so the minimum is lost.
 
@@ -99,7 +103,7 @@ Lists with `multiple` or `size` greater than 1 read these variables. `multiple` 
 The variables:
 
 - `--sqs-surface` for the background, not `--sqs-bg`
-- `--sqs-text`, `--sqs-muted`, `--sqs-border`, `--sqs-border-width`, `--sqs-invalid`
+- `--sqs-text`, `--sqs-muted`, `--sqs-border`, `--sqs-border-hover`, `--sqs-border-width`, `--sqs-invalid`
 - `--sqs-list-radius` for the corners, by default `--sqs-radius` capped at `.75em`
 - `--sqs-accent` for the bar at checked options and for the focus ring
 - `--sqs-selected` and `--sqs-hover` for the rows
@@ -131,7 +135,7 @@ Rules for the open list only work with `base-select`. Wrap them in `@supports` a
 
 The arrow is drawn with CSS gradients, so it follows `--sqs-arrow` and dark mode. In forced colors the native arrow takes over, always at the end.
 
-**Size.** `--sqs-arrow-size` sets the width; the height is half of it. Between `.5em` and `1em` works best. The padding next to the arrow grows with it.
+**Size.** `--sqs-arrow-size` sets the width; the height is half of it. Between `.5em` and `1em` works best. The padding next to the arrow grows with it. `--sqs-arrow-inset` sets the distance from the edge, by default the same as `--sqs-padding-inline`.
 
 **Side.** The arrow belongs at the end of the field, which is on the left under `dir="rtl"`. For special cases, such as a compact "Sort" select in a toolbar, the class `sqs-arrow-start` moves it to the start:
 
@@ -145,7 +149,7 @@ The arrow is drawn with CSS gradients, so it follows `--sqs-arrow` and dark mode
 .sqs { --sqs-arrow-image: url("arrow.svg"); }
 ```
 
-- The image fills a box as wide as `--sqs-arrow-size` and half as high. An SVG with a `viewBox` fits itself in. For icons from an icon set, crop the `viewBox` to the arrow.
+- The image fills a box as wide as `--sqs-arrow-size` and half as high, or as high as `--sqs-arrow-height`. An SVG with a `viewBox` fits itself in. For icons from an icon set, crop the `viewBox` to the arrow.
 - An image file keeps its own colors. It does not follow `--sqs-arrow` or dark mode, so check its contrast against the field in both: at least 3:1.
 - `none` hides the arrow. An invalid value, such as a color, shows no arrow either.
 
@@ -181,31 +185,27 @@ Two chevrons, up and down. They need two positions, so this one also sets `backg
 }
 ```
 
-**Another arrow while open.** Set the image again for `:open`, here a chevron pointing up. This needs `base-select`, so Firefox, touch devices and older browsers keep the closed arrow. Keep `:open` in a rule of its own, inside the same `@supports` and media query as the stylesheet:
+**Another arrow while open.** `--sqs-arrow-image-open` takes the same values, here a chevron pointing up. This needs `base-select`, so Firefox, touch devices and older browsers keep the closed arrow:
 
 ```css
-@supports (appearance: base-select) {
-  @media (hover: hover) and (pointer: fine) {
-    .sqs:open {
-      --sqs-arrow-image:
-        linear-gradient(135deg, #0000 calc(100% / 3 - .8px), var(--sqs-arrow, light-dark(#596370, #a3adb8)) 0 calc(100% / 3 + .8px), #0000 0),
-        linear-gradient(-135deg, #0000 calc(100% / 3 - .8px), var(--sqs-arrow, light-dark(#596370, #a3adb8)) 0 calc(100% / 3 + .8px), #0000 0);
-    }
-  }
+.sqs {
+  --sqs-arrow-image-open:
+    linear-gradient(135deg, #0000 calc(100% / 3 - .8px), var(--sqs-arrow, light-dark(#596370, #a3adb8)) 0 calc(100% / 3 + .8px), #0000 0),
+    linear-gradient(-135deg, #0000 calc(100% / 3 - .8px), var(--sqs-arrow, light-dark(#596370, #a3adb8)) 0 calc(100% / 3 + .8px), #0000 0);
 }
 ```
 
-**A tall arrow.** For an image that is not twice as wide as high, such as 9 × 25 px, set its size yourself and let `--sqs-arrow-size` reserve its width:
+**A tall arrow.** For an image that is not twice as wide as high, such as 9 × 25 px, set both sides:
 
 ```css
 .sqs {
   --sqs-arrow-size: 9px;
+  --sqs-arrow-height: 25px;
   --sqs-arrow-image: url("arrow-tall.svg");
-  background-size: 9px 25px;
 }
 ```
 
-The space next to the text follows `--sqs-arrow-size`, rounded to an even number of pixels, and the arrow stays `--sqs-padding-inline` away from the edge. Right to left and `sqs-arrow-start` keep working. Keep the image lower than the field.
+The width is rounded to an even number of pixels, here 10 px; an SVG with a `viewBox` stays centered in it. Keep the image lower than the field. The chevron and the recipes above are drawn for a box twice as wide as high and get distorted with another height.
 
 ## More recipes
 

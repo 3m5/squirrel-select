@@ -50,7 +50,7 @@ Set CSS variables on any ancestor, or on the select itself:
 }
 ```
 
-All variables are listed in [Theming](theming.html). Your own CSS outside a layer always wins over ours, because the stylesheet lives in the cascade layer `squirrel`.
+All variables are listed in [Theming](theming.html). Your own CSS outside a layer always wins over ours, because the stylesheet lives in the cascade layer `squirrel`. That includes old global rules such as `select { border: 0; }` from a reset: they override the styling, see "My styles do not apply" in [Troubleshooting](troubleshooting.html).
 
 For dark mode, declare it on your page. The stylesheet follows your page and never switches on its own:
 

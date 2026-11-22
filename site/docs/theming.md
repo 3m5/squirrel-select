@@ -54,8 +54,8 @@ Without `color-scheme`, the select stays light, even if the operating system is 
 | `--sqs-list-radius` | `--sqs-radius`, capped at `.75em` | corners of the open list and of lists; the option corners follow | yes | lists |
 | `--sqs-border-width` | `1px` | border width | yes | yes |
 | `--sqs-height` | `2.5em` | minimum field height; never below 24 px, and 44 px on touch | yes | yes |
-| `--sqs-padding-block` | `.5em` | padding top and bottom | yes | yes |
-| `--sqs-padding-inline` | `.75em` | padding start and end | yes | yes |
+| `--sqs-padding-block` | `.5em` | padding top and bottom; one value, or two for top and bottom | yes | yes |
+| `--sqs-padding-inline` | `.75em` | padding start and end; one value only, because the arrow position is calculated from it | yes | yes |
 | `--sqs-gap` | `.5em` | space between text and arrow, checkmark or icon and text | yes | text and arrow |
 | `--sqs-option-padding-block` | `.375em` | padding top and bottom of each option; rows stay at least 44 px high on touch | yes | lists, not in Safari |
 | `--sqs-arrow-size` | `.625em` | arrow width; the height is half, rounded to whole pixels | yes | yes |
@@ -180,6 +180,79 @@ Two chevrons, up and down. They need two positions, so this one also sets `backg
     left var(--sqs-padding-inline, .75em) top calc(50% + .21875em), left var(--sqs-padding-inline, .75em) top calc(50% + .21875em);
 }
 ```
+
+**Another arrow while open.** Set the image again for `:open`, here a chevron pointing up. This needs `base-select`, so Firefox, touch devices and older browsers keep the closed arrow. Keep `:open` in a rule of its own, inside the same `@supports` and media query as the stylesheet:
+
+```css
+@supports (appearance: base-select) {
+  @media (hover: hover) and (pointer: fine) {
+    .sqs:open {
+      --sqs-arrow-image:
+        linear-gradient(135deg, #0000 calc(100% / 3 - .8px), var(--sqs-arrow, light-dark(#596370, #a3adb8)) 0 calc(100% / 3 + .8px), #0000 0),
+        linear-gradient(-135deg, #0000 calc(100% / 3 - .8px), var(--sqs-arrow, light-dark(#596370, #a3adb8)) 0 calc(100% / 3 + .8px), #0000 0);
+    }
+  }
+}
+```
+
+**A tall arrow.** For an image that is not twice as wide as high, such as 9 × 25 px, set its size yourself and let `--sqs-arrow-size` reserve its width:
+
+```css
+.sqs {
+  --sqs-arrow-size: 9px;
+  --sqs-arrow-image: url("arrow-tall.svg");
+  background-size: 9px 25px;
+}
+```
+
+The space next to the text follows `--sqs-arrow-size`, rounded to an even number of pixels, and the arrow stays `--sqs-padding-inline` away from the edge. Right to left and `sqs-arrow-start` keep working. Keep the image lower than the field.
+
+## More recipes
+
+Each of these is your own rule outside a layer, so it wins without `!important`. `:not([multiple], [size])` limits a rule to the closed field and leaves lists alone.
+
+**Only a line below the field.**
+
+```css
+.sqs:not([multiple], [size]) {
+  border-width: 0 0 var(--sqs-border-width, 1px);
+  border-radius: 0;
+}
+.sqs:not([multiple], [size]):is(:user-invalid, [aria-invalid="true"]) {
+  box-shadow: inset 0 -1px var(--sqs-invalid, light-dark(#b3261e, #ff9b91));
+}
+```
+
+An error shows in a second way besides the color: the stylesheet adds an inner line of 1px. Without the second rule that line runs all around the field; with it, the bottom line gets twice as thick. In forced colors the line turns dashed instead. The open list keeps its border. On a colored background, set `--sqs-bg` to the background color too.
+
+**No checkmark and no bold for the checked option.**
+
+```css
+.sqs option:checked {
+  font-weight: normal;
+}
+@supports (appearance: base-select) {
+  .sqs option::checkmark {
+    display: none;
+  }
+}
+```
+
+The checked option keeps its background: `--sqs-selected`, plus the bar in lists, and its own gray in Safari lists. That is then the only cue, so keep it clearly visible.
+
+**Different text in field and list.**
+
+```css
+.sqs {
+  --sqs-text: light-dark(#000, #fff);
+  line-height: 1.5;
+}
+.sqs:not([multiple], [size], :disabled, :has(option[value=""]:checked)) {
+  color: light-dark(#4a525c, #c4cbd3);
+}
+```
+
+`--sqs-text` colors the list. The field gets its own color only while it shows a real value, so the placeholder and a disabled field keep the muted color. A plain `color` on `.sqs` would override both. The options take over the `line-height`; set it on `.sqs option` to give them their own.
 
 ## Long text
 

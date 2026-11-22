@@ -53,6 +53,16 @@ export default {
 
 Relative imports keep working. Or leave the `@import` to your bundler: Vite and webpack read `exports`.
 
+## Sass stops with "This function isn't allowed in plain CSS"
+
+Dart Sass before 1.65 does not know the CSS function `round()`, which the stylesheet uses. It stops when you load the stylesheet with `@use` or a Sass `@import`. Update Sass to 1.65 or later. Or keep the stylesheet out of Sass: import it from JavaScript, or write a plain CSS import with `url()` or the `.css` ending. Sass leaves that import alone, and your bundler resolves it:
+
+```scss
+@import url("@3m5-de/squirrel-select/squirrel-select.css");
+```
+
+If your bundler cannot find the package this way, point it to `node_modules` or add an alias, for example with `resolve.modules` or `resolve.alias` in webpack.
+
 ## The arrow is on the wrong side in right-to-left pages (Vite, Next)
 
 Lightning CSS, the CSS minifier in Vite and in Next with Turbopack, rewrites `:dir(rtl)` into a list of right-to-left languages for older browsers. A page with `dir="rtl"` but without such a `lang` then gets the arrow over the start of the text. The same happens to `sqs-arrow-start` and to the selection bar in lists. Set the CSS targets to the browsers SquirrelSelect needs anyway, in `vite.config.js`:
